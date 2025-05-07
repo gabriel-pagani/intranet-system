@@ -1,0 +1,163 @@
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: #f4f6f8;
+    color: #212529;
+    height: 100vh;
+    display: flex;
+}
+
+.layout {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    position: relative; /* Para posicionamento do toggle */
+}
+
+/* Estilos da sidebar */
+.sidebar {
+    width: 300px;
+    background-color: #212529;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    transition: transform 0.3s ease;
+    position: relative;
+}
+
+.sidebar.collapsed {
+    transform: translateX(-300px);
+}
+
+.sidebar hr {
+    margin: 15px 0;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+    text-align: left;
+}
+
+.logo img {
+    max-width: 100%;
+    height: 80px;
+    object-fit: contain;
+    cursor: pointer;
+}
+
+/* Área da navegação com scroll */
+.dashboard-nav {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto; /* Adiciona rolagem vertical */
+    max-height: calc(100vh - 270px); /* Altura máxima considerando outros elementos */
+    padding-right: 5px; /* Espaço para barra de rolagem */
+}
+
+/* Estilização da barra de rolagem */
+.dashboard-nav::-webkit-scrollbar {
+    width: 0px;
+}
+
+.dashboard-nav::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+.dashboard-nav::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+}
+
+.dashboard-nav::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.dash-link {
+    width: 100%;
+    background: none;
+    border: none;
+    color: white;
+    text-align: left;
+    padding: 10px;
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+
+.dash-link:hover {
+    background-color: #343a40;
+    cursor: pointer;
+}
+
+.setor-toggle {
+    padding: 0px;
+    border-radius: 6px;
+}
+
+.setor-toggle:hover {
+    background-color: #343a40;
+}
+
+.user-section {
+    font-size: 1rem;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.logout {
+    margin-top: 20px;
+}
+
+/* Toggle button para ocultar/mostrar sidebar */
+.sidebar-toggle {
+    position: absolute;
+    left: 300px;
+    top: 50%;
+    z-index: 100;
+    background-color: #212529;
+    color: white;
+    border: none;
+    border-radius: 0 4px 4px 0;
+    padding: 10px 5px;
+    cursor: pointer;
+    transition: left 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-toggle.collapsed {
+    left: 0;
+}
+
+.sidebar-toggle i {
+    font-size: 1rem;
+}
+
+/* Main content area */
+.dashboard-view {
+    flex-grow: 1;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    transition: margin-left 0.3s ease;
+}
+
+.dashboard-view.expanded {
+    margin-left: -300px;
+}
+
+iframe {
+    flex-grow: 1;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
