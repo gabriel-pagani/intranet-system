@@ -18,10 +18,10 @@ def login_view(request):
         try:
             if not user.last_login:
                 login(request, user)
-                return redirect('password-change')
+                return redirect('dashboards:password-change')
             elif user:
                 login(request, user)
-                return redirect('home')
+                return redirect('dashboards:home')
         except:
             messages.error(
                 request, 'Usuário ou senha incorretos. Tente novamente!')
@@ -48,7 +48,7 @@ def home_view(request):
 @never_cache
 def logout_view(request):
     logout(request)
-    response = redirect('login')
+    response = redirect('dashboards:login')
     response['Cache-Control'] = 'no-cache, no-store, must-revalidate'
     response['Pragma'] = 'no-cache'
     response['Expires'] = '0'
@@ -64,7 +64,7 @@ def change_password_view(request):
             user = form.save()
             update_session_auth_hash(request, user)
             messages.success(request, 'Sua senha foi alterada com sucesso!')
-            return redirect('logout')
+            return redirect('dashboards:logout')
     else:
         form = PasswordChangeForm(request.user)
 
