@@ -175,3 +175,6 @@ cython_debug/
 
 # Commands
 deploy_guide/
+
+# Json
+ramais.json

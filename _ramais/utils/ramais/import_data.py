@@ -2,9 +2,9 @@ import json
 from _ramais.models import Ramais
 
 
-def import_data(file_path: str):
+def import_data():
     try:
-        with open(file_path, encoding='utf-8') as f:
+        with open('ramais.json', encoding='utf-8') as f:
             data = json.load(f)
 
         count = 0
@@ -27,4 +27,4 @@ def import_data(file_path: str):
 # ================== EXEMPLO DE USO =======================
 # python manage.py shell
 # from _ramais.utils.ramais.import_data import import_data
-# import_data('caminho/para/o/data.json')
+# import_data()
