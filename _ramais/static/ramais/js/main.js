@@ -79,7 +79,7 @@ function removerAcentos(texto) {
 
 document.addEventListener("DOMContentLoaded", function () {
     // Carrega os ramais a partir do arquivo JSON
-    fetch("/api/ramais/")
+    fetch("/ramais/api/")
     .then(response => response.json())
     .then(data => {
         // Substitui a listaRamais hard-coded pelos dados carregados do JSON
