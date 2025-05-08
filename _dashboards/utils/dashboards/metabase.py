@@ -1,9 +1,8 @@
 import jwt
 import time
-import os
-import dotenv
+from project.local_settings import METABASE_SECRET_KEY, METABASE_SITE_URL
 
-dotenv.load_dotenv()
+
 token_cache = {}
 
 
@@ -19,10 +18,9 @@ def generate_dashboard_url(dashboard_id):
         "exp": round(time.time()) + (60 * 60)
     }
 
-    token = jwt.encode(payload, os.getenv(
-        'METABASE_SECRET_KEY'), algorithm="HS256")
+    token = jwt.encode(payload, METABASE_SECRET_KEY, algorithm="HS256")
 
-    url = f"{os.getenv('METABASE_SITE_URL')}/embed/dashboard/{token}#bordered=true&titled=true"
+    url = f"{METABASE_SITE_URL}/embed/dashboard/{token}#bordered=true&titled=true"
 
     # Atualiza o cache
     token_cache[dashboard_id] = {

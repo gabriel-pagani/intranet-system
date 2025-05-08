@@ -36,7 +36,7 @@ python .\manage.py createsuperuser
 ```
 
 # Configuração
-Na pasta intranet-system crie o arquivo ".env". Dentro do arquivo adicione o seguinte conteúdo
+Na pasta project crie o arquivo "local_settings.py". Dentro do arquivo adicione o seguinte conteúdo
 ```
 METABASE_SITE_URL = 'https://metabase.seudominio.com'
 METABASE_SECRET_KEY = 'sua-chave-metabase'
@@ -49,8 +49,9 @@ intranet-system/
 ├── _home/
 ├── _ramais/
 ├── project/
+├── static/
+├── templates/
 ├── venv/
-├── .env
 ├── .gitignore
 ├── db.sqlite3
 ├── LICENSE
