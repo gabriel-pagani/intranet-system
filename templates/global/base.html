@@ -6,10 +6,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{% block title %}{% endblock %}- Grupo SMI</title>
         <link href="{% static 'global/images/icon.png' %}" rel="icon">
-        {% block style %}{% endblock %}
+        {% block head %}{% endblock %}
     </head>
     <body>
-        {% block content %}{% endblock %}
-        {% block script %}{% endblock %}
+        {% block body %}{% endblock %}
     </body>
 </html>
