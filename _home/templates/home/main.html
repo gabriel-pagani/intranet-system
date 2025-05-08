@@ -1,33 +1,27 @@
+{% extends 'global/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="{% static 'home/images/estrada.png' %}" type="image/x-icon" />
-    <title>Home - Grupo SMI</title>
-</head>
-<body>
-    <div>
-        <a href="/ramais/">
-            <h1>
-                Ramais
-            </h1>
-        </a>
-    </div>
-    <div>
-        <a href="/indicadores/">
-            <h1>
-                Indicadores
-            </h1>
-        </a>
-    </div>
-    <div>
-        <a href="/admin/">
-            <h1>
-                Administração
-            </h1>
-        </a>
-    </div>
-</body>
-</html>
+
+{% block title %}Home{% endblock title %}
+
+{% block head %}
+        <link href="{% static 'home/css/main.css' %}" rel="stylesheet">
+{% endblock head %}
+
+{% block body %}
+        <div>
+            <a href="/ramais/">
+                <h1>Ramais</h1>
+            </a>
+        </div>
+        <div>
+            <a href="/indicadores/">
+                <h1>Indicadores</h1>
+            </a>
+        </div>
+        <div>
+            <a href="/admin/">
+                <h1>Administração</h1>
+            </a>
+        </div>
+        <script src="{% static 'home/js/main.js' %}"></script>
+{% endblock body %}
