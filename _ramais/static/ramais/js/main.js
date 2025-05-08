@@ -88,9 +88,4 @@ document.addEventListener("DOMContentLoaded", function () {
         carregarRamais();
     })
     .catch(error => console.error("Erro ao carregar os ramais:", error));
-
-    // Evento para o clique na logo que recarrega a página
-    document.getElementById('logo-img').addEventListener('click', function() {
-    location.reload();
-    });
 });
