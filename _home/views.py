@@ -33,11 +33,11 @@ def login_done(request):
         )
 
         if authenticated is not None:
-            messages.success(request, 'Você está logado!')
             login(request, authenticated)
+            return redirect(reverse('home:home'))
         else:
-            messages.error(request, 'Usuário ou senha inválidos!')
+            messages.error(request, 'Dados inválidos!')
     else:
-        messages.error(request, 'Dados inválidos!')
+        messages.error(request, 'Dados não inseridos!')
 
     return redirect(reverse('home:login'))
