@@ -7,6 +7,58 @@ body {
     display: flex;
 }
 
+.form-label {
+    font-weight: 500;
+    font-size: 16px;
+    margin-bottom: 6px;
+}
+
+.input-group-text {
+    background-color: #f1f3f5;
+    border: none;
+    font-size: 16px;
+    padding: 12px;
+}
+
+.form-control {
+    border: none;
+    background-color: #f1f3f5;
+    border-radius: 0 6px 6px 0;
+    font-size: 16px;
+    padding: 12px 14px;
+}
+
+.form-control:focus {
+    box-shadow: none;
+    outline: none;
+    background-color: #e9ecef;
+}
+
+/* Common buttons */
+.btn-dark {
+    background-color: #212529;
+    border: none;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+}
+
+.btn-dark:hover {
+    background-color: #000;
+}
+
+/* Common links */
+a {
+    text-decoration: none;
+    transition: color 0.2s ease;
+    font-size: 14px;
+}
+
+a:hover {
+    color: #000;
+}
+
 .layout {
     display: flex;
     width: 100%;
