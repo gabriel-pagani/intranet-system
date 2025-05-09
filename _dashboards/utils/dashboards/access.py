@@ -1,7 +1,7 @@
 from _dashboards.models import Dashboard
 
 
-def get_dashboards_do_usuario(user):
+def get_dashboards(user):
     if user.is_superuser:
         return Dashboard.objects.all()
 
