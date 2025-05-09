@@ -120,9 +120,9 @@ STATIC_ROOT = BASE_DIR / 'static_root'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Redirect after login/logout
-LOGIN_REDIRECT_URL = 'dashboards:home'
-LOGIN_URL = 'dashboards:login'
+# Redirect to login/logout
+LOGIN_REDIRECT_URL = 'home:home'
+LOGIN_URL = 'home:login'
 
 try:
     from project.local_settings import *

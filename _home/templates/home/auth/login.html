@@ -1,0 +1,12 @@
+{% extends 'global/base.html' %}
+{% load static %}
+
+{% block title %}Login{% endblock title %}
+
+{% block head %}
+        <link href="{% static 'home/css/main.css' %}" rel="stylesheet">
+{% endblock head %}
+
+{% block body %}
+    {% include 'home/partials/form.html' %}
+{% endblock body %}
