@@ -28,3 +28,9 @@ h1 {
     font-size: 36px;
     margin-bottom: 24px;
 }
+
+#password-help {
+    font-size: 0.8rem;
+    margin-top: 5px;
+    color: #6c757d;
+}
