@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from _home.forms import LoginForm, CustomPasswordChangeForm
 from django.urls import reverse
 from django.http import Http404
-from django.contrib.auth import authenticate, login, update_session_auth_hash
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
@@ -118,3 +118,8 @@ def change_password_view(request):
         'form': form,
         'is_required': is_required
     })
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('home:login')
