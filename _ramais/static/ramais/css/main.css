@@ -7,39 +7,6 @@ body {
     padding: 20px;
 }
 
-.container {
-    width: 90%; 
-    max-width: 1200px; 
-    background-color: #fff;
-    border-radius: 8px;
-    padding: 25px;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 25px;
-}
-
-.search-container {
-    display: flex;
-    align-items: center;
-}
-
-#search-input {
-    width: 280px; 
-    padding: 10px; 
-    font-size: 16px; 
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-#search-input:focus {
-    border-color: #ffa600aa;
-}
-
 h1 {
     font-size: 34px;
     color: #333;
@@ -71,7 +38,40 @@ tbody tr:hover {
     background-color: #50505042; 
 }
 
-.header-cell {
+.container {
+    width: 90%; 
+    max-width: 1200px; 
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 25px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+}
+
+#search {
+    width: 280px; 
+    padding: 10px; 
+    font-size: 16px; 
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+#search:focus {
+    border-color: #ffa600aa;
+}
+
+.column-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -82,13 +82,13 @@ tbody tr:hover {
     height: auto;
 }
 
-.paginacao-container {
+.pagination {
     display: flex;
     justify-content: center;
     margin-top: 20px;
 }
 
-.pagina-botao {
+.page-btn {
     background-color: transparent;
     color: #333;
     border: none;
@@ -100,12 +100,12 @@ tbody tr:hover {
     border-radius: 4px;
 }
 
-.pagina-botao:hover {
+.page-btn:hover {
     color: #ff8f00aa;
     background-color: #ff910037;
 }
 
-.pagina-ativa {
+.active-page {
     color: white;
     background-color: #ff8f00aa;
     font-weight: bold;

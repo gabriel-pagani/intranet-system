@@ -5,7 +5,6 @@
 
 {% block head %}
         <link href="{% static 'ramais/css/main.css' %}" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 {% endblock head %}
 
 {% block body %}
@@ -16,25 +15,25 @@
                 </a>
                 <div class="header-text">
                     <h1>Lista de Ramais</h1>
-                    <div class="search-container">
-                        <input type="text" id="search-input" placeholder="Pesquise aqui..." oninput="filtrarRamais()"/>
+                    <div class="search-box">
+                        <input type="text" id="search" placeholder="Pesquise aqui..." oninput="filterRamais()"/>
                     </div>
                 </div>
             </div>
 
-            <table id="lista-ramais">
+            <table id="extensions-table">
                 <thead>
                     <tr>
-                        <th><div class="header-cell">Nome</div></th>
-                        <th><div class="header-cell">Ramal</div></th>
-                        <th><div class="header-cell">Setor</div></th>
-                        <th><div class="header-cell">Máquina</div></th>
+                        <th><div class="column-header">Nome</div></th>
+                        <th><div class="column-header">Ramal</div></th>
+                        <th><div class="column-header">Setor</div></th>
+                        <th><div class="column-header">Máquina</div></th>
                     </tr>
                 </thead>
                 <tbody></tbody>
             </table>
 
-            <div id="paginacao" class="paginacao-container"></div>
+            <div id="pagination" class="pagination"></div>
         </div>
         <script src="{% static 'ramais/js/main.js' %}"></script>
 {% endblock body %}

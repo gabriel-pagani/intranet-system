@@ -1,91 +1,96 @@
-const ramaisPorPagina = 12; // Número de ramais por página
-let paginaAtual = 1; // Página inicial
+const itemsPerPage = 10;
+let currentPage = 1;
+let ramaisList = [];
+let filteredRamais = [];
 
-// Função para carregar os ramais da página atual
-function carregarRamais(lista = ramaisFiltrados) {
-    const listaElement = document.querySelector('#lista-ramais tbody');
-    listaElement.innerHTML = '';
+// Load ramais for current page
+function loadRamais(list = filteredRamais) {
+    const tableBody = document.querySelector('#extensions-table tbody');
+    tableBody.innerHTML = '';
 
-    const inicio = (paginaAtual - 1) * ramaisPorPagina;
-    const fim = inicio + ramaisPorPagina;
-    const ramaisPagina = lista.slice(inicio, fim);
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    const pageItems = list.slice(start, end);
 
-    ramaisPagina.forEach((ramal) => {
+    pageItems.forEach(item => {
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td>${ramal.nome}</td>
-            <td>${ramal.ramal}</td>
-            <td>${ramal.setor}</td>
-            <td>${ramal.maquina}</td>
+            <td>${item.nome}</td>
+            <td>${item.ramal}</td>
+            <td>${item.setor}</td>
+            <td>${item.maquina}</td>
         `;
-        listaElement.appendChild(row);
+        tableBody.appendChild(row);
     });
-    renderizarPaginacao(lista.length);
+    
+    renderPagination(list.length);
 }
 
-// Função para criar botões de navegação de páginas
-function renderizarPaginacao(totalRamais) {
-    const paginacaoContainer = document.getElementById('paginacao');
-    paginacaoContainer.innerHTML = '';
+// Create pagination buttons
+function renderPagination(totalItems) {
+    const paginationContainer = document.getElementById('pagination');
+    paginationContainer.innerHTML = '';
 
-    const totalPaginas = Math.ceil(totalRamais / ramaisPorPagina);
-    for (let i = 1; i <= totalPaginas; i++) {
-        const botaoPagina = document.createElement('button');
-        botaoPagina.textContent = i;
-        botaoPagina.classList.add('pagina-botao');
-        if (i === paginaAtual) botaoPagina.classList.add('pagina-ativa');
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+    
+    for (let i = 1; i <= totalPages; i++) {
+        const pageBtn = document.createElement('button');
+        pageBtn.textContent = i;
+        pageBtn.classList.add('page-btn');
+        
+        if (i === currentPage) {
+            pageBtn.classList.add('active-page');
+        }
 
-        botaoPagina.addEventListener('click', () => {
-            paginaAtual = i;
-            carregarRamais();
+        pageBtn.addEventListener('click', () => {
+            currentPage = i;
+            loadRamais();
         });
 
-        paginacaoContainer.appendChild(botaoPagina);
+        paginationContainer.appendChild(pageBtn);
     }
 }
 
-// Função para filtrar os ramais com base no termo de pesquisa
-function filtrarRamais() {
-    let input = document.getElementById('search-input').value.trim().toLowerCase();
-    const buscaInvertida = input.startsWith('-');
+// Filter extensions based on search term
+function filterRamais() {
+    const input = document.getElementById('search').value.trim().toLowerCase();
+    const isInverseSearch = input.startsWith('-');
+    
+    const searchTerm = isInverseSearch 
+        ? removeAccents(input.slice(1).trim()) 
+        : removeAccents(input);
 
-    // Remove o sinal de menos só do início, se for busca invertida
-    if (buscaInvertida) {
-        input = input.slice(1).trim();
-    }
+    filteredRamais = ramaisList.filter(item => {
+        const name = removeAccents(item.nome.toLowerCase());
+        const ext = removeAccents(item.ramal.toLowerCase());
+        const sector = removeAccents(item.setor.toLowerCase());
+        const machine = removeAccents(item.maquina.toLowerCase());
 
-    const termo = removerAcentos(input);
+        const containsTerm = name.includes(searchTerm) || 
+                           ext.includes(searchTerm) || 
+                           sector.includes(searchTerm) || 
+                           machine.includes(searchTerm);
 
-    ramaisFiltrados = listaRamais.filter((ramal) => {
-        const nome = removerAcentos(ramal.nome.toLowerCase());
-        const ramalNumero = removerAcentos(ramal.ramal.toLowerCase());
-        const setor = removerAcentos(ramal.setor.toLowerCase());
-        const maquina = removerAcentos(ramal.maquina.toLowerCase());
-
-        const contemTermo = nome.includes(termo) || ramalNumero.includes(termo) || setor.includes(termo) || maquina.includes(termo);
-
-        // Se for busca invertida, mantemos apenas os que NÃO contêm o termo
-        return buscaInvertida ? !contemTermo : contemTermo;
+        return isInverseSearch ? !containsTerm : containsTerm;
     });
 
-    paginaAtual = 1; // Resetar para a primeira página após filtrar
-    carregarRamais();
+    currentPage = 1;
+    loadRamais();
 }
 
-// Função para remover acentos (ajuda na pesquisa)
-function removerAcentos(texto) {
-    return texto.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+// Remove accents for better search
+function removeAccents(text) {
+    return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    // Carrega os ramais a partir do arquivo JSON
+// Load data when page loads
+document.addEventListener("DOMContentLoaded", function() {
     fetch("/ramais/api/")
-    .then(response => response.json())
-    .then(data => {
-        // Substitui a listaRamais hard-coded pelos dados carregados do JSON
-        listaRamais = data;
-        ramaisFiltrados = [...listaRamais];
-        carregarRamais();
-    })
-    .catch(error => console.error("Erro ao carregar os ramais:", error));
+        .then(response => response.json())
+        .then(data => {
+            ramaisList = data;
+            filteredRamais = [...ramaisList];
+            loadRamais();
+        })
+        .catch(error => console.error("Erro ao carregar os ramais:", error));
 });
