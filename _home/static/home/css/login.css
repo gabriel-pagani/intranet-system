@@ -1,6 +1,9 @@
 /* Estilos específicos para a página de login e troca de senha */
 body {
-  background-color: var(--primary-color-light);
+  background-image: url("/static/global/images/fundo_smi.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   min-height: 100vh;
   margin: 0;
   padding: 0;
