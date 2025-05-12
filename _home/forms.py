@@ -11,15 +11,11 @@ class LoginForm(forms.Form):
 
 class CustomPasswordChangeForm(PasswordChangeForm):
     old_password = forms.CharField(
-        widget=forms.PasswordInput(attrs={'placeholder': 'Senha atual'}),
-        label="Senha atual"
+        widget=forms.PasswordInput()
     )
     new_password1 = forms.CharField(
-        widget=forms.PasswordInput(attrs={'placeholder': 'Nova senha'}),
-        label="Nova senha"
+        widget=forms.PasswordInput()
     )
     new_password2 = forms.CharField(
-        widget=forms.PasswordInput(
-            attrs={'placeholder': 'Confirme a nova senha'}),
-        label="Confirmação da nova senha"
+        widget=forms.PasswordInput()
     )

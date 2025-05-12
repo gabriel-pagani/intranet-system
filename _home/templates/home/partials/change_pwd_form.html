@@ -60,10 +60,21 @@
                 </div>
                 {% endif %}
             </div>
-
-            <div class="d-grid">
-                <button type="submit" class="btn btn-dark">Salvar nova senha</button>
+            
+            <div class="mb-3">
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-dark">Salvar nova senha</button>
+                </div>
             </div>
         </form>
+        {% if not is_required %}
+            <div class="mb-0">
+                <a href="/">
+                    <div class="d-grid text-center">
+                        Voltar
+                    </div>
+                </a>
+            </div>
+        {% endif %}
     </div>
 </div>
