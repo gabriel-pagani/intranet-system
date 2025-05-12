@@ -1,40 +1,39 @@
 body {
     margin: 0;
-    font-family: 'Inter', sans-serif;
-    background-color: #f4f6f8;
-    color: #212529;
+    font-family: var(--font-family);
+    background-color: var(--bg-gray);
+    color: var(--text-dark);
     height: 100vh;
     display: flex;
 }
 
 .form-label {
     font-weight: 500;
-    font-size: 16px;
-    margin-bottom: 6px;
+    font-size: var(--font-size-md);
+    margin-bottom: var(--spacing-xs);
 }
 
 .input-group-text {
-    background-color: #f1f3f5;
+    background-color: var(--bg-gray-light);
     border: none;
-    font-size: 16px;
-    padding: 12px;
+    font-size: var(--font-size-md);
+    padding: var(--spacing-sm);
 }
 
 .form-control {
     border: none;
-    background-color: #f1f3f5;
-    border-radius: 0 6px 6px 0;
-    font-size: 16px;
-    padding: 12px 14px;
+    background-color: var(--bg-gray-light);
+    border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+    font-size: var(--font-size-md);
+    padding: var(--spacing-sm);
 }
 
 .form-control:focus {
     box-shadow: none;
     outline: none;
-    background-color: #e9ecef;
+    background-color: var(--bg-gray-medium);
 }
 
-/* Common buttons */
 .btn-dark {
     background-color: #212529;
     border: none;
@@ -48,7 +47,6 @@ body {
     background-color: #000;
 }
 
-/* Common links */
 a {
     text-decoration: none;
     transition: color 0.2s ease;
@@ -63,33 +61,39 @@ a:hover {
     display: flex;
     width: 100%;
     height: 100vh;
-    position: relative; /* Para posicionamento do toggle */
+    position: relative;
+    overflow-x: hidden;
 }
 
-/* Estilos da sidebar */
 .sidebar {
     width: 300px;
-    background-color: #212529;
-    color: white;
+    min-width: 300px;
+    background-color: var(--secondary-color);
+    color: var(--text-light);
     display: flex;
     flex-direction: column;
-    padding: 20px;
-    transition: transform 0.3s ease;
-    position: relative;
+    padding: var(--spacing-lg);
+    transition: all var(--transition-smooth);
+    z-index: 10;
+    height: 100vh;
+    box-sizing: border-box;
 }
 
 .sidebar.collapsed {
-    transform: translateX(-300px);
+    margin-left: -300px;
+    min-width: 0;
 }
 
 .sidebar hr {
-    margin: 15px 0;
+    margin: var(--spacing-md) 0;
+    opacity: 0.2;
+    border-color: var(--text-muted);
 }
 
 .logo {
-    font-size: 1.5rem;
+    font-size: var(--font-size-xl);
     font-weight: bold;
-    margin-bottom: 5px;
+    margin-bottom: var(--spacing-xs);
     text-align: left;
 }
 
@@ -98,61 +102,67 @@ a:hover {
     height: 80px;
     object-fit: contain;
     cursor: pointer;
+    transition: opacity var(--transition-fast);
 }
 
-/* Área da navegação com scroll */
-.dashboard-nav {
+.logo img:hover {
+    opacity: 0.9;
+}
+
+.nav-menu {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    overflow-y: auto; /* Adiciona rolagem vertical */
-    max-height: calc(100vh - 270px); /* Altura máxima considerando outros elementos */
-    padding-right: 5px; /* Espaço para barra de rolagem */
+    gap: var(--spacing-sm);
+    overflow-y: auto;
+    max-height: calc(100vh - 270px);
+    padding-right: var(--spacing-xs);
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
 }
 
-/* Estilização da barra de rolagem */
-.dashboard-nav::-webkit-scrollbar {
-    width: 0px;
+.nav-menu::-webkit-scrollbar {
+    width: 4px;
 }
 
-.dashboard-nav::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 3px;
+.nav-menu::-webkit-scrollbar-track {
+    background: transparent;
 }
 
-.dashboard-nav::-webkit-scrollbar-thumb {
+.nav-menu::-webkit-scrollbar-thumb {
     background-color: rgba(255, 255, 255, 0.3);
-    border-radius: 3px;
+    border-radius: var(--border-radius-sm);
 }
 
-.dashboard-nav::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(255, 255, 255, 0.5);
-}
-
-.dash-link {
+.dashboard-btn {
     width: 100%;
     background: none;
     border: none;
-    color: white;
+    color: var(--text-light);
     text-align: left;
-    padding: 10px;
-    border-radius: 8px;
-    transition: background 0.2s;
+    padding: var(--spacing-sm);
+    border-radius: var(--border-radius-md);
+    transition: all var(--transition-fast);
+    opacity: 0.8;
 }
 
-.dash-link:hover {
-    background-color: #343a40;
+.dashboard-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
     cursor: pointer;
+    opacity: 1;
 }
 
-.setor-toggle {
-    padding: 0px;
-    border-radius: 6px;
+.section-toggle {
+    padding: var(--spacing-sm);
+    border-radius: var(--border-radius-md);
+    transition: all var(--transition-fast);
+    opacity: 0.9;
+    margin-bottom: var(--spacing-xs);
 }
 
-.setor-toggle:hover {
-    background-color: #343a40;
+.section-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    opacity: 1;
 }
 
 .user-section {
@@ -166,23 +176,25 @@ a:hover {
     margin-top: 20px;
 }
 
-/* Toggle button para ocultar/mostrar sidebar */
 .sidebar-toggle {
-    position: absolute;
+    position: fixed;
     left: 300px;
     top: 50%;
+    transform: translateY(-50%);
     z-index: 100;
-    background-color: #212529;
-    color: white;
+    background-color: var(--secondary-color);
+    color: var(--text-light);
     border: none;
-    border-radius: 0 4px 4px 0;
-    padding: 10px 5px;
+    border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+    padding: var(--spacing-sm) var(--spacing-xs);
     cursor: pointer;
-    transition: left 0.3s ease;
+    transition: all var(--transition-smooth);
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-md);
+    height: 50px;
+    width: 24px;
 }
 
 .sidebar-toggle.collapsed {
@@ -190,21 +202,26 @@ a:hover {
 }
 
 .sidebar-toggle i {
-    font-size: 1rem;
+    font-size: var(--font-size-sm);
+    transition: transform var(--transition-normal);
 }
 
-/* Main content area */
+.sidebar-toggle:hover {
+    background-color: #000;
+}
+
 .dashboard-view {
     flex-grow: 1;
-    background-color: #fff;
+    background-color: var(--bg-light);
     display: flex;
     flex-direction: column;
-    height: 100%;
-    transition: margin-left 0.3s ease;
+    height: 100vh;
+    transition: all var(--transition-smooth);
+    width: calc(100% - 300px);
 }
 
 .dashboard-view.expanded {
-    margin-left: -300px;
+    width: 100%;
 }
 
 iframe {
@@ -212,4 +229,38 @@ iframe {
     width: 100%;
     height: 100%;
     border: none;
+}
+
+/* Responsividade */
+@media (max-width: 992px) {
+    .sidebar {
+        width: 250px;
+        min-width: 250px;
+        padding: var(--spacing-md);
+    }
+    
+    .sidebar-toggle {
+        left: 250px;
+    }
+    
+    .dashboard-view {
+        width: calc(100% - 250px);
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        min-width: 100%;
+        position: absolute;
+        z-index: 100;
+    }
+    
+    .sidebar:not(.collapsed) {
+        box-shadow: var(--shadow-lg);
+    }
+    
+    .dashboard-view {
+        width: 100%;
+    }
 }

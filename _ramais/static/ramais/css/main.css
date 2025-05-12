@@ -3,55 +3,57 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #ff8f00aa;
-    padding: 20px;
+    background-color: var(--primary-color-light);
+    padding: var(--spacing-lg);
 }
 
 h1 {
-    font-size: 34px;
-    color: #333;
-    margin-bottom: 10px;
+    font-size: var(--font-size-xxl);
+    color: var(--text-dark);
+    margin-bottom: var(--spacing-sm);
 }
 
 table {
     width: 100%;
-    margin-top: 20px;
+    margin-top: var(--spacing-lg);
+    border-collapse: collapse;
 }
 
 th, td {
     width: 25%;
-    padding: 12px;
+    padding: var(--spacing-sm);
     text-align: left;
-    font-size: 16px; 
-    color: #000000;
+    font-size: var(--font-size-md);
+    color: var(--text-dark);
 }
 
 th {
-    background-color: #f1f1f1;
+    background-color: var(--bg-gray-medium);
+    font-weight: 600;
 }
 
 tbody tr:nth-child(odd) {
-    background-color: #f9f9f9;
+    background-color: var(--bg-gray-light);
 }
 
 tbody tr:hover {
-    background-color: #50505042; 
+    background-color: var(--bg-hover);
 }
 
 .container {
     width: 90%; 
     max-width: 1200px; 
-    background-color: #fff;
-    border-radius: 8px;
-    padding: 25px;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+    background-color: var(--bg-light);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-lg);
 }
 
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 25px;
+    margin-bottom: var(--spacing-lg);
 }
 
 .search-box {
@@ -61,20 +63,23 @@ tbody tr:hover {
 
 #search {
     width: 280px; 
-    padding: 10px; 
-    font-size: 16px; 
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    padding: var(--spacing-sm); 
+    font-size: var(--font-size-md);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    transition: border-color var(--transition-fast);
 }
 
 #search:focus {
-    border-color: #ffa600aa;
+    border-color: var(--border-focus);
+    outline: none;
 }
 
 .column-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: var(--spacing-xs) 0;
 }
 
 .header img {
@@ -85,41 +90,79 @@ tbody tr:hover {
 .pagination {
     display: flex;
     justify-content: center;
-    margin-top: 20px;
+    margin-top: var(--spacing-lg);
 }
 
 .page-btn {
     background-color: transparent;
-    color: #333;
+    color: var(--text-dark);
     border: none;
-    padding: 8px 12px;
-    margin: 0 5px;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    margin: 0 var(--spacing-xs);
     cursor: pointer;
-    font-size: 14px;
-    transition: color 0.3s, background-color 0.3s;
-    border-radius: 4px;
+    font-size: var(--font-size-sm);
+    transition: all var(--transition-fast);
+    border-radius: var(--border-radius-sm);
 }
 
 .page-btn:hover {
-    color: #ff8f00aa;
-    background-color: #ff910037;
+    color: var(--primary-color);
+    background-color: var(--primary-color-lighter);
 }
 
 .active-page {
-    color: white;
-    background-color: #ff8f00aa;
-    font-weight: bold;
+    color: var(--text-light);
+    background-color: var(--primary-color-light);
+    font-weight: 600;
 }
 
 .logo {
     width: 130px;
     height: auto;
-    margin-left: 20px;
+    margin-left: var(--spacing-lg);
     cursor: pointer;
+    transition: opacity var(--transition-fast);
+}
+
+.logo:hover {
+    opacity: 0.9;
 }
 
 .header-text {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .logo {
+        margin-left: 0;
+        margin-bottom: var(--spacing-md);
+    }
+    
+    #search {
+        width: 100%;
+    }
+    
+    .search-box {
+        width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+    th, td {
+        padding: var(--spacing-xs);
+        font-size: var(--font-size-sm);
+    }
+    
+    .container {
+        width: 95%;
+        padding: var(--spacing-md);
+    }
 }

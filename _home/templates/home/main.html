@@ -8,20 +8,21 @@
 {% endblock head %}
 
 {% block body %}
-        <div>
-            <a href="/ramais/">
-                <h1>Ramais</h1>
-            </a>
-        </div>
-        <div>
-            <a href="/indicadores/">
-                <h1>Indicadores</h1>
-            </a>
-        </div>
-        <div>
-            <a href="/logout/">
-                <h1>Sair</h1>
-            </a>
+        <div class="home-container">
+            <div class="nav-menu">
+                <a href="/ramais/" class="menu-item">
+                    <h1>Ramais</h1>
+                </a>
+                <a href="/indicadores/" class="menu-item">
+                    <h1>Indicadores</h1>
+                </a>
+                <a href="/change-password/" class="menu-item">
+                    <h1>Alterar Senha</h1>
+                </a>
+                <a href="/logout/" class="menu-item logout-item">
+                    <h1>Sair</h1>
+                </a>
+            </div>
         </div>
         <script src="{% static 'home/js/main.js' %}"></script>
 {% endblock body %}

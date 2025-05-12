@@ -1,94 +1,121 @@
+/* Estilos específicos para a página de login e troca de senha */
 body {
-    margin: 0;
-    font-family: 'Inter', sans-serif;
-    background-color: #f4f6f8;
-    background-image: url('/static/global/images/fundo_smi.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    color: #212529;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+  background-color: var(--primary-color-light);
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
 }
 
-.form-label {
-    font-weight: 500;
-    font-size: 16px;
-    margin-bottom: 6px;
-}
-
-.input-group-text {
-    background-color: #f1f3f5;
-    border: none;
-    font-size: 16px;
-    padding: 12px;
-}
-
-.form-control {
-    border: none;
-    background-color: #f1f3f5;
-    border-radius: 0 6px 6px 0;
-    font-size: 16px;
-    padding: 12px 14px;
-}
-
-.form-control:focus {
-    box-shadow: none;
-    outline: none;
-    background-color: #e9ecef;
-}
-
-/* Common buttons */
-.btn-dark {
-    background-color: #212529;
-    border: none;
-    padding: 12px;
-    font-size: 16px;
-    font-weight: 500;
-    transition: background-color 0.2s ease;
-}
-
-.btn-dark:hover {
-    background-color: #000;
-}
-
-/* Common links */
-a {
-    text-decoration: none;
-    transition: color 0.2s ease;
-    font-size: 14px;
-}
-
-a:hover {
-    color: #000;
-}
-
-.container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.auth-wrapper {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--spacing-md);
+  box-sizing: border-box;
 }
 
 .login-container {
-    width: 100%;
-    max-width: 440px;
-    padding: 50px 40px;
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  background-color: var(--bg-light);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-lg);
+  width: 100%;
+  max-width: 450px;
+  margin: 0 auto;
 }
 
-h1 {
-    font-weight: 600;
-    font-size: 36px;
-    margin-bottom: 24px;
+.login-container h1 {
+  font-size: var(--font-size-xl);
+  color: var(--text-dark);
+  margin-bottom: var(--spacing-md);
+}
+
+.input-group {
+  margin-bottom: var(--spacing-sm);
+}
+
+.input-group-text {
+  background-color: var(--bg-gray-light);
+  border: 1px solid var(--border-color);
+  border-right: none;
+  border-radius: var(--border-radius-md) 0 0 var(--border-radius-md);
+  padding: var(--spacing-md);
+}
+
+.form-control {
+  border: 1px solid var(--border-color);
+  border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+  padding: var(--spacing-md);
+  font-size: var(--font-size-md);
+}
+
+.form-control:focus {
+  box-shadow: none;
+  outline: none;
+  border-color: var(--border-focus);
+}
+
+.btn {
+  padding: var(--spacing-md);
+  font-weight: 500;
+  transition: background-color var(--transition-fast);
+}
+
+.btn-dark {
+  background-color: var(--secondary-color);
+  border: none;
+}
+
+.btn-dark:hover {
+  background-color: var(--secondary-color-light);
+}
+
+.text-danger {
+  color: #dc3545;
+  font-size: var(--font-size-sm);
+  margin-top: var(--spacing-xs);
 }
 
 #password-help {
-    font-size: 0.8rem;
-    margin-top: 5px;
-    color: #6c757d;
+  font-size: var(--font-size-sm);
+  color: #6c757d;
+  margin-top: var(--spacing-sm);
+}
+
+#password-help ul {
+  padding-left: var(--spacing-lg);
+  margin-top: var(--spacing-xs);
+}
+
+.alert {
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  display: flex;
+  align-items: center;
+}
+
+.alert-info {
+  background-color: #cff4fc;
+  color: #055160;
+}
+
+.alert-success {
+  background-color: #d1e7dd;
+  color: #0f5132;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  color: #842029;
+}
+
+/* Responsividade */
+@media (max-width: 576px) {
+  .login-container {
+    width: 95%;
+    padding: var(--spacing-md);
+  }
 }
