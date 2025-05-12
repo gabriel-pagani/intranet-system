@@ -46,9 +46,9 @@ def login_done(request):
                 login(request, user)
                 return redirect(reverse('home:home'))
         else:
-            messages.error(request, 'Dados inválidos!')
+            messages.error(request, 'Dados inválidos')
     else:
-        messages.error(request, 'Dados não inseridos!')
+        messages.error(request, 'Preencha todos os campos')
 
     return redirect(reverse('home:login'))
 
