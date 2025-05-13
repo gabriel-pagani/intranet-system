@@ -100,28 +100,35 @@ def change_password_view(request):
                 # Atualizar a sessão para usuários já logados
                 update_session_auth_hash(request, saved_user)
 
-            messages.success(request, 'Sua senha foi alterada com sucesso!')
-            return redirect(reverse('home:home'))
+            messages.success(request, 'Sua senha foi alterada com sucesso')
+            logout(request)
+            return redirect(reverse('home:login'))
         else:
-            # Se o formulário for inválido, exibir mensagens de erro
-            erro_mensagem = ""
-            for field, errors in form.errors.items():
-                field_name = field
-                # Personalizar nomes dos campos para serem mais amigáveis
-                if field == 'old_password':
-                    field_name = 'Senha atual'
-                elif field == 'new_password1':
-                    field_name = 'Nova senha'
-                elif field == 'new_password2':
-                    field_name = 'Confirmação da senha'
+            # Pegar os valores dos campos
+            old_password = form.data.get('old_password', '')
+            new_password1 = form.data.get('new_password1', '')
+            new_password2 = form.data.get('new_password2', '')
 
-                # Formatar mensagens de erro
-                for error in errors:
-                    erro_mensagem += f"{field_name}: {error}"
+            # Verificar campos não preenchidos
+            if not old_password or not new_password1 or not new_password2:
+                erro_mensagem = "Preencha todos os campos"
+            # Verificar se a senha atual está correta (verificando se esse é o erro no formulário)
+            elif 'old_password' in form.errors:
+                erro_mensagem = "A senha atual está incorreta"
+            # Verificar se as senhas novas coincidem
+            elif new_password1 != new_password2:
+                erro_mensagem = "As senhas não coincidem"
+            # Verificar requisitos da senha
+            elif len(new_password1) < 8 and new_password1.isdigit():
+                erro_mensagem = "A nova senha deve ter pelo menos 8 caracteres e não pode ser inteiramente numérica"
+            # Verificar outros requisitos de senha (mensagem genérica para outros erros do campo new_password1)
+            elif 'new_password1' in form.errors:
+                erro_mensagem = "A nova senha não atende aos requisitos de segurança"
+            # Mensagem genérica para outros erros
+            else:
+                erro_mensagem = "Ocorreu um erro ao alterar sua senha. Verifique os dados e tente novamente"
 
-            # Adicionar uma única mensagem com todos os erros
-            if erro_mensagem:
-                messages.error(request, erro_mensagem)
+            messages.error(request, erro_mensagem)
     else:
         # Se o usuário não estiver logado, usamos o ID da sessão
         if not request.user.is_authenticated:
