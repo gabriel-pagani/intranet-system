@@ -1,80 +1,54 @@
-<div class="auth-wrapper">
-    <div class="login-container">
-        <h1 class="mb-4 text-center fs-1">Troque sua senha</h1>
-        {% if is_required %}
-            <div class="alert alert-info mb-4" role="alert">
-                <i class="bi bi-info-circle-fill me-2"></i>
-                Para sua segurança, é necessário alterar sua senha no primeiro acesso.
-            </div>
-        {% endif %}
-        
-        <form method="post" novalidate>
-            {% csrf_token %}
-            <div class="mb-3">
-                <div class="input-group">
-                    <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                    <input type="password" name="old_password" id="id_old_password" class="form-control" placeholder="Senha atual" required>
-                </div>
-                {% if form.old_password.errors %}
-                <div class="text-danger">
-                    {% for error in form.old_password.errors %}
-                    <small>{{ error }}</small>
-                    {% endfor %}
-                </div>
-                {% endif %}
-            </div>
-            
-            <div class="mb-3">
-                <div class="input-group">
-                    <span class="input-group-text"><i class="bi bi-key"></i></span>
-                    <input type="password" name="new_password1" id="id_new_password1" class="form-control" placeholder="Nova Senha" required>
-                </div>
-                {% if form.new_password1.errors %}
-                <div class="text-danger">
-                    {% for error in form.new_password1.errors %}
-                    <small>{{ error }}</small>
-                    {% endfor %}
-                </div>
-                {% endif %}
-                <div id="password-help">
-                    <p class="m-0">Sua senha deve conter:</p>
-                    <ul>
-                        <li>No mínimo 8 caracteres</li>
-                        <li>Não pode ter apenas números</li>
-                        <li>Evitar ser similar aos seus dados pessoais</li>
-                        <li>Evitar ser uma senha comum</li>            
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="mb-3">
-                <div class="input-group">
-                    <span class="input-group-text"><i class="bi bi-key-fill"></i></span>
-                    <input type="password" name="new_password2" id="id_new_password2" class="form-control" placeholder="Confirme a nova senha" required>
-                </div>
-                {% if form.new_password2.errors %}
-                <div class="text-danger">
-                    {% for error in form.new_password2.errors %}
-                    <small>{{ error }}</small>
-                    {% endfor %}
-                </div>
-                {% endif %}
-            </div>
-            
-            <div class="mb-3">
-                <div class="d-grid">
-                    <button type="submit" class="btn btn-dark">Salvar nova senha</button>
-                </div>
-            </div>
-        </form>
-        {% if not is_required %}
-            <div class="mb-0">
-                <a href="/">
-                    <div class="d-grid text-center">
-                        Voltar
-                    </div>
-                </a>
-            </div>
-        {% endif %}
+<div class="container" id="tela-senha">
+  <h2>Troca de Senha</h2>
+  {% if is_required %}
+    <div class="mensagem info">
+      <i class="fas fa-circle-info"></i>
+      <span>
+        Para sua segurança, é necessário alterar sua senha no primeiro acesso
+      </span>
     </div>
+  {% endif %}
+
+  {% if messages %} 
+    {% for message in messages %} 
+      {% if 'error' in message.tags %}
+        <div class="mensagem erro">
+          <i class="fas fa-circle-xmark"></i> 
+          <span>{{ message }}</span>
+        </div>            
+      {% endif %}
+    {% endfor%} 
+  {% endif %}
+
+  <form method="post" novalidate>
+    {% csrf_token %}
+    <div class="input-group">
+      <i class="fas fa-lock"></i>
+      <input type="password" name="old_password" placeholder="Senha Atual" id="senha-atual"/>
+    </div>
+
+    <div class="input-group">
+      <i class="fas fa-lock"></i>
+      <input type="password" name="new_password1" placeholder="Nova Senha" id="nova-senha"/>
+    </div>
+
+    <ul class="regras">
+      <li>Sua senha precisa conter pelo menos 8 caracteres.</li>
+      <li>Sua senha não pode ser uma senha comumente utilizada.</li>
+      <li>Sua senha não pode ser inteiramente numérica.</li>
+    </ul>
+
+    <div class="input-group">
+      <i class="fas fa-lock"></i>
+      <input type="password" name="new_password2" placeholder="Confirme a nova senha" id="confirma-senha"/>
+    </div>
+
+    <button type="submit" class="btn">Salvar nova senha</button>
+  </form>
+
+  {% if not is_required %}
+    <a href="/">
+      <div class="link-voltar">Voltar</div>
+    </a>
+  {% endif %}
 </div>

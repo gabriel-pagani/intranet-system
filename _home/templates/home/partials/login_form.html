@@ -1,37 +1,28 @@
-<div class="auth-wrapper">
-  <div class="login-container text-center">
-      <h1 class="mb-4  fs-1">Bem Vindo!</h1>
-      <form method="post" action="{{ form_action }}" novalidate>
-          {% if messages %}
-              {% for message in messages %}
-                  <div class="alert 
-                              {% if 'error' in message.tags %}alert-danger
-                              {% else %}alert-success{% endif %}
-                              mb-4" role="alert">
-                      <i class="bi 
-                          {% if 'error' in message.tags %}bi-exclamation-triangle-fill
-                          {% else %}bi-check-circle-fill{% endif %}
-                          me-2"></i>
-                      {{ message }}
-                  </div>
-              {% endfor %}
-          {% endif %}
-          {% csrf_token %}
-          <div class="mb-3 text-start">
-              <div class="input-group">
-                  <span class="input-group-text"><i class="bi bi-person"></i></span>
-                  <input type="text" name="username" id="id_username" placeholder="Usuário" class="form-control" required>
-              </div>
-          </div>
-          <div class="mb-3 text-start">
-              <div class="input-group">
-                  <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                  <input type="password" name="password" id="id_password" placeholder="Senha" class="form-control" required>
-              </div>
-          </div>                       
-          <div class="d-grid mb-3">
-              <button type="submit" class="btn btn-dark">Entrar</button>
-          </div>
-      </form>
-  </div>
+<div class="container" id="tela-login">
+  <h2>Bem Vindo!</h2>
+  {% if messages %} 
+    {% for message in messages %} 
+      {% if 'error' in message.tags %}
+        <div class="mensagem erro">
+          <i class="fas fa-circle-xmark"></i> 
+          <span>{{ message }}</span>
+        </div>            
+      {% endif %}
+    {% endfor%} 
+  {% endif %}
+
+  <form method="post" action="{{ form_action }}" novalidate>
+    {% csrf_token %}
+    <div class="input-group">
+      <i class="fas fa-user"></i>
+      <input type="text" name="username" placeholder="Usuário" id="usuario" />
+    </div>
+
+    <div class="input-group">
+      <i class="fas fa-lock"></i>
+      <input type="password" name="password" placeholder="Senha" id="senha" />
+    </div>
+
+    <button type="submit" class="btn">Entrar</button>
+  </form>
 </div>
