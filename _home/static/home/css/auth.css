@@ -48,23 +48,23 @@ h2 {
 }
 
 .erro {
-  background-color: #f8d7da;
+  background-color: #f1aeb5;
   color: #842029;
 }
 
 .sucesso {
-  background-color: #d1e7dd;
-  color: #0f5132;
+  background-color: #aef1b6;
+  color: #20842c;
 }
 
 .aviso {
-  background-color: #fef9c3;
-  color: #664d03;
+  background-color: #f1efae;
+  color: #758420;
 }
 
 .info {
-  background-color: #cfe2ff;
-  color: #084298;
+  background-color: #9eeaf9;
+  color: #055174;
 }
 
 .input-group {
