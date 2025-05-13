@@ -1,175 +1,91 @@
-/**
- * Configuração e inicialização da aplicação de ramais
- */
-const RamaisApp = {
-    // Configurações
-    config: {
-        itemsPerPage: 10,
-        apiUrl: "/ramais/api/"
-    },
+const ramaisPorPagina = 10; // Número de ramais por página
+let paginaAtual = 1; // Página inicial
 
-    // Estado da aplicação
-    state: {
-        currentPage: 1,
-        ramaisList: [],
-        filteredRamais: []
-    },
 
-    // Elementos DOM
-    elements: {
-        table: null,
-        tableBody: null,
-        searchInput: null,
-        pagination: null
-    },
+// Função para carregar os ramais da página atual
+function carregarRamais(lista = ramaisFiltrados) {
+    const listaElement = document.querySelector('#lista-ramais tbody');
+    listaElement.innerHTML = '';
 
-    /**
-     * Inicializa a aplicação
-     */
-    init: function() {
-        // Captura elementos
-        this.elements.table = document.getElementById('extensions-table');
-        this.elements.tableBody = this.elements.table.querySelector('tbody');
-        this.elements.searchInput = document.getElementById('search');
-        this.elements.pagination = document.getElementById('pagination');
+    const inicio = (paginaAtual - 1) * ramaisPorPagina;
+    const fim = inicio + ramaisPorPagina;
+    const ramaisPagina = lista.slice(inicio, fim);
 
-        // Configura eventos
-        this.elements.searchInput.addEventListener('input', this.handleSearch.bind(this));
+    ramaisPagina.forEach((ramal) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${ramal.nome}</td>
+            <td>${ramal.ramal}</td>
+            <td>${ramal.setor}</td>
+            <td>${ramal.maquina}</td>
+        `;
+        listaElement.appendChild(row);
+    });
+    renderizarPaginacao(lista.length);
+}
 
-        // Carrega dados
-        this.loadData();
-    },
+// Função para criar botões de navegação de páginas
+function renderizarPaginacao(totalRamais) {
+    const paginacaoContainer = document.getElementById('paginacao');
+    paginacaoContainer.innerHTML = '';
 
-    /**
-     * Carrega dados da API
-     */
-    loadData: function() {
-        fetch(this.config.apiUrl)
-            .then(response => response.json())
-            .then(data => {
-                this.state.ramaisList = data;
-                this.state.filteredRamais = [...data];
-                this.renderRamais();
-            })
-            .catch(error => console.error("Erro ao carregar os ramais:", error));
-    },
+    const totalPaginas = Math.ceil(totalRamais / ramaisPorPagina);
+    for (let i = 1; i <= totalPaginas; i++) {
+        const botaoPagina = document.createElement('button');
+        botaoPagina.textContent = i;
+        botaoPagina.classList.add('pagina-botao');
+        if (i === paginaAtual) botaoPagina.classList.add('pagina-ativa');
 
-    /**
-     * Renderiza a tabela de ramais
-     */
-    renderRamais: function() {
-        const { currentPage } = this.state;
-        const { itemsPerPage } = this.config;
-        const ramais = this.state.filteredRamais;
-        
-        // Limpa tabela
-        this.elements.tableBody.innerHTML = '';
-
-        // Calcula índices para paginação
-        const start = (currentPage - 1) * itemsPerPage;
-        const end = start + itemsPerPage;
-        const pageItems = ramais.slice(start, end);
-
-        // Adiciona ramais à tabela
-        if (pageItems.length === 0) {
-            const emptyRow = document.createElement('tr');
-            emptyRow.innerHTML = `<td colspan="4" class="text-center">Nenhum ramal encontrado.</td>`;
-            this.elements.tableBody.appendChild(emptyRow);
-        } else {
-            pageItems.forEach(item => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${item.nome}</td>
-                    <td>${item.ramal}</td>
-                    <td>${item.setor}</td>
-                    <td>${item.maquina}</td>
-                `;
-                this.elements.tableBody.appendChild(row);
-            });
-        }
-        
-        // Renderiza paginação
-        this.renderPagination();
-    },
-
-    /**
-     * Renderiza componente de paginação
-     */
-    renderPagination: function() {
-        const { currentPage } = this.state;
-        const { itemsPerPage } = this.config;
-        const totalItems = this.state.filteredRamais.length;
-        
-        // Limpa paginação
-        this.elements.pagination.innerHTML = '';
-
-        // Se não houver itens, não renderiza paginação
-        if (totalItems === 0) return;
-
-        const totalPages = Math.ceil(totalItems / itemsPerPage);
-        
-        // Adiciona botões de página
-        for (let i = 1; i <= totalPages; i++) {
-            const pageBtn = document.createElement('button');
-            pageBtn.textContent = i;
-            pageBtn.classList.add('page-btn');
-            
-            if (i === currentPage) {
-                pageBtn.classList.add('active-page');
-            }
-
-            pageBtn.addEventListener('click', () => this.goToPage(i));
-            
-            this.elements.pagination.appendChild(pageBtn);
-        }
-    },
-
-    /**
-     * Navega para a página especificada
-     */
-    goToPage: function(page) {
-        this.state.currentPage = page;
-        this.renderRamais();
-    },
-
-    /**
-     * Manipula pesquisa
-     */
-    handleSearch: function() {
-        const input = this.elements.searchInput.value.trim().toLowerCase();
-        const isInverseSearch = input.startsWith('-');
-        
-        const searchTerm = isInverseSearch 
-            ? this.removeAccents(input.slice(1).trim()) 
-            : this.removeAccents(input);
-
-        this.state.filteredRamais = this.state.ramaisList.filter(item => {
-            const name = this.removeAccents(item.nome.toLowerCase());
-            const ext = this.removeAccents(item.ramal.toLowerCase());
-            const sector = this.removeAccents(item.setor.toLowerCase());
-            const machine = this.removeAccents(item.maquina.toLowerCase());
-
-            const containsTerm = name.includes(searchTerm) || 
-                               ext.includes(searchTerm) || 
-                               sector.includes(searchTerm) || 
-                               machine.includes(searchTerm);
-
-            return isInverseSearch ? !containsTerm : containsTerm;
+        botaoPagina.addEventListener('click', () => {
+            paginaAtual = i;
+            carregarRamais();
         });
 
-        this.state.currentPage = 1;
-        this.renderRamais();
-    },
-
-    /**
-     * Remove acentos para melhorar a pesquisa
-     */
-    removeAccents: function(text) {
-        return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        paginacaoContainer.appendChild(botaoPagina);
     }
-};
+}
 
-// Inicializa a aplicação quando o DOM estiver carregado
-document.addEventListener("DOMContentLoaded", function() {
-    RamaisApp.init();
+// Função para filtrar os ramais com base no termo de pesquisa
+function filtrarRamais() {
+    const input = document.getElementById('search-input').value.toLowerCase().trim();
+    const buscaInversa = input.startsWith('-');
+
+    const termo = buscaInversa
+        ? removerAcentos(input.slice(1).trim())
+        : removerAcentos(input);
+
+    ramaisFiltrados = listaRamais.filter((ramal) => {
+        const nome = removerAcentos(ramal.nome.toLowerCase());
+        const ramalNumero = removerAcentos(ramal.ramal.toLowerCase());
+        const setor = removerAcentos(ramal.setor.toLowerCase());
+        const maquina = removerAcentos(ramal.maquina.toLowerCase());
+
+        const contemTermo =
+            nome.includes(termo) ||
+            ramalNumero.includes(termo) ||
+            setor.includes(termo) ||
+            maquina.includes(termo);
+
+        return buscaInversa ? !contemTermo : contemTermo;
+    });
+
+    paginaAtual = 1; // Resetar para a primeira página após filtrar
+    carregarRamais();
+}
+
+// Função para remover acentos (ajuda na pesquisa)
+function removerAcentos(texto) {
+    return texto.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Carrega os ramais a partir do arquivo JSON
+    fetch("/ramais/api/")
+      .then(response => response.json())
+      .then(data => {
+        listaRamais = data;
+        ramaisFiltrados = [...listaRamais];
+        carregarRamais();
+      })
+      .catch(error => console.error("Erro ao carregar os ramais:", error));
 });
