@@ -27,13 +27,9 @@
             </nav>
 
             <div class="bottom">
-                <a href="/admin/">
-                    <i class="fas fa-user-tie"></i>
-                    <span class="text">Administração</span>
-                </a>
                 <a href="{% url "home:change-password" %}">
-                    <i class="fas fa-key"></i>
-                    <span class="text">Alterar Senha</span>
+                    <i class="fas fa-user-tie"></i>
+                    <span class="text">{{ request.user }}</span>
                 </a>
                 <a href="{% url "home:logout" %}">
                     <i class="fas fa-sign-out-alt"></i>
