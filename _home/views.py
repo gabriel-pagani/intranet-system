@@ -104,9 +104,24 @@ def change_password_view(request):
             return redirect(reverse('home:home'))
         else:
             # Se o formulário for inválido, exibir mensagens de erro
+            erro_mensagem = ""
             for field, errors in form.errors.items():
+                field_name = field
+                # Personalizar nomes dos campos para serem mais amigáveis
+                if field == 'old_password':
+                    field_name = 'Senha atual'
+                elif field == 'new_password1':
+                    field_name = 'Nova senha'
+                elif field == 'new_password2':
+                    field_name = 'Confirmação da senha'
+
+                # Formatar mensagens de erro
                 for error in errors:
-                    messages.error(request, error)
+                    erro_mensagem += f"{field_name}: {error}"
+
+            # Adicionar uma única mensagem com todos os erros
+            if erro_mensagem:
+                messages.error(request, erro_mensagem)
     else:
         # Se o usuário não estiver logado, usamos o ID da sessão
         if not request.user.is_authenticated:
