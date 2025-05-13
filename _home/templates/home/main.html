@@ -4,28 +4,47 @@
 {% block title %}Home{% endblock title %}
 
 {% block head %}
-        <link href="{% static 'home/css/main.css' %}" rel="stylesheet">
+        <link href="{% static 'home/css/home.css' %}" rel="stylesheet">
 {% endblock head %}
 
 {% block body %}
-        <div class="home-container">
-            <div class="nav-menu">
-                <a href="/ramais/" class="menu-item">
-                    <h1>Ramais</h1>
-                </a>
-                <a href="/indicadores/" class="menu-item">
-                    <h1>Indicadores</h1>
-                </a>
-                <a href="/admin/" class="menu-item">
-                    <h1>Administração</h1>
-                </a>
-                <a href="/change-password/" class="menu-item">
-                    <h1>Alterar Senha</h1>
-                </a>
-                <a href="/logout/" class="menu-item">
-                    <h1>Sair</h1>
+        <div class="sidebar" id="sidebar">
+            <div class="logo">
+                <a href="{% url "home:home" %}">
+                    <img src="{% static 'global/images/white_logo.png' %}" class="img-fluid" />
                 </a>
             </div>
+
+            <nav class="menu">
+                <a href="{% url "dashboards:home" %}">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span class="text">Central de Dashboards</span>
+                </a>
+                <a href="{% url "ramais:home" %}">
+                    <i class="fas fa-phone"></i>
+                    <span class="text">Lista de Ramais</span>
+                </a>
+            </nav>
+
+            <div class="bottom">
+                <a href="/admin/">
+                    <i class="fas fa-user-tie"></i>
+                    <span class="text">Administração</span>
+                </a>
+                <a href="{% url "home:change-password" %}">
+                    <i class="fas fa-key"></i>
+                    <span class="text">Alterar Senha</span>
+                </a>
+                <a href="{% url "home:logout" %}">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span class="text">Sair</span>
+                </a>
+                <button id="toggle"><i class="fas fa-bars"></i></button>
+            </div>
         </div>
-        <script src="{% static 'home/js/main.js' %}"></script>
+
+        <div class="main-content">
+            <!-- Conteúdo principal -->
+        </div>
+        <script src="{% static 'home/js/home.js' %}"></script>
 {% endblock body %}
