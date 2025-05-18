@@ -1,0 +1,12 @@
+{% extends 'global/base.html' %}
+{% load static %}
+
+{% block title %}Calendário{% endblock title %}
+
+{% block head %}
+        <link href="{% static 'calendar/css/main.css' %}" rel="stylesheet">
+{% endblock head %}
+
+{% block body %}
+        <script src="{% static 'calendar/js/main.js' %}"></script>
+{% endblock body %}
