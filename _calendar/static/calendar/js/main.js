@@ -46,9 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return `${year}-${month}-${day}T${hours}:${minutes}`;
     }
     
-    // Verifica se o usuário pode editar eventos
-    // Variáveis isAdmin e isAuthenticated são definidas no template
-    const canEditEvents = typeof isAdmin !== 'undefined' ? isAdmin : false;
+    // Variáveis canAddEvent, canChangeEvent e canDeleteEvent são definidas no template
     
     // Configuração do FullCalendar
     const calendar = new FullCalendar.Calendar(calendarEl, {
@@ -59,8 +57,8 @@ document.addEventListener("DOMContentLoaded", function () {
         slotDuration: "00:30:00",
         nowIndicator: true,
         allDaySlot: true,
-        editable: canEditEvents, // Somente administradores podem arrastar/redimensionar eventos
-        selectable: canEditEvents, // Somente administradores podem selecionar áreas para criar eventos
+        editable: canChangeEvent, // Somente usuários com permissão podem arrastar/redimensionar eventos
+        selectable: canAddEvent, // Somente usuários com permissão podem selecionar áreas para criar eventos
         headerToolbar: {
             left: "prev,next today",
             center: "title",
@@ -82,8 +80,8 @@ document.addEventListener("DOMContentLoaded", function () {
         eventClick: function (info) {
             const event = info.event;
             
-            if (canEditEvents) {
-                // Para administradores: Modal de edição
+            if (canChangeEvent) {
+                // Para usuários com permissão de edição: Modal de edição
                 // Preencher o formulário com os dados do evento
                 eventIdInput.value = event.id;
                 titleInput.value = event.title;
@@ -95,12 +93,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 
                 // Configurar o modal para edição
                 modalTitle.textContent = "Editar Evento";
-                deleteButton.style.display = "block";
+                // Mostrar botão de exclusão apenas se o usuário tiver permissão
+                deleteButton.style.display = canDeleteEvent ? "block" : "none";
                 
                 // Exibir o modal
                 eventModal.style.display = "block";
             } else {
-                // Para usuários não-admin: Modal de visualização
+                // Para usuários sem permissão de edição: Modal de visualização
                 // Preencher o formulário somente leitura com os dados do evento
                 viewEventIdInput.value = event.id;
                 viewTitleInput.value = event.title;
@@ -117,7 +116,7 @@ document.addEventListener("DOMContentLoaded", function () {
         
         // Selecionar um intervalo de tempo para criar novo evento
         select: function (info) {
-            if (!canEditEvents) return; // Somente administradores podem criar eventos
+            if (!canAddEvent) return; // Somente usuários com permissão podem criar eventos
             
             // Limpar o formulário
             eventForm.reset();
@@ -138,19 +137,19 @@ document.addEventListener("DOMContentLoaded", function () {
         
         // Arrastar e soltar evento (atualizar datas)
         eventDrop: function (info) {
-            if (canEditEvents) {
+            if (canChangeEvent) {
                 updateEvent(info.event);
             } else {
-                info.revert(); // Desfazer a alteração para não-administradores
+                info.revert(); // Desfazer a alteração para usuários sem permissão
             }
         },
         
         // Redimensionar evento (atualizar horário de término)
         eventResize: function (info) {
-            if (canEditEvents) {
+            if (canChangeEvent) {
                 updateEvent(info.event);
             } else {
-                info.revert(); // Desfazer a alteração para não-administradores
+                info.revert(); // Desfazer a alteração para usuários sem permissão
             }
         }
     });
@@ -294,7 +293,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const eventId = eventIdInput.value;
         const csrfToken = getCsrfToken();
         
-        if (!eventId) return;
+        if (!eventId || !canDeleteEvent) return;
         
         if (confirm('Tem certeza que deseja excluir este evento?')) {
             fetch(`/calendario/api/events/${eventId}/`, {
@@ -340,4 +339,4 @@ document.addEventListener("DOMContentLoaded", function () {
             closeViewModal();
         }
     });
-    });
+});

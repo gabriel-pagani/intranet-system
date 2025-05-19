@@ -132,8 +132,10 @@
         <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
         <script src="{% static 'calendar/js/main.js' %}"></script>
         <script>
-            // Verifica se o usuário é um administrador
-            const isAdmin = {% if user.is_superuser %}true{% else %}false{% endif %};
+            // Verifica se o usuário tem permissões para manipular eventos
+            const canAddEvent = {% if can_add_event %}true{% else %}false{% endif %};
+            const canChangeEvent = {% if can_change_event %}true{% else %}false{% endif %};
+            const canDeleteEvent = {% if can_delete_event %}true{% else %}false{% endif %};
             const isAuthenticated = {% if user.is_authenticated %}true{% else %}false{% endif %};
         </script>
 {% endblock body %}

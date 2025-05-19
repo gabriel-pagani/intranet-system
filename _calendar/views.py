@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST, require_http_methods
 import json
@@ -11,7 +11,11 @@ from _calendar.models import Event
 @login_required
 def home_view(request):
     """Renderiza a página principal do calendário"""
-    return render(request, 'calendar/main.html')
+    return render(request, 'calendar/main.html', {
+        'can_add_event': request.user.has_perm('_calendar.add_event'),
+        'can_change_event': request.user.has_perm('_calendar.change_event'),
+        'can_delete_event': request.user.has_perm('_calendar.delete_event'),
+    })
 
 
 @login_required
@@ -41,13 +45,11 @@ def get_events(request):
 
 
 @login_required
+@permission_required('_calendar.add_event', raise_exception=True)
 @csrf_exempt
 @require_POST
 def create_event(request):
     """Cria um novo evento"""
-    # Verificar se o usuário é administrador
-    if not request.user.is_superuser:
-        return JsonResponse({'error': 'Permissão negada. Apenas administradores podem criar eventos.'}, status=403)
     try:
         data = json.loads(request.body)
 
@@ -91,15 +93,20 @@ def create_event(request):
 def update_delete_event(request, event_id):
     """Atualiza ou deleta um evento existente"""
     event = get_object_or_404(Event, id=event_id)
-    # Somente administradores podem modificar ou deletar eventos
-    if not request.user.is_superuser:
-        return JsonResponse({'error': 'Permissão negada. Apenas administradores podem modificar eventos.'}, status=403)
 
     if request.method == 'DELETE':
+        # Verificar permissão de exclusão
+        if not request.user.has_perm('_calendar.delete_event'):
+            return JsonResponse({'error': 'Permissão negada. Você não tem autorização para excluir eventos.'}, status=403)
+
         event.delete()
         return JsonResponse({'success': True})
 
     elif request.method == 'PUT':
+        # Verificar permissão de edição
+        if not request.user.has_perm('_calendar.change_event'):
+            return JsonResponse({'error': 'Permissão negada. Você não tem autorização para modificar eventos.'}, status=403)
+
         try:
             data = json.loads(request.body)
 
