@@ -11,35 +11,35 @@
         <div class="sidebar" id="sidebar">
             <div class="logo">
                 <a href="{% url "home:home" %}">
-                    <img src="{% static 'global/images/white_logo.png' %}" class="img-fluid" />
+                    <img src="{% static 'global/images/white_logo.png' %}" class="img-fluid" title="Recarregar a Página"/>
                 </a>
             </div>
 
             <nav class="menu">
                 <a href="{% url "dashboards:home" %}">
                     <i class="fas fa-chart-line"></i>
-                    <span class="text">Central de Indicadores</span>
+                    <span class="text" title="Acessar Central de Indicadores">Central de Indicadores</span>
                 </a>
                 <a href="{% url "ramais:home" %}">
                     <i class="fas fa-phone"></i>
-                    <span class="text">Lista de Ramais</span>
+                    <span class="text" title="Acessar Lista de Ramais">Lista de Ramais</span>
                 </a>
                 <a href="{% url "calendar:home" %}">
                     <i class="fas fa-calendar-days"></i>
-                    <span class="text">Calendário de Eventos</span>
+                    <span class="text" title="Acessar Calendário de Eventos">Calendário de Eventos</span>
                 </a>
             </nav>
 
             <div class="bottom">
                 <a href="{% url "home:change-password" %}">
                     <i class="fas fa-user-tie"></i>
-                    <span class="text">{{ request.user }}</span>
+                    <span class="text" title="Alterar Senha">{{ request.user }}</span>
                 </a>
                 <a href="{% url "home:logout" %}">
                     <i class="fas fa-sign-out-alt"></i>
-                    <span class="text">Sair</span>
+                    <span class="text" title="Fazer Logout">Sair</span>
                 </a>
-                <button id="toggle"><i class="fas fa-bars"></i></button>
+                <button id="toggle" title="Minimizar Menu Lateral"><i class="fas fa-bars"></i></button>
             </div>
         </div>
 

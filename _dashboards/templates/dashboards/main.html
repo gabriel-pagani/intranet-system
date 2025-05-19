@@ -11,7 +11,7 @@
         <div class="sidebar" id="sidebar">
             <div class="logo">
                 <a href="{% url "dashboards:home" %}">
-                    <img src="{% static 'global/images/white_logo.png' %}" class="img-fluid" />
+                    <img src="{% static 'global/images/white_logo.png' %}" class="img-fluid" title="Recarregar a Página"/>
                 </a>
             </div>
 
@@ -50,9 +50,9 @@
             <div class="bottom">
                 <a href="{% url "home:home" %}">
                   <i class="fas fa-arrow-left"></i>
-                  <span class="text">Voltar</span>
+                  <span class="text" title="Voltar ao Menu Principal">Voltar</span>
                 </a>
-                <button id="toggle"><i class="fas fa-bars"></i></button>
+                <button id="toggle" title="Minimizar Menu Lateral"><i class="fas fa-bars"></i></button>
             </div>
         </div>
 
