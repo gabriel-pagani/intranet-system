@@ -45,9 +45,11 @@ METABASE_SECRET_KEY = 'sua-chave-metabase'
 # Estrutura do Projeto
 ```
 intranet-system/
+├── _calendar/
 ├── _dashboards/
 ├── _home/
 ├── _ramais/
+├── .vscode/
 ├── project/
 ├── static/
 ├── templates/
@@ -56,6 +58,7 @@ intranet-system/
 ├── db.sqlite3
 ├── LICENSE
 ├── manage.py
+├── pytest.ini
 ├── README.md
 └── requirements.txt
 ```
