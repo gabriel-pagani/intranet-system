@@ -3,6 +3,7 @@ Sistema empresarial intranet que tem o objetivo de centralizar o sistemas da emp
 
 # Pré-requisitos
 - Python 3.9+
+- Git 2.49+
 
 # Instalação
 - Clone o repositório
