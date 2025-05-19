@@ -4,9 +4,14 @@
 {% block title %}Calendário{% endblock title %}
 
 {% block head %}
+        <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet"/>
         <link href="{% static 'calendar/css/main.css' %}" rel="stylesheet">
 {% endblock head %}
 
 {% block body %}
+        <div id="calendar-container">
+          <div id="calendar" style="max-height: 915px"></div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
         <script src="{% static 'calendar/js/main.js' %}"></script>
 {% endblock body %}
