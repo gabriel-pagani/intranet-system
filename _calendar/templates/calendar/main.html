@@ -9,8 +9,14 @@
 {% endblock head %}
 
 {% block body %}
+        <div class="calendar-header">
+            <a href="{% url "home:home" %}">
+              <img src="{% static 'global/images/white_logo.png' %}" alt="Logo SMI" class="logo" id="logo-img" />
+            </a>
+        </div>
+
         <div id="calendar-container">
-          <div id="calendar" style="max-height: 915px"></div>
+          <div id="calendar" style="max-height: 800px"></div>
         </div>
         
         <!-- Modal para Criar/Editar Evento -->
