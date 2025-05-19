@@ -69,6 +69,65 @@
           </div>
         </div>
         
+        <!-- Modal para Visualização de Evento (Somente Leitura) -->
+        <div id="view-event-modal" style="display: none;" class="event-modal">
+          <div class="event-modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 id="view-modal-title">Visualizar Evento</h2>
+            
+            <div id="view-event-form">
+              <input type="hidden" id="view-event-id">
+              
+              <div class="form-group">
+                <label for="view-event-title">Título</label>
+                <input type="text" id="view-event-title" disabled>
+              </div>
+              
+              <div class="form-group">
+                <label for="view-event-description">Descrição</label>
+                <textarea id="view-event-description" rows="3" disabled></textarea>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="view-event-start">Início</label>
+                  <input type="datetime-local" id="view-event-start" disabled>
+                </div>
+                
+                <div class="form-group">
+                  <label for="view-event-end">Fim</label>
+                  <input type="datetime-local" id="view-event-end" disabled>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="view-event-color">Cor</label>
+                <select id="view-event-color" disabled>
+                  <option value="blue">Azul</option>
+                  <option value="green">Verde</option>
+                  <option value="red">Vermelho</option>
+                  <option value="orange">Laranja</option>
+                  <option value="purple">Roxo</option>
+                </select>
+              </div>
+              
+              <div class="form-group checkbox">
+                <input type="checkbox" id="view-event-all-day" disabled>
+                <label for="view-event-all-day">Dia inteiro</label>
+              </div>
+              
+              <div class="form-buttons">
+                <button type="button" id="view-close-button">Fechar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
         <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
         <script src="{% static 'calendar/js/main.js' %}"></script>
+        <script>
+            // Verifica se o usuário é um administrador
+            const isAdmin = {% if user.is_superuser %}true{% else %}false{% endif %};
+            const isAuthenticated = {% if user.is_authenticated %}true{% else %}false{% endif %};
+        </script>
 {% endblock body %}

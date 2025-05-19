@@ -32,6 +32,7 @@ def get_events(request):
             'borderColor': event.color,
             'extendedProps': {
                 'description': event.description or '',
+                'creatorId': event.creator.id if event.creator else None,
             }
         }
         event_list.append(event_dict)
@@ -44,6 +45,9 @@ def get_events(request):
 @require_POST
 def create_event(request):
     """Cria um novo evento"""
+    # Verificar se o usuário é administrador
+    if not request.user.is_superuser:
+        return JsonResponse({'error': 'Permissão negada. Apenas administradores podem criar eventos.'}, status=403)
     try:
         data = json.loads(request.body)
 
@@ -73,6 +77,7 @@ def create_event(request):
             'borderColor': event.color,
             'extendedProps': {
                 'description': event.description or '',
+                'creatorId': event.creator.id if event.creator else None,
             }
         })
 
@@ -86,10 +91,9 @@ def create_event(request):
 def update_delete_event(request, event_id):
     """Atualiza ou deleta um evento existente"""
     event = get_object_or_404(Event, id=event_id)
-
-    # Somente o criador ou superusuário pode modificar
-    if not request.user.is_superuser and event.creator and event.creator != request.user:
-        return JsonResponse({'error': 'Permissão negada'}, status=403)
+    # Somente administradores podem modificar ou deletar eventos
+    if not request.user.is_superuser:
+        return JsonResponse({'error': 'Permissão negada. Apenas administradores podem modificar eventos.'}, status=403)
 
     if request.method == 'DELETE':
         event.delete()
@@ -127,6 +131,7 @@ def update_delete_event(request, event_id):
                 'borderColor': event.color,
                 'extendedProps': {
                     'description': event.description or '',
+                    'creatorId': event.creator.id if event.creator else None,
                 }
             })
 

@@ -13,8 +13,19 @@ document.addEventListener("DOMContentLoaded", function () {
     const allDayCheckbox = document.getElementById("event-all-day");
     const deleteButton = document.getElementById("delete-button");
     const cancelButton = document.getElementById("cancel-button");
-    const closeModalButton = document.querySelector(".close-modal");
-
+    const closeModalButton = document.querySelector("#event-modal .close-modal");
+    // Elementos DOM - Modal somente leitura
+    const viewEventModal = document.getElementById("view-event-modal");
+    const viewEventIdInput = document.getElementById("view-event-id");
+    const viewTitleInput = document.getElementById("view-event-title");
+    const viewDescriptionInput = document.getElementById("view-event-description");
+    const viewStartInput = document.getElementById("view-event-start");
+    const viewEndInput = document.getElementById("view-event-end");
+    const viewColorSelect = document.getElementById("view-event-color");
+    const viewAllDayCheckbox = document.getElementById("view-event-all-day");
+    const viewCloseButton = document.getElementById("view-close-button");
+    const viewCloseModalButton = document.querySelector("#view-event-modal .close-modal");
+    
     // Função para obter o token CSRF
     function getCsrfToken() {
         const cookieValue = document.cookie
@@ -34,7 +45,11 @@ document.addEventListener("DOMContentLoaded", function () {
         const minutes = String(d.getMinutes()).padStart(2, '0');
         return `${year}-${month}-${day}T${hours}:${minutes}`;
     }
-
+    
+    // Verifica se o usuário pode editar eventos
+    // Variáveis isAdmin e isAuthenticated são definidas no template
+    const canEditEvents = typeof isAdmin !== 'undefined' ? isAdmin : false;
+    
     // Configuração do FullCalendar
     const calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: "timeGridWeek",
@@ -44,8 +59,8 @@ document.addEventListener("DOMContentLoaded", function () {
         slotDuration: "00:30:00",
         nowIndicator: true,
         allDaySlot: true,
-        editable: true,
-        selectable: true,
+        editable: canEditEvents, // Somente administradores podem arrastar/redimensionar eventos
+        selectable: canEditEvents, // Somente administradores podem selecionar áreas para criar eventos
         headerToolbar: {
             left: "prev,next today",
             center: "title",
@@ -67,25 +82,43 @@ document.addEventListener("DOMContentLoaded", function () {
         eventClick: function (info) {
             const event = info.event;
             
-            // Preencher o formulário com os dados do evento
-            eventIdInput.value = event.id;
-            titleInput.value = event.title;
-            descriptionInput.value = event.extendedProps.description || '';
-            startInput.value = formatDateTimeLocal(event.start);
-            endInput.value = formatDateTimeLocal(event.end || new Date(event.start.getTime() + 60*60*1000));
-            colorSelect.value = event.backgroundColor;
-            allDayCheckbox.checked = event.allDay;
-            
-            // Configurar o modal para edição
-            modalTitle.textContent = "Editar Evento";
-            deleteButton.style.display = "block";
-            
-            // Exibir o modal
-            eventModal.style.display = "block";
+            if (canEditEvents) {
+                // Para administradores: Modal de edição
+                // Preencher o formulário com os dados do evento
+                eventIdInput.value = event.id;
+                titleInput.value = event.title;
+                descriptionInput.value = event.extendedProps.description || '';
+                startInput.value = formatDateTimeLocal(event.start);
+                endInput.value = formatDateTimeLocal(event.end || new Date(event.start.getTime() + 60*60*1000));
+                colorSelect.value = event.backgroundColor;
+                allDayCheckbox.checked = event.allDay;
+                
+                // Configurar o modal para edição
+                modalTitle.textContent = "Editar Evento";
+                deleteButton.style.display = "block";
+                
+                // Exibir o modal
+                eventModal.style.display = "block";
+            } else {
+                // Para usuários não-admin: Modal de visualização
+                // Preencher o formulário somente leitura com os dados do evento
+                viewEventIdInput.value = event.id;
+                viewTitleInput.value = event.title;
+                viewDescriptionInput.value = event.extendedProps.description || '';
+                viewStartInput.value = formatDateTimeLocal(event.start);
+                viewEndInput.value = formatDateTimeLocal(event.end || new Date(event.start.getTime() + 60*60*1000));
+                viewColorSelect.value = event.backgroundColor;
+                viewAllDayCheckbox.checked = event.allDay;
+                
+                // Exibir o modal de visualização
+                viewEventModal.style.display = "block";
+            }
         },
         
         // Selecionar um intervalo de tempo para criar novo evento
         select: function (info) {
+            if (!canEditEvents) return; // Somente administradores podem criar eventos
+            
             // Limpar o formulário
             eventForm.reset();
             eventIdInput.value = '';
@@ -105,23 +138,35 @@ document.addEventListener("DOMContentLoaded", function () {
         
         // Arrastar e soltar evento (atualizar datas)
         eventDrop: function (info) {
-            updateEvent(info.event);
+            if (canEditEvents) {
+                updateEvent(info.event);
+            } else {
+                info.revert(); // Desfazer a alteração para não-administradores
+            }
         },
         
         // Redimensionar evento (atualizar horário de término)
         eventResize: function (info) {
-            updateEvent(info.event);
+            if (canEditEvents) {
+                updateEvent(info.event);
+            } else {
+                info.revert(); // Desfazer a alteração para não-administradores
+            }
         }
     });
-
+    
     // Renderizar o calendário
     calendar.render();
-
-    // Fechar o modal
-    function closeModal() {
+    
+    // Fechar os modais
+    function closeEditModal() {
         eventModal.style.display = "none";
     }
-
+    
+    function closeViewModal() {
+        viewEventModal.style.display = "none";
+    }
+    
     // Atualizar evento existente
     function updateEvent(event) {
         const csrfToken = getCsrfToken();
@@ -198,7 +243,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 event.setAllDay(data.allDay);
                 event.setExtendedProp('description', data.extendedProps.description);
                 
-                closeModal();
+                closeEditModal();
             })
             .catch(error => {
                 console.error('Erro ao atualizar evento:', error);
@@ -235,7 +280,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 });
                 
-                closeModal();
+                closeEditModal();
             })
             .catch(error => {
                 console.error('Erro ao criar evento:', error);
@@ -269,7 +314,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const event = calendar.getEventById(eventId);
                 event.remove();
                 
-                closeModal();
+                closeEditModal();
             })
             .catch(error => {
                 console.error('Erro ao excluir evento:', error);
@@ -277,15 +322,22 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
     });
-
-    // Botões para fechar o modal
-    cancelButton.addEventListener('click', closeModal);
-    closeModalButton.addEventListener('click', closeModal);
     
-    // Fechar modal ao clicar fora dele
+    // Event listeners para o modal de edição
+    cancelButton.addEventListener('click', closeEditModal);
+    closeModalButton.addEventListener('click', closeEditModal);
+    
+    // Event listeners para o modal de visualização
+    viewCloseButton.addEventListener('click', closeViewModal);
+    viewCloseModalButton.addEventListener('click', closeViewModal);
+    
+    // Fechar modais ao clicar fora deles
     window.addEventListener('click', function (e) {
         if (e.target === eventModal) {
-            closeModal();
+            closeEditModal();
+        }
+        if (e.target === viewEventModal) {
+            closeViewModal();
         }
     });
-});
+    });

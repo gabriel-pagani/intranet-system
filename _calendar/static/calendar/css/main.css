@@ -46,7 +46,8 @@ body {
 }
 
 /* Formulário */
-#event-form {
+#event-form,
+#view-event-form {
   margin-top: 20px;
 }
 
@@ -79,7 +80,15 @@ input[type="datetime-local"] {
   border-radius: 4px;
   font-size: 1rem;
 }
-
+/* Campos desabilitados no modal somente leitura */
+input[disabled],
+textarea[disabled],
+select[disabled] {
+  background-color: #f9f9f9;
+  color: #666;
+  cursor: not-allowed;
+  border-color: #eee;
+}
 .checkbox {
   display: flex;
   align-items: center;
@@ -125,13 +134,13 @@ button {
 #delete-button:hover {
   background-color: #d33426;
 }
-
-#cancel-button {
+#cancel-button,
+#view-close-button {
   background-color: #f1f1f1;
   color: #333;
 }
-
-#cancel-button:hover {
+#cancel-button:hover,
+#view-close-button:hover {
   background-color: #e4e4e4;
 }
 
@@ -163,17 +172,17 @@ button {
     width: 95%;
     padding: 15px;
   }
-  
+
   .form-row {
     flex-direction: column;
     gap: 0;
   }
-  
+
   .fc .fc-toolbar {
     flex-direction: column;
     gap: 10px;
   }
-  
+
   .fc .fc-toolbar-title {
     font-size: 1.2rem;
   }
