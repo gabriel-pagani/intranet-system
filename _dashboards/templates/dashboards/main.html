@@ -21,7 +21,7 @@
                   {% for setor, dashboards in dados.items %}
                     <li class="menu-item">
                       <div class="sector-header">
-                        <i class="fas fa-chart-line"></i>
+                        <i class="fas fa-box-archive"></i>
                         <span class="text">{{ setor }}</span>
                         <i class="fas fa-chevron-right toggle-icon"></i>
                       </div>
@@ -29,7 +29,7 @@
                         {% for dashboard in dashboards %}
                           <li>
                             <a href="#" class="dashboard-link" data-url="{{ dashboard.url }}">
-                              <i class="fas fa-tachometer-alt"></i>
+                              <i class="fas fa-chart-line"></i>
                               <span class="text">{{ dashboard.titulo }}</span>
                             </a>
                           </li>
