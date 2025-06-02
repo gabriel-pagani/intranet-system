@@ -31,6 +31,12 @@
             </nav>
 
             <div class="bottom">
+                {% if request.user.is_staff %}
+                    <a href="{% url "admin:index" %}">
+                        <i class="fa-solid fa-screwdriver-wrench"></i>
+                        <span class="text" title="Acessar Portal de Administração">Portal de Administração</span>
+                    </a>
+                {% endif %}
                 <a href="{% url "home:change-password" %}">
                     <i class="fas fa-user-tie"></i>
                     <span class="text" title="Alterar Senha">{{ request.user }}</span>
