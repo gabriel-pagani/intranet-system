@@ -41,26 +41,33 @@
   <form method="post" novalidate>
     {% csrf_token %}
     <div class="input-group">
-      <i class="fas fa-lock"></i>
-      <input type="password" name="old_password" placeholder="Senha Atual" id="senha-atual"/>
+      <i class="fas fa-lock input-icon"></i>
+      <input type="password" name="old_password" placeholder="Senha Atual" id="senha-atual" value="{{ form.old_password.value|default_if_none:'' }}"/>
+      <i class="fas fa-eye toggle-password" data-target="senha-atual" title="Mostrar/Ocultar senha"></i>
     </div>
-
+  
     <div class="input-group">
-      <i class="fas fa-lock"></i>
-      <input type="password" name="new_password1" placeholder="Nova Senha" id="nova-senha"/>
+      <i class="fas fa-lock input-icon"></i>
+      <input type="password" name="new_password1" placeholder="Nova Senha" id="nova-senha" 
+             value="{{ form.new_password1.value|default_if_none:'' }}" 
+             autocomplete="new-password"/>
+      <i class="fas fa-eye toggle-password" data-target="nova-senha" title="Mostrar/Ocultar senha"></i>
     </div>
-
+  
     <ul class="regras">
       <li>Sua senha precisa conter pelo menos 8 caracteres.</li>
       <li>Sua senha não pode ser uma senha comumente utilizada.</li>
       <li>Sua senha não pode ser inteiramente numérica.</li>
     </ul>
-
+  
     <div class="input-group">
-      <i class="fas fa-lock"></i>
-      <input type="password" name="new_password2" placeholder="Confirme a nova senha" id="confirma-senha"/>
+      <i class="fas fa-lock input-icon"></i>
+      <input type="password" name="new_password2" placeholder="Confirme a nova senha" id="confirma-senha" 
+             value="{{ form.new_password2.value|default_if_none:'' }}" 
+             autocomplete="new-password"/>
+      <i class="fas fa-eye toggle-password" data-target="confirma-senha" title="Mostrar/Ocultar senha"></i>
     </div>
-
+  
     <button type="submit" class="btn">Salvar nova senha</button>
   </form>
 

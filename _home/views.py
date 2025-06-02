@@ -50,7 +50,11 @@ def login_done(request):
     else:
         messages.error(request, 'Preencha todos os campos')
 
-    return redirect(reverse('home:login'))
+    # Retornar para o login com o formulário preenchido
+    return render(request, 'home/auth/login.html', {
+        'form': form,
+        'form_action': reverse('home:login-done')
+    })
 
 
 def change_password_view(request):
