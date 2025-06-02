@@ -30,7 +30,56 @@ function renderizarPaginacao(totalRamais) {
     paginacaoContainer.innerHTML = '';
 
     const totalPaginas = Math.ceil(totalRamais / ramaisPorPagina);
-    for (let i = 1; i <= totalPaginas; i++) {
+    
+    // Não mostrar paginação se houver apenas uma página
+    if (totalPaginas <= 1) return;
+    
+    // Lógica para mostrar páginas com reticências em telas pequenas
+    const isMobile = window.innerWidth <= 480;
+    const maxVisiblePages = isMobile ? 3 : 7;
+    
+    let startPage = Math.max(1, paginaAtual - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(totalPaginas, startPage + maxVisiblePages - 1);
+    
+    // Ajustar início se estivermos próximos ao final
+    if (endPage - startPage + 1 < maxVisiblePages) {
+        startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+    
+    // Botão "Anterior"
+    if (paginaAtual > 1) {
+        const botaoAnterior = document.createElement('button');
+        botaoAnterior.innerHTML = isMobile ? '‹' : '‹ Anterior';
+        botaoAnterior.classList.add('pagina-botao');
+        botaoAnterior.addEventListener('click', () => {
+            paginaAtual--;
+            carregarRamais();
+        });
+        paginacaoContainer.appendChild(botaoAnterior);
+    }
+    
+    // Primeira página e reticências
+    if (startPage > 1) {
+        const primeira = document.createElement('button');
+        primeira.textContent = '1';
+        primeira.classList.add('pagina-botao');
+        primeira.addEventListener('click', () => {
+            paginaAtual = 1;
+            carregarRamais();
+        });
+        paginacaoContainer.appendChild(primeira);
+        
+        if (startPage > 2) {
+            const reticencias = document.createElement('span');
+            reticencias.textContent = '...';
+            reticencias.style.padding = '8px 4px';
+            reticencias.style.color = '#666';
+            paginacaoContainer.appendChild(reticencias);
+        }
+    }
+    
+    // Páginas visíveis
+    for (let i = startPage; i <= endPage; i++) {
         const botaoPagina = document.createElement('button');
         botaoPagina.textContent = i;
         botaoPagina.classList.add('pagina-botao');
@@ -42,6 +91,38 @@ function renderizarPaginacao(totalRamais) {
         });
 
         paginacaoContainer.appendChild(botaoPagina);
+    }
+    
+    // Reticências e última página
+    if (endPage < totalPaginas) {
+        if (endPage < totalPaginas - 1) {
+            const reticencias = document.createElement('span');
+            reticencias.textContent = '...';
+            reticencias.style.padding = '8px 4px';
+            reticencias.style.color = '#666';
+            paginacaoContainer.appendChild(reticencias);
+        }
+        
+        const ultima = document.createElement('button');
+        ultima.textContent = totalPaginas;
+        ultima.classList.add('pagina-botao');
+        ultima.addEventListener('click', () => {
+            paginaAtual = totalPaginas;
+            carregarRamais();
+        });
+        paginacaoContainer.appendChild(ultima);
+    }
+    
+    // Botão "Próximo"
+    if (paginaAtual < totalPaginas) {
+        const botaoProximo = document.createElement('button');
+        botaoProximo.innerHTML = isMobile ? '›' : 'Próximo ›';
+        botaoProximo.classList.add('pagina-botao');
+        botaoProximo.addEventListener('click', () => {
+            paginaAtual++;
+            carregarRamais();
+        });
+        paginacaoContainer.appendChild(botaoProximo);
     }
 }
 
