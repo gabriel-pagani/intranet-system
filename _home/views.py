@@ -100,9 +100,7 @@ def change_password_view(request):
                 # Atualizar a sessão para usuários já logados
                 update_session_auth_hash(request, saved_user)
 
-            messages.success(request, 'Sua senha foi alterada com sucesso')
-            logout(request)
-            return redirect(reverse('home:login'))
+            return redirect(reverse('home:home'))
         else:
             # Pegar os valores dos campos
             old_password = form.data.get('old_password', '')
