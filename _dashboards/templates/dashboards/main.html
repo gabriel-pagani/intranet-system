@@ -20,7 +20,7 @@
                 <ul class="menu-list">
                   {% for setor, dashboards in dados.items %}
                     <li class="menu-item">
-                      <div class="sector-header">
+                      <div class="sector-header" title="{{ setor }}">
                         <i class="fas fa-box-archive"></i>
                         <span class="text">{{ setor }}</span>
                         <i class="fas fa-chevron-right toggle-icon"></i>
@@ -28,7 +28,7 @@
                       <ul class="submenu">
                         {% for dashboard in dashboards %}
                           <li>
-                            <a href="#" class="dashboard-link" data-url="{{ dashboard.url }}">
+                            <a href="#" class="dashboard-link" data-url="{{ dashboard.url }}" title="{{ dashboard.titulo }}">
                               <i class="fas fa-chart-line"></i>
                               <span class="text">{{ dashboard.titulo }}</span>
                             </a>
@@ -48,9 +48,9 @@
             </nav>
 
             <div class="bottom">
-                <a href="{% url "home:home" %}">
+                <a href="{% url "home:home" %}" title="Voltar ao Menu Principal">
                   <i class="fas fa-arrow-left"></i>
-                  <span class="text" title="Voltar ao Menu Principal">Voltar</span>
+                  <span class="text">Voltar</span>
                 </a>
                 <button id="toggle" title="Minimizar Menu Lateral"><i class="fas fa-bars"></i></button>
             </div>

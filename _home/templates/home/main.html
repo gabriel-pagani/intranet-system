@@ -10,40 +10,40 @@
 {% block body %}
         <div class="sidebar" id="sidebar">
             <div class="logo">
-                <a href="{% url "home:home" %}">
-                    <img src="{% static 'global/images/white_logo.png' %}" class="img-fluid" title="Recarregar a Página"/>
+                <a href="{% url "home:home" %}" title="Recarregar a Página">
+                    <img src="{% static 'global/images/white_logo.png' %}" class="img-fluid" />
                 </a>
             </div>
 
             <nav class="menu">
-                <a href="{% url "dashboards:home" %}">
+                <a href="{% url "dashboards:home" %}" title="Acessar Central de Indicadores">
                     <i class="fas fa-chart-pie"></i>
-                    <span class="text" title="Acessar Central de Indicadores">Central de Indicadores</span>
+                    <span class="text">Central de Indicadores</span>
                 </a>
-                <a href="{% url "ramais:home" %}">
+                <a href="{% url "ramais:home" %}" title="Acessar Lista de Ramais">
                     <i class="fas fa-phone"></i>
-                    <span class="text" title="Acessar Lista de Ramais">Lista de Ramais</span>
+                    <span class="text">Lista de Ramais</span>
                 </a>
-                <a href="{% url "calendar:home" %}">
+                <a href="{% url "calendar:home" %}" title="Acessar Calendário de Eventos">
                     <i class="fas fa-calendar-days"></i>
-                    <span class="text" title="Acessar Calendário de Eventos">Calendário de Eventos</span>
+                    <span class="text">Calendário de Eventos</span>
                 </a>
             </nav>
 
             <div class="bottom">
                 {% if request.user.is_staff %}
-                    <a href="{% url "admin:index" %}">
+                    <a href="{% url "admin:index" %}" title="Acessar Portal de Administração">
                         <i class="fa-solid fa-screwdriver-wrench"></i>
-                        <span class="text" title="Acessar Portal de Administração">Portal de Administração</span>
+                        <span class="text">Portal de Administração</span>
                     </a>
                 {% endif %}
-                <a href="{% url "home:change-password" %}">
+                <a href="{% url "home:change-password" %}" title="Alterar Senha">
                     <i class="fas fa-user-tie"></i>
-                    <span class="text" title="Alterar Senha">{{ request.user }}</span>
+                    <span class="text">{{ request.user }}</span>
                 </a>
-                <a href="{% url "home:logout" %}">
+                <a href="{% url "home:logout" %}" title="Fazer Logout">
                     <i class="fas fa-sign-out-alt"></i>
-                    <span class="text" title="Fazer Logout">Sair</span>
+                    <span class="text">Sair</span>
                 </a>
                 <button id="toggle" title="Minimizar Menu Lateral"><i class="fas fa-bars"></i></button>
             </div>
