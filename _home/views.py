@@ -124,7 +124,7 @@ def change_password_view(request):
                 erro_mensagem = "A nova senha não atende aos requisitos de segurança"
             # Mensagem genérica para outros erros
             else:
-                erro_mensagem = "Ocorreu um erro ao alterar sua senha. Verifique os dados e tente novamente"
+                erro_mensagem = "Ocorreu um erro ao alterar sua senha. Entre em contato com os administradores da página"
 
             messages.error(request, erro_mensagem)
     else:
