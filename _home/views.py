@@ -115,17 +115,16 @@ def change_password_view(request):
             if not old_password or not new_password1 or not new_password2:
                 erro_mensagem = "Preencha todos os campos"
             # Verificar se a senha atual está correta (verificando se esse é o erro no formulário)
-            elif 'old_password' in form.errors:
-                erro_mensagem = "A senha atual está incorreta"
+            elif 'A senha antiga foi digitada incorretamente. Por favor, informe-a novamente.' in str(form.errors):
+                erro_mensagem = "A senha antiga está incorreta"
             # Verificar se as senhas novas coincidem
             elif new_password1 != new_password2:
                 erro_mensagem = "As senhas não coincidem"
             # Verificar requisitos da senha
             elif len(new_password1) < 8 and new_password1.isdigit():
                 erro_mensagem = "A nova senha deve ter pelo menos 8 caracteres e não pode ser inteiramente numérica"
-            # Verificar outros requisitos de senha (mensagem genérica para outros erros do campo new_password1)
-            elif 'new_password1' in form.errors:
-                erro_mensagem = "A nova senha não atende aos requisitos de segurança"
+            elif 'Esta senha é muito comum.' in str(form.errors):
+                erro_mensagem = "A nova senha é muito comum"
             # Mensagem genérica para outros erros
             else:
                 erro_mensagem = "Ocorreu um erro ao alterar sua senha. Entre em contato com os administradores da página"
