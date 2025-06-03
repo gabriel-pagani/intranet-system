@@ -37,14 +37,25 @@
                         <span class="text">Portal de Administração</span>
                     </a>
                 {% endif %}
-                <a href="{% url "home:change-password" %}" title="Alterar Senha">
-                    <i class="fas fa-user-tie"></i>
-                    <span class="text">{{ request.user }}</span>
-                </a>
-                <a href="{% url "home:logout" %}" title="Fazer Logout">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span class="text">Sair</span>
-                </a>
+                
+                <div class="user-menu">
+                    <a href="#" class="user-toggle" id="user-toggle" title="{{ request.user }}">
+                        <i class="fas fa-user-tie"></i>
+                        <span class="text">{{ request.user }}</span>
+                        <i class="fas fa-chevron-down dropdown-icon"></i>
+                    </a>
+                    <div class="user-dropdown" id="user-dropdown">
+                        <a href="{% url "home:change-password" %}" title="Alterar Senha">
+                            <i class="fas fa-key"></i>
+                            <span>Alterar Senha</span>
+                        </a>
+                        <a href="{% url "home:logout" %}" title="Fazer Logout">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Sair</span>
+                        </a>
+                    </div>
+                </div>
+                
                 <button id="toggle" title="Minimizar Menu Lateral"><i class="fas fa-bars"></i></button>
             </div>
         </div>
