@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
         locale: "pt-br",
         slotMinTime: "00:00:00",
         slotMaxTime: "23:59:59",
-        slotDuration: "00:30:00",
+        slotDuration: "00:15:00",
         nowIndicator: true,
         allDaySlot: true,
         editable: canChangeEvent, // Somente usuários com permissão podem arrastar/redimensionar eventos
@@ -73,6 +73,45 @@ document.addEventListener("DOMContentLoaded", function () {
             list: "Ano",
         },
         
+        eventContent: function(arg) {
+            const event = arg.event;
+            const description = event.extendedProps.description || '';
+            
+            // Criar o HTML customizado para o evento
+            const eventEl = document.createElement('div');
+            eventEl.className = 'fc-event-main';
+            
+            // Se não for evento de dia inteiro, mostrar o horário de início e fim
+            let timeText = '';
+            if (!event.allDay && event.start) {
+                const startTime = event.start.toLocaleTimeString('pt-BR', { 
+                    hour: '2-digit', 
+                    minute: '2-digit' 
+                });
+                
+                let endTime = '';
+                if (event.end) {
+                    endTime = event.end.toLocaleTimeString('pt-BR', { 
+                        hour: '2-digit', 
+                        minute: '2-digit' 
+                    });
+                    timeText = `${startTime} - ${endTime}`;
+                } else {
+                    timeText = startTime;
+                }
+            }
+            
+            eventEl.innerHTML = `
+                <div style="padding: 2px 4px; font-size: 16px;">
+                    ${timeText ? `<div style="font-size: 12px; opacity: 0.7;">${timeText}</div>` : ''}
+                    <div style="font-weight: bold;">${event.title}</div>
+                    ${description ? `<div style="opacity: 0.8; margin-top: 2px; font-size: 14px;">${description}</div>` : ''}
+                </div>
+            `;
+            
+            return { domNodes: [eventEl] };
+        },
+
         // Carregar eventos do servidor
         events: '/calendario/api/events/',
         
