@@ -17,7 +17,14 @@ function carregarRamais(lista = ramaisFiltrados) {
             <td>${ramal.nome}</td>
             <td>${ramal.ramal}</td>
             <td>${ramal.setor}</td>
-            <td>${ramal.maquina}</td>
+            <td>
+                <div class="machine-cell">
+                    <span>${ramal.maquina}</span>
+                    <button class="copy-btn" onclick="copiarTexto('${ramal.maquina}')" title="Copiar número da máquina">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+            </td>
         `;
         listaElement.appendChild(row);
     });
@@ -157,6 +164,14 @@ function filtrarRamais() {
 // Função para remover acentos (ajuda na pesquisa)
 function removerAcentos(texto) {
     return texto.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+
+// Função para copiar texto para a área de transferência
+function copiarTexto(texto) {
+    navigator.clipboard.writeText(texto).then(() => {
+    }).catch(err => {
+        console.error('Erro ao copiar: ', err);
+    });
 }
 
 document.addEventListener("DOMContentLoaded", function () {

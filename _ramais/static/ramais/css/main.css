@@ -78,7 +78,7 @@ tbody tr:nth-child(odd) {
 }
 
 tbody tr:hover {
-  background-color: #50505042;
+  background-color: #f1f1f1;
 }
 
 .header-cell {
@@ -132,4 +132,31 @@ tbody tr:hover {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+}
+
+.copy-btn {
+  background: none;
+  border: none;
+  color: #ff8f00aa;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 8px;
+  padding: 4px;
+  border-radius: 3px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.copy-btn:hover {
+  background-color: #ff910037;
+  color: #ff8f00;
+}
+
+.copy-btn:active {
+  transform: scale(0.90);
+}
+
+.machine-cell {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
