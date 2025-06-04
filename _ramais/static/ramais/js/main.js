@@ -171,6 +171,12 @@ function copiarTexto(texto) {
     navigator.clipboard.writeText(texto).then(() => {
     }).catch(err => {
         console.error('Erro ao copiar: ', err);
+        const textArea = document.createElement('textarea');
+        textArea.value = texto;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
     });
 }
 
