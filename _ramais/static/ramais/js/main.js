@@ -168,16 +168,37 @@ function removerAcentos(texto) {
 
 // Função para copiar texto para a área de transferência
 function copiarTexto(texto) {
-    navigator.clipboard.writeText(texto).then(() => {
-    }).catch(err => {
-        console.error('Erro ao copiar: ', err);
-        const textArea = document.createElement('textarea');
-        textArea.value = texto;
-        document.body.appendChild(textArea);
-        textArea.select();
+    // Verifica se a API Clipboard está disponível
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(texto).then(() => {
+        }).catch(err => {
+            console.error('Erro ao copiar: ', err);
+            copiarTextoFallback(texto);
+        });
+    } else {
+        // Usa fallback para navegadores sem suporte ou contextos não seguros
+        copiarTextoFallback(texto);
+    }
+}
+
+// Função fallback para copiar texto
+function copiarTextoFallback(texto) {
+    const textArea = document.createElement('textarea');
+    textArea.value = texto;
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-999999px';
+    textArea.style.top = '-999999px';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
         document.execCommand('copy');
-        document.body.removeChild(textArea);
-    });
+    } catch (err) {
+        console.error('Erro ao copiar texto: ', err);
+    }
+    
+    document.body.removeChild(textArea);
 }
 
 document.addEventListener("DOMContentLoaded", function () {
