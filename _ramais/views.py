@@ -6,7 +6,9 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def home_view(request):
-    return render(request, 'ramais/main.html')
+    return render(request, 'ramais/main.html', {
+        'is_staff': request.user.is_staff
+    })
 
 
 @login_required

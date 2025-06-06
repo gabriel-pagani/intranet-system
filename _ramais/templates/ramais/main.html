@@ -26,12 +26,17 @@
                 <th><div class="header-cell">Nome</div></th>
                 <th><div class="header-cell">Ramal</div></th>
                 <th><div class="header-cell">Setor</div></th>
+                {% if request.user.is_staff %}
                 <th><div class="header-cell">Máquina</div></th>
+                {% endif %}
                 </tr>
             </thead>
             <tbody></tbody>
             </table>
             <div id="paginacao" class="paginacao-container"></div>
         </div>
+        <script>
+            const isStaff = {% if request.user.is_staff %}true{% else %}false{% endif %};
+        </script>
         <script src="{% static 'ramais/js/main.js' %}"></script>
 {% endblock body %}

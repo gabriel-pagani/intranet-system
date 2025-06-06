@@ -13,19 +13,29 @@ function carregarRamais(lista = ramaisFiltrados) {
 
     ramaisPagina.forEach((ramal) => {
         const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${ramal.nome}</td>
-            <td>${ramal.ramal}</td>
-            <td>${ramal.setor}</td>
-            <td>
-                <div class="machine-cell">
-                    <span>${ramal.maquina}</span>
-                    <button class="copy-btn" onclick="copiarTexto('${ramal.maquina}')" title="Copiar número da máquina">
-                        <i class="fas fa-copy"></i>
-                    </button>
-                </div>
-            </td>
-        `;
+        
+        if (isStaff) {
+            row.innerHTML = `
+                <td>${ramal.nome}</td>
+                <td>${ramal.ramal}</td>
+                <td>${ramal.setor}</td>
+                <td>
+                    <div class="machine-cell">
+                        <span>${ramal.maquina}</span>
+                        <button class="copy-btn" onclick="copiarTexto('${ramal.maquina}')" title="Copiar número da máquina">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </td>
+            `;
+        } else {
+            row.innerHTML = `
+                <td>${ramal.nome}</td>
+                <td>${ramal.ramal}</td>
+                <td>${ramal.setor}</td>
+            `;
+        }
+        
         listaElement.appendChild(row);
     });
     renderizarPaginacao(lista.length);
