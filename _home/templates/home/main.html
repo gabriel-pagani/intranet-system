@@ -31,13 +31,6 @@
             </nav>
 
             <div class="bottom">
-                {% if request.user.is_staff %}
-                    <a href="{% url "admin:index" %}" title="Acessar Portal de Administração">
-                        <i class="fa-solid fa-screwdriver-wrench"></i>
-                        <span class="text">Portal de Administração</span>
-                    </a>
-                {% endif %}
-                
                 <div class="user-menu">
                     <a href="#" class="user-toggle" id="user-toggle" title="{{ request.user }}">
                         <i class="fas fa-user-tie"></i>
@@ -45,6 +38,12 @@
                         <i class="fas fa-chevron-down dropdown-icon"></i>
                     </a>
                     <div class="user-dropdown" id="user-dropdown">
+                        {% if request.user.is_staff %}
+                            <a href="{% url "admin:index" %}" title="Acessar Portal de Controle do Site">
+                                <i class="fa-solid fa-screwdriver-wrench"></i>
+                                <span>Portal de Administração</span>
+                            </a>
+                        {% endif %}
                         <a href="{% url "home:change-password" %}" title="Alterar Senha">
                             <i class="fas fa-key"></i>
                             <span>Alterar Senha</span>
