@@ -42,7 +42,7 @@ class Ramais(models.Model):
     nome = models.CharField(max_length=100, blank=True)
     ramal = models.CharField(max_length=4, blank=True)
     setor = models.CharField(max_length=100, blank=True, choices=SETORES)
-    maquina = models.CharField(max_length=10, blank=True)
+    maquina = models.CharField(max_length=20, blank=True)
 
     def __str__(self):
         return f'{self.nome} - {self.ramal}'
