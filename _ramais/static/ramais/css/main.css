@@ -146,13 +146,8 @@ tbody tr:hover {
   transition: background-color 0.3s, color 0.3s;
 }
 
-.copy-btn:hover {
-  background-color: #ff910037;
-  color: #ff8f00;
-}
-
 .copy-btn:active {
-  transform: scale(0.90);
+  transform: scale(0.75);
 }
 
 .machine-cell {
