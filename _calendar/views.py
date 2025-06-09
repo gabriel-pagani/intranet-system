@@ -12,9 +12,9 @@ from _calendar.models import Event
 def home_view(request):
     """Renderiza a página principal do calendário"""
     return render(request, 'calendar/main.html', {
-        'can_add_event': request.user.has_perm('_calendar.add_event'),
-        'can_change_event': request.user.has_perm('_calendar.change_event'),
-        'can_delete_event': request.user.has_perm('_calendar.delete_event'),
+        'can_add_event': request.user.is_staff,
+        'can_change_event': request.user.is_staff,
+        'can_delete_event': request.user.is_staff,
     })
 
 
