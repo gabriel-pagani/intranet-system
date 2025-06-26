@@ -2,9 +2,14 @@ from django.shortcuts import render, redirect
 from _home.forms import LoginForm, CustomPasswordChangeForm
 from django.urls import reverse
 from django.http import Http404
-from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash, get_user_model
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth.forms import SetPasswordForm
 
 
 @login_required
@@ -146,3 +151,100 @@ def change_password_view(request):
 def logout_view(request):
     logout(request)
     return redirect('home:login')
+
+
+def forgot_password_view(request):
+    if request.method == 'POST':
+        email = request.POST.get('email', '').strip()
+        
+        if not email:
+            messages.error(request, 'Por favor, informe seu email')
+            return render(request, 'home/auth/forgot_password.html', {'email': email})
+        
+        User = get_user_model()
+        try:
+            user = User.objects.get(email=email)
+            
+            # Gerar token de reset
+            token = default_token_generator.make_token(user)
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            
+            # Construir URL de reset
+            reset_url = request.build_absolute_uri(
+                reverse('home:password-reset-confirm', kwargs={'uidb64': uid, 'token': token})
+            )
+            
+            subject = 'Redefinição de senha - Portal Grupo SMI'
+            message = f'''
+Olá {user.first_name or user.username},
+
+Você solicitou a redefinição de sua senha do portal do Grupo SMI.
+Clique no link abaixo para criar uma nova senha:
+
+{reset_url}
+
+Se você não solicitou esta redefinição, ignore este email.
+'''
+            
+            try:
+                send_mail(
+                    subject,
+                    message,
+                    'noreply@gruposmi.com.br',
+                    [email],
+                    fail_silently=False,
+                )
+                messages.success(request, 'Um email com instruções foi enviado para seu endereço eletrônico')
+                return redirect('home:login')
+            except Exception as e:
+                messages.error(request, 'Erro ao enviar o email. Tente novamente mais tarde')
+                
+        except User.DoesNotExist:
+            messages.error(request, 'O email informado não consta nos registros. Entre em contato com os administradores da página')
+            return redirect('home:login')
+    
+    return render(request, 'home/auth/forgot_password.html')
+
+def password_reset_confirm_view(request, uidb64, token):
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        User = get_user_model()
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        if request.method == 'POST':
+            form = SetPasswordForm(user, request.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Sua senha foi redefinida com sucesso')
+                return redirect('home:login')
+            else:
+                # Tratar erros do formulário
+                new_password1 = form.data.get('new_password1', '')
+                new_password2 = form.data.get('new_password2', '')
+                
+                if not new_password1 or not new_password2:
+                    erro_mensagem = "Preencha todos os campos"
+                elif new_password1 != new_password2:
+                    erro_mensagem = "As senhas não coincidem"
+                elif len(new_password1) < 8 and new_password1.isdigit():
+                    erro_mensagem = "A nova senha deve ter pelo menos 8 caracteres e não pode ser inteiramente numérica"
+                elif 'Esta senha é muito comum.' in str(form.errors):
+                    erro_mensagem = "A nova senha é muito comum"
+                else:
+                    erro_mensagem = "Ocorreu um erro ao alterar sua senha. Entre em contato com os administradores da página"
+                
+                messages.error(request, erro_mensagem)
+        else:
+            form = SetPasswordForm(user)
+        
+        return render(request, 'home/auth/password_reset_confirm.html', {
+            'form': form,
+            'validlink': True
+        })
+    else:
+        return render(request, 'home/auth/password_reset_confirm.html', {
+            'validlink': False
+        })
