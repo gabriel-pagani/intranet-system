@@ -6,3 +6,4 @@ from _ramais.models import Ramais
 class RamaisAdmin(admin.ModelAdmin):
     list_display = ('nome', 'ramal', 'setor', 'maquina')
     search_fields = ('nome', 'setor')
+    list_filter = ('setor',)
