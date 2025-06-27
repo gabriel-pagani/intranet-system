@@ -201,7 +201,6 @@ Se você não solicitou esta redefinição, ignore este email.
                 
         except User.DoesNotExist:
             messages.error(request, 'O email informado não consta nos registros. Entre em contato com os administradores da página')
-            return redirect('home:login')
     
     return render(request, 'home/auth/forgot_password.html')
 
