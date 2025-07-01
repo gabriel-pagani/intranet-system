@@ -194,7 +194,7 @@ Se você não solicitou esta redefinição, ignore este email.
                     [email],
                     fail_silently=False,
                 )
-                messages.success(request, 'Um email com instruções foi enviado para seu endereço eletrônico')
+                messages.success(request, 'Um email com instruções será enviado para seu endereço eletrônico em alguns minutos')
                 return redirect('home:login')
             except Exception as e:
                 messages.error(request, 'Erro ao enviar o email. Tente novamente mais tarde')
