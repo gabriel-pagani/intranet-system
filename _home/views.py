@@ -190,7 +190,7 @@ Se você não solicitou esta redefinição, ignore este email.
                 send_mail(
                     subject,
                     message,
-                    'noreply@gruposmi.com.br',
+                    'noreply.gruposmi@gmail.com',
                     [email],
                     fail_silently=False,
                 )
