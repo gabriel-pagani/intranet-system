@@ -130,6 +130,10 @@ def change_password_view(request):
                 erro_mensagem = "A nova senha deve ter pelo menos 8 caracteres e não pode ser inteiramente numérica"
             elif 'Esta senha é muito comum.' in str(form.errors):
                 erro_mensagem = "A nova senha é muito comum"
+            elif 'A senha é muito parecida com endereço de email' in str(form.errors):
+                    erro_mensagem = "A nova senha é muito parecida com o email cadastrado"
+            elif 'A senha é muito parecida com usuário' in str(form.errors):
+                erro_mensagem = "A nova senha é muito parecida com o nome do usuário"
             # Mensagem genérica para outros erros
             else:
                 erro_mensagem = "Ocorreu um erro ao alterar sua senha. Entre em contato com os administradores da página"
@@ -232,6 +236,10 @@ def password_reset_confirm_view(request, uidb64, token):
                     erro_mensagem = "A nova senha deve ter pelo menos 8 caracteres e não pode ser inteiramente numérica"
                 elif 'Esta senha é muito comum.' in str(form.errors):
                     erro_mensagem = "A nova senha é muito comum"
+                elif 'A senha é muito parecida com endereço de email' in str(form.errors):
+                    erro_mensagem = "A nova senha é muito parecida com o email cadastrado"
+                elif 'A senha é muito parecida com usuário' in str(form.errors):
+                    erro_mensagem = "A nova senha é muito parecida com o nome do usuário"
                 else:
                     erro_mensagem = "Ocorreu um erro ao alterar sua senha. Entre em contato com os administradores da página"
                 
