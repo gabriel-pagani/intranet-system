@@ -200,7 +200,7 @@ Se você não solicitou esta redefinição, ignore este email.
                 messages.error(request, 'Erro ao enviar o email. Tente novamente mais tarde')
                 
         except User.DoesNotExist:
-            messages.error(request, 'O email informado não consta nos registros. Entre em contato com os administradores da página')
+            messages.error(request, 'Erro ao enviar o email. Entre em contato com os administradores da página')
     
     return render(request, 'home/auth/forgot_password.html')
 
