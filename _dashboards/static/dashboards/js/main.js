@@ -19,7 +19,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Handle dashboard link clicks to update iframe
   const dashboardLinks = document.querySelectorAll(".dashboard-link");
-  dashboardLinks.forEach((link) => {
+  const dashboardFrame = document.getElementById("dashboard-frame");
+  const dashboardPlaceholder = document.getElementById("dashboard-placeholder");
+
+  dashboardLinks.forEach(function (link) {
     link.addEventListener("click", function (e) {
       e.preventDefault();
 
@@ -31,7 +34,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Update iframe source with dashboard URL
       const dashboardUrl = this.getAttribute("data-url");
-      document.getElementById("dashboard-frame").src = dashboardUrl;
+
+      // Hide placeholder and show iframe
+      dashboardPlaceholder.style.display = "none";
+      dashboardFrame.style.display = "block";
+      dashboardFrame.src = dashboardUrl;
     });
   });
 });

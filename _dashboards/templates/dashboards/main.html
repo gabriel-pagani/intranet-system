@@ -57,7 +57,11 @@
         </div>
 
         <div class="main-content">
-            <iframe id="dashboard-frame" src="" frameborder="0"></iframe>
+            <div id="dashboard-placeholder" class="dashboard-placeholder">
+              <i class="fa-solid fa-chart-line"></i>
+              <p>Nenhum Indicador Selecionado</p>
+            </div>
+            <iframe id="dashboard-frame" src="" frameborder="0" style="display: none;"></iframe>
         </div>
         <script src="{% static 'dashboards/js/main.js' %}"></script>
 {% endblock body %}
