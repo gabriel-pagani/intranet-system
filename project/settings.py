@@ -1,6 +1,8 @@
 # Generated using Django 5.2.1
 
 from pathlib import Path
+from django_auth_ldap.config import LDAPSearch
+from ldap import SCOPE_SUBTREE
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -135,6 +137,24 @@ LOGIN_URL = 'home:login'
 SESSION_COOKIE_AGE = 60 * 60 * 24
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_SAVE_EVERY_REQUEST = True
+
+# Auth LDAP
+AUTHENTICATION_BACKENDS = [
+    'django_auth_ldap.backend.LDAPBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+AUTH_LDAP_USER_SEARCH = LDAPSearch(
+    "ou=Sinasc,dc=sinasc,dc=com,dc=br",
+    SCOPE_SUBTREE,
+    "(sAMAccountName=%(user)s)"
+)
+AUTH_LDAP_USER_ATTR_MAP = {
+    "first_name": "givenName",
+    "last_name": "sn",
+    "email": "mail",
+    "username": "uid",
+}
+AUTH_LDAP_ALWAYS_UPDATE_USER = True
 
 try:
     from project.local_settings import *
