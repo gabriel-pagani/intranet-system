@@ -3,7 +3,7 @@ Sistema empresarial intranet que tem o objetivo de centralizar o sistemas da emp
 
 # Pré-requisitos
 - Python 3.9+
-- Git 2.49+
+- Git 2.48+
 
 # Instalação
 - Clone o repositório
@@ -40,6 +40,10 @@ Na pasta project crie o arquivo "local_settings.py". Dentro do arquivo adicione 
 ```
 METABASE_SITE_URL = 'https://metabase.seudominio.com'
 METABASE_SECRET_KEY = 'sua-chave-metabase'
+
+AUTH_LDAP_SERVER_URI = 'ldap://ad.seudominio.com'
+AUTH_LDAP_BIND_DN = 'cn=usuario-admin,ou=pasta,ou=pasta,ou=pasta,dc=dominio,dc=com,dc=br'
+AUTH_LDAP_BIND_PASSWORD = 'senha-usuario-admin'
 ```
 
 # Estrutura do Projeto
