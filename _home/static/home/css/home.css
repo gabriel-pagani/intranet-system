@@ -36,10 +36,15 @@ body {
 .logo img {
   width: 40px;
   height: auto;
+  transition: width 0.3s ease;
 }
 
 .sidebar:not(.collapsed) .logo img {
   width: 125px;
+}
+
+.sidebar.collapsed .logo img {
+  width: 30px;
 }
 
 .menu {
