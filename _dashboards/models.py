@@ -53,3 +53,6 @@ class Dashboard(models.Model):
 
     class Meta:
         ordering = ['setor', 'titulo']
+        permissions = [
+            ("view_all_dashboards", "Can view all dashboards"),
+        ]

@@ -2,7 +2,7 @@ from _dashboards.models import Dashboard
 
 
 def get_dashboards(user):
-    if user.is_superuser:
+    if user.has_perm('_dashboards.view_all_dashboards'):
         return Dashboard.objects.all()
 
     dashboards_usuario = Dashboard.objects.filter(usuarios=user)
