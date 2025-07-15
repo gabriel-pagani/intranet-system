@@ -1,4 +1,4 @@
-const ramaisPorPagina = 10; // Número de ramais por página
+const ramaisPorPagina = 8; // Número de ramais por página
 let paginaAtual = 1; // Página inicial
 
 
