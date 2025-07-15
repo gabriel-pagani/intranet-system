@@ -8,13 +8,13 @@
 {% endblock head %}
 
 {% block menu %}
-    <a href="{% url "dashboards:home" %}" title="Acessar Central de Indicadores">
-        <i class="fas fa-chart-pie"></i>
-        <span class="text">Central de Indicadores</span>
-    </a>
     <a href="{% url "ramais:home" %}" title="Acessar Lista de Ramais">
         <i class="fas fa-phone"></i>
         <span class="text">Lista de Ramais</span>
+    </a>
+    <a href="{% url "dashboards:home" %}" title="Acessar Central de Indicadores">
+        <i class="fas fa-chart-pie"></i>
+        <span class="text">Central de Indicadores</span>
     </a>
     <a href="{% url "calendar:home" %}" title="Acessar Calendário de Eventos">
         <i class="fas fa-calendar-days"></i>
