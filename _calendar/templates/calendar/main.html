@@ -1,4 +1,4 @@
-{% extends 'global/base.html' %}
+{% extends 'global/base_with_sidebar.html' %}
 {% load static %}
 
 {% block title %}Calendário{% endblock title %}
@@ -8,13 +8,16 @@
         <link href="{% static 'calendar/css/main.css' %}" rel="stylesheet">
 {% endblock head %}
 
-{% block body %}
-        <div class="calendar-header">
-            <a href="{% url "home:home" %}">
-              <img src="{% static 'global/images/white_logo.png' %}" alt="Logo SMI" class="logo" id="logo-img" title="Voltar ao Menu Principal"/>
-            </a>
-        </div>
+{% block menu %}{% endblock menu %}
 
+{% block bottom %}
+  <a href="{% url "home:home" %}" title="Voltar ao Menu Principal">
+    <i class="fas fa-arrow-left"></i>
+    <span class="text">Voltar</span>
+  </a>
+{% endblock bottom %}
+
+{% block content %}
         <div id="calendar-container">
           <div id="calendar" style="max-height: 795px"></div>
         </div>
@@ -128,14 +131,17 @@
             </div>
           </div>
         </div>
-        
-        <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
-        <script src="{% static 'calendar/js/main.js' %}"></script>
-        <script>
-            // Verifica se o usuário tem permissões para manipular eventos
-            const canAddEvent = {% if can_add_event %}true{% else %}false{% endif %};
-            const canChangeEvent = {% if can_change_event %}true{% else %}false{% endif %};
-            const canDeleteEvent = {% if can_delete_event %}true{% else %}false{% endif %};
-            const isAuthenticated = {% if user.is_authenticated %}true{% else %}false{% endif %};
-        </script>
-{% endblock body %}
+{% endblock content %}
+
+{% block scripts %}
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+  <script src="{% static 'calendar/js/main.js' %}"></script>
+  <script>
+      // Verifica se o usuário tem permissões para manipular eventos
+      const canAddEvent = {% if can_add_event %}true{% else %}false{% endif %};
+      const canChangeEvent = {% if can_change_event %}true{% else %}false{% endif %};
+      const canDeleteEvent = {% if can_delete_event %}true{% else %}false{% endif %};
+      const isAuthenticated = {% if user.is_authenticated %}true{% else %}false{% endif %};
+  </script>
+{% endblock scripts %}
+

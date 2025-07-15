@@ -188,21 +188,21 @@ button {
   }
 }
 
-/* Barra superior */
-.calendar-header {
+.bottom a {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  background-color: #2c3e50;
   color: white;
-  padding: 10px 20px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  padding: 20px 0px;
+  text-decoration: none;
+  padding: 10px 12px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  transition: background 0.2s;
 }
 
-.logo {
-  width: 130px;
-  height: auto;
-  margin-left: 20px;
-  cursor: pointer;
+.bottom a:hover {
+  background-color: #33373c;
+}
+
+.bottom .text {
+  margin-left: 12px;
 }
