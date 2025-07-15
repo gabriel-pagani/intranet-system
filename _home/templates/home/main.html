@@ -1,4 +1,4 @@
-{% extends 'global/base.html' %}
+{% extends 'global/base_with_sidebar.html' %}
 {% load static %}
 
 {% block title %}Home{% endblock title %}
@@ -7,59 +7,45 @@
         <link href="{% static 'home/css/home.css' %}" rel="stylesheet">
 {% endblock head %}
 
-{% block body %}
-        <div class="sidebar" id="sidebar">
-            <div class="logo">
-                <a href="{% url "home:home" %}" title="Recarregar a Página">
-                    <img src="{% static 'global/images/white_logo.png' %}" class="img-fluid" id="logo-img"
-                        data-full-logo="{% static 'global/images/white_logo.png' %}"
-                        data-icon-logo="{% static 'global/images/icon.png' %}"
-                    />
-                </a>
-            </div>
+{% block menu %}
+    <a href="{% url "dashboards:home" %}" title="Acessar Central de Indicadores">
+        <i class="fas fa-chart-pie"></i>
+        <span class="text">Central de Indicadores</span>
+    </a>
+    <a href="{% url "ramais:home" %}" title="Acessar Lista de Ramais">
+        <i class="fas fa-phone"></i>
+        <span class="text">Lista de Ramais</span>
+    </a>
+    <a href="{% url "calendar:home" %}" title="Acessar Calendário de Eventos">
+        <i class="fas fa-calendar-days"></i>
+        <span class="text">Calendário de Eventos</span>
+    </a>
+{% endblock menu %}
 
-            <nav class="menu">
-                <a href="{% url "dashboards:home" %}" title="Acessar Central de Indicadores">
-                    <i class="fas fa-chart-pie"></i>
-                    <span class="text">Central de Indicadores</span>
+{% block bottom %}
+    <div class="user-menu">
+        <a href="#" class="user-toggle" id="user-toggle" title="{{ request.user }}">
+            <i class="fas fa-user-tie"></i>
+            <span class="text">{{ request.user }}</span>
+            <i class="fas fa-chevron-down dropdown-icon"></i>
+        </a>
+        <div class="user-dropdown" id="user-dropdown">
+            {% if request.user.is_staff %}
+                <a href="{% url "admin:index" %}" title="Acessar Portal de Controle do Site">
+                    <i class="fa-solid fa-screwdriver-wrench"></i>
+                    <span>Portal de Administração</span>
                 </a>
-                <a href="{% url "ramais:home" %}" title="Acessar Lista de Ramais">
-                    <i class="fas fa-phone"></i>
-                    <span class="text">Lista de Ramais</span>
-                </a>
-                <a href="{% url "calendar:home" %}" title="Acessar Calendário de Eventos">
-                    <i class="fas fa-calendar-days"></i>
-                    <span class="text">Calendário de Eventos</span>
-                </a>
-            </nav>
-
-            <div class="bottom">
-                <div class="user-menu">
-                    <a href="#" class="user-toggle" id="user-toggle" title="{{ request.user }}">
-                        <i class="fas fa-user-tie"></i>
-                        <span class="text">{{ request.user }}</span>
-                        <i class="fas fa-chevron-down dropdown-icon"></i>
-                    </a>
-                    <div class="user-dropdown" id="user-dropdown">
-                        {% if request.user.is_staff %}
-                            <a href="{% url "admin:index" %}" title="Acessar Portal de Controle do Site">
-                                <i class="fa-solid fa-screwdriver-wrench"></i>
-                                <span>Portal de Administração</span>
-                            </a>
-                        {% endif %}
-                        <a href="{% url "home:logout" %}" title="Fazer Logout">
-                            <i class="fas fa-sign-out-alt"></i>
-                            <span>Sair</span>
-                        </a>
-                    </div>
-                </div>
-                
-                <button id="toggle" title="Minimizar Menu Lateral"><i class="fas fa-bars"></i></button>
-            </div>
+            {% endif %}
+            <a href="{% url "home:logout" %}" title="Fazer Logout">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Sair</span>
+            </a>
         </div>
+    </div>
+{% endblock bottom %}
 
-        <div class="main-content">
-            <!-- Conteúdo principal -->
-        </div>
-        <script src="{% static 'home/js/home.js' %}"></script>
-{% endblock body %}
+{% block content %}{% endblock content %}
+
+{% block scripts %}
+    <script src="{% static 'home/js/home.js' %}"></script>
+{% endblock scripts %}

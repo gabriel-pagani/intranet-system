@@ -1,4 +1,4 @@
-{% extends 'global/base.html' %}
+{% extends 'global/base_with_sidebar.html' %}
 {% load static %}
 
 {% block title %}Indicadores{% endblock title %}
@@ -7,61 +7,53 @@
         <link href="{% static 'dashboards/css/main.css' %}" rel="stylesheet">
 {% endblock head %}
 
-{% block body %}
-        <div class="sidebar" id="sidebar">
-            <div class="logo">
-                <a href="{% url "home:home" %}">
-                    <img src="{% static 'global/images/white_logo.png' %}" class="img-fluid" title="Voltar ao Menu Principal"/>
+{% block menu %}
+  {% if dados|length > 0 %}
+    <ul class="menu-list">
+      {% for setor, dashboards in dados.items %}
+        <li class="menu-item">
+          <div class="sector-header" title="{{ setor }}">
+            <i class="fas fa-box-archive"></i>
+            <span class="text">{{ setor }}</span>
+            <i class="fas fa-chevron-right toggle-icon"></i>
+          </div>
+          <ul class="submenu">
+            {% for dashboard in dashboards %}
+              <li>
+                <a href="#" class="dashboard-link" data-url="{{ dashboard.url }}" title="{{ dashboard.titulo }}">
+                  <i class="fas fa-chart-line"></i>
+                  <span class="text">{{ dashboard.titulo }}</span>
                 </a>
-            </div>
+              </li>
+            {% endfor %}
+          </ul>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <div class="alert">
+      Não há indicadores<p>
+      disponíveis para você<p>
+      no momento
+    </div>
+  {% endif %}
+{% endblock menu %}
 
-            <nav class="menu">
-              {% if dados|length > 0 %}
-                <ul class="menu-list">
-                  {% for setor, dashboards in dados.items %}
-                    <li class="menu-item">
-                      <div class="sector-header" title="{{ setor }}">
-                        <i class="fas fa-box-archive"></i>
-                        <span class="text">{{ setor }}</span>
-                        <i class="fas fa-chevron-right toggle-icon"></i>
-                      </div>
-                      <ul class="submenu">
-                        {% for dashboard in dashboards %}
-                          <li>
-                            <a href="#" class="dashboard-link" data-url="{{ dashboard.url }}" title="{{ dashboard.titulo }}">
-                              <i class="fas fa-chart-line"></i>
-                              <span class="text">{{ dashboard.titulo }}</span>
-                            </a>
-                          </li>
-                        {% endfor %}
-                      </ul>
-                    </li>
-                  {% endfor %}
-                </ul>
-              {% else %}
-                <div class="alert">
-                  Não há indicadores<p>
-                  disponíveis para você<p>
-                  no momento
-                </div>
-              {% endif %}
-            </nav>
+{% block bottom %}
+  <a href="{% url "home:home" %}" title="Voltar ao Menu Principal">
+    <i class="fas fa-arrow-left"></i>
+    <span class="text">Voltar</span>
+  </a>
+{% endblock bottom %}
 
-            <div class="bottom">
-                <a href="{% url "home:home" %}" title="Voltar ao Menu Principal">
-                  <i class="fas fa-arrow-left"></i>
-                  <span class="text">Voltar</span>
-                </a>
-                <button id="toggle" title="Minimizar Menu Lateral"><i class="fas fa-bars"></i></button>
-            </div>
-        </div>
+{% block content %}
+  <div id="dashboard-placeholder" class="dashboard-placeholder">
+    <i class="fa-solid fa-chart-line"></i>
+    <p>Nenhum Indicador Selecionado</p>
+  </div>
+  <iframe id="dashboard-frame" src="" frameborder="0" style="display: none;"></iframe>
+{% endblock content %}
 
-        <div class="main-content">
-            <div id="dashboard-placeholder" class="dashboard-placeholder">
-              <i class="fa-solid fa-chart-line"></i>
-              <p>Nenhum Indicador Selecionado</p>
-            </div>
-            <iframe id="dashboard-frame" src="" frameborder="0" style="display: none;"></iframe>
-        </div>
-        <script src="{% static 'dashboards/js/main.js' %}"></script>
-{% endblock body %}
+{% block scripts %}
+  <script src="{% static 'dashboards/js/main.js' %}"></script>
+{% endblock scripts %}
