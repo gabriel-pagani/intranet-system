@@ -1,7 +1,7 @@
 # Generated using Django 5.2.1
 
 from pathlib import Path
-from django_auth_ldap.config import LDAPSearch
+from django_auth_ldap.config import LDAPSearch, ActiveDirectoryGroupType
 from ldap import SCOPE_SUBTREE
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -155,6 +155,19 @@ AUTH_LDAP_USER_ATTR_MAP = {
     "username": "uid",
 }
 AUTH_LDAP_ALWAYS_UPDATE_USER = True
+
+AUTH_LDAP_MIRROR_GROUPS = True
+
+AUTH_LDAP_GROUP_SEARCH = LDAPSearch(
+    "ou=Grupos,ou=Sinasc,dc=sinasc,dc=com,dc=br",
+    SCOPE_SUBTREE,
+    "(objectClass=group)"
+)
+AUTH_LDAP_GROUP_TYPE = ActiveDirectoryGroupType(name_attr="cn")
+
+AUTH_LDAP_USER_FLAGS_BY_GROUP = {
+    "is_staff": "cn=GRUPO_TECNOLOGIA,ou=Grupos,ou=Sinasc,dc=sinasc,dc=com,dc=br",
+}
 
 try:
     from project.local_settings import *
