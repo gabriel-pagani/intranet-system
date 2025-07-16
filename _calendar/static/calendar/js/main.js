@@ -23,6 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
             day: "Dia",
             list: "Ano",
         },
+        events: '/agenda/api/get/',
     });
     
     calendar.render();
