@@ -5,11 +5,12 @@ document.addEventListener("DOMContentLoaded", function () {
         initialView: "timeGridWeek",
         locale: "pt-br",
         slotMinTime: "06:00:00",
-        slotMaxTime: "21:30:00",
+        slotMaxTime: "22:00:00",
         slotDuration: "00:30:00",
         nowIndicator: true,
         allDaySlot: false,
         selectable: true,
+        height: 'auto',
         headerToolbar: {
             left: "prev,next today",
             center: "title",
