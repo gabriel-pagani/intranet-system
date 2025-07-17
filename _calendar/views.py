@@ -32,7 +32,7 @@ def get_reunioes(request):
             'extendedProps': {
                 'organizer': reuniao.organizador,
                 'description': reuniao.descricao if reuniao.descricao else None,
-                'type': reuniao.tipo.tipo if reuniao.tipo else None,
+                'type': reuniao.tipo.id if reuniao.tipo else None,
                 'private': reuniao.privada,
             }
         })
