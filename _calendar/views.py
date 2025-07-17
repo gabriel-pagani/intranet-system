@@ -3,6 +3,8 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse
 from .models import Agenda
+from .forms import AgendaForm
+import json
 
 
 @login_required
@@ -39,14 +41,35 @@ def get_reunioes(request):
 
 @login_required
 @permission_required('_calendar.add_agenda', raise_exception=True)
+@require_http_methods(["POST"])
 def add_reuniao(request):
-    ...
+    try:
+        data = json.loads(request.body)
+        form = AgendaForm(data)
+        if form.is_valid():
+            reuniao = form.save()
+            return JsonResponse({'status': 'success', 'id': reuniao.id})
+        else:
+            return JsonResponse({'status': 'error', 'errors': form.errors}, status=400)
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
 
 
 @login_required
 @permission_required('_calendar.change_agenda', raise_exception=True)
+@require_http_methods(["POST"])
 def update_reuniao(request, pk):
-    ...
+    try:
+        reuniao = get_object_or_404(Agenda, pk=pk)
+        data = json.loads(request.body)
+        form = AgendaForm(data, instance=reuniao)
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'status': 'success'})
+        else:
+            return JsonResponse({'status': 'error', 'errors': form.errors}, status=400)
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
 
 
 @login_required
