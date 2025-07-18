@@ -30,6 +30,10 @@
 }
 
 .fc .fc-timegrid-now-indicator-line {
-  border-color: #000000 !important;
+  border-color: #1f2327 !important;
+}
+
+.fc-timegrid-now-indicator-arrow {
+  border-color: #00000000 !important;
 }
 
