@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const calendarEl = document.getElementById("calendar");
         
     const calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: "timeGridWeek",
+        initialView: "timeGridDay",
         locale: "pt-br",
         slotMinTime: "06:00:00",
         slotMaxTime: "22:00:00",
@@ -27,6 +27,26 @@ document.addEventListener("DOMContentLoaded", function () {
             list: "Ano",
         },
         events: '/agenda/api/get/',
+        eventContent: function(arg) {
+            let startTime = arg.event.start ? arg.event.start.toLocaleTimeString('pt-BR', {
+                hour: '2-digit',
+                minute: '2-digit'
+            }) : '';
+
+            let endTime = arg.event.end ? arg.event.end.toLocaleTimeString('pt-BR', {
+                hour: '2-digit',
+                minute: '2-digit'
+            }) : '';
+            
+            return {
+                html: `
+                    <div>
+                        <div>${arg.event.title} (${startTime}-${endTime})</div>
+                        <div>${arg.event.extendedProps.description || ''}</div>
+                    </div>
+                `
+            };
+        },
         eventDrop: function(info) {
             updateEventDateTime(info.event);
         },
@@ -38,7 +58,6 @@ document.addEventListener("DOMContentLoaded", function () {
     function updateEventDateTime(event) {
         const eventData = {
             titulo: event.title,
-            organizador: event.extendedProps.organizer,
             descricao: event.extendedProps.description || '',
             tipo: event.extendedProps.type,
             data_inicio: event.start.toISOString(),
