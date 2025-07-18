@@ -1,10 +1,11 @@
 from django.db import models
+from colorfield.fields import ColorField
 from django.core.exceptions import ValidationError
 from re import match
 
 class TipoReuniao(models.Model):
     tipo = models.CharField(max_length=100, unique=True, verbose_name="Tipo da Reunião")
-    cor = models.CharField(max_length=7, default="#007bff", verbose_name="Cor em Hexadecimal")
+    cor = ColorField(default='#007bff', verbose_name="Cor do Tipo de Reunião")
 
     def clean(self):
         super().clean()
