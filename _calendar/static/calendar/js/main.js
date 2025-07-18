@@ -27,26 +27,6 @@ document.addEventListener("DOMContentLoaded", function () {
             list: "Ano",
         },
         events: '/agenda/api/get/',
-        eventContent: function(arg) {
-            let startTime = arg.event.start ? arg.event.start.toLocaleTimeString('pt-BR', {
-                hour: '2-digit',
-                minute: '2-digit'
-            }) : '';
-
-            let endTime = arg.event.end ? arg.event.end.toLocaleTimeString('pt-BR', {
-                hour: '2-digit',
-                minute: '2-digit'
-            }) : '';
-            
-            return {
-                html: `
-                    <div>
-                        <div>${arg.event.title} (${startTime}-${endTime})</div>
-                        <div>${arg.event.extendedProps.description || ''}</div>
-                    </div>
-                `
-            };
-        },
         eventDrop: function(info) {
             updateEventDateTime(info.event);
         },
