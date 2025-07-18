@@ -10,6 +10,8 @@ document.addEventListener("DOMContentLoaded", function () {
         nowIndicator: true,
         allDaySlot: false,
         selectable: true,
+        editable: canChange,
+        eventResizableFromStart: true,
         height: 'auto',
         headerToolbar: {
             left: "prev,next today",
@@ -25,7 +27,66 @@ document.addEventListener("DOMContentLoaded", function () {
             list: "Ano",
         },
         events: '/agenda/api/get/',
+        eventDrop: function(info) {
+            updateEventDateTime(info.event);
+        },
+        eventResize: function(info) {
+            updateEventDateTime(info.event);
+        }
     });
+    
+    function updateEventDateTime(event) {
+        const eventData = {
+            titulo: event.title,
+            organizador: event.extendedProps.organizer,
+            descricao: event.extendedProps.description || '',
+            tipo: event.extendedProps.type,
+            data_inicio: event.start.toISOString(),
+            data_fim: event.end.toISOString(),
+            privada: event.extendedProps.private || false
+        };
+    
+        fetch(`/agenda/api/update/${event.id}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCsrfToken(),
+            },
+            body: JSON.stringify(eventData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                console.log('Evento atualizado com sucesso');
+            } else {
+                console.error('Erro ao atualizar evento:', data.errors || data.message);
+                // Reverter mudança em caso de erro
+                calendar.refetchEvents();
+            }
+        })
+        .catch(error => {
+            console.error('Erro na requisição:', error);
+            // Reverter mudança em caso de erro
+            calendar.refetchEvents();
+        });
+    }
+    
+    function getCsrfToken() {
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
+        if (csrfToken) {
+            return csrfToken.value;
+        }
+        
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+            const [name, value] = cookie.trim().split('=');
+            if (name === 'csrftoken') {
+                return value;
+            }
+        }
+        
+        return '';
+    }
     
     calendar.render();
 });

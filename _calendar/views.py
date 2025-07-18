@@ -9,7 +9,12 @@ import json
 
 @login_required
 def home_view(request):
-    return render(request, 'calendar/main.html')
+    permissions = {
+        'can_add': request.user.has_perm('_calendar.add_agenda'),
+        'can_change': request.user.has_perm('_calendar.change_agenda'),
+        'can_delete': request.user.has_perm('_calendar.delete_agenda'),
+    }
+    return render(request, 'calendar/main.html', permissions)
 
 
 @login_required
@@ -80,6 +85,6 @@ def delete_reuniao(request, pk):
         reuniao = get_object_or_404(Agenda, pk=pk)
         reuniao.delete()
         return JsonResponse({'status': 'success'})
-        
+
     except Exception as e:
         return JsonResponse({'status': 'error', 'message': str(e)}, status=500)

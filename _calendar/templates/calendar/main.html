@@ -26,5 +26,10 @@
 {% block scripts %}
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
   <script src="{% static 'calendar/js/main.js' %}"></script>
+  <script>
+    const canAdd = {% if can_add %}true{% else %}false{% endif %};
+    const canChange = {% if can_change %}true{% else %}false{% endif %};
+    const canDelete = {% if can_delete %}true{% else %}false{% endif %};
+  </script>
 {% endblock scripts %}
 
