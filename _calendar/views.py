@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required, permission_required
 from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse
-from .models import Agenda
+from .models import Agenda, TipoReuniao
 from .forms import AgendaForm
 import json
 
@@ -39,6 +39,19 @@ def get_reunioes(request):
                 'type': reuniao.tipo.id if reuniao.tipo else None,
                 'private': reuniao.privada,
             }
+        })
+    return JsonResponse(data, safe=False)
+
+
+@login_required
+def get_tipos_reuniao(request):
+    tipos = TipoReuniao.objects.all()
+    data = []
+    for tipo in tipos:
+        data.append({
+            'id': tipo.id,
+            'tipo': tipo.tipo,
+            'cor': tipo.cor
         })
     return JsonResponse(data, safe=False)
 
