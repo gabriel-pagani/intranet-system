@@ -18,7 +18,33 @@
 }
 
 #calendar-container {
-  padding: 15px;
+  padding: 15px 15px 0px 15px;
+  height: calc(100vh - 15px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+#calendar {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.fc .fc-header-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: white;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 0 !important;
+  padding-bottom: 10px;
+}
+
+.fc .fc-view-harness {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .fc .fc-toolbar-title {
@@ -36,4 +62,3 @@
 .fc-timegrid-now-indicator-arrow {
   border-color: #00000000 !important;
 }
-
