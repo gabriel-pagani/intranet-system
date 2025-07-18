@@ -5,12 +5,11 @@ class AgendaForm(forms.ModelForm):
     class Meta:
         model = Agenda
         fields = [
-            'titulo', 'organizador', 'descricao', 'tipo',
+            'titulo', 'descricao', 'tipo',
             'data_inicio', 'data_fim', 'privada'
         ]
         widgets = {
             'titulo': forms.TextInput(attrs={'class': 'form-control'}),
-            'organizador': forms.TextInput(attrs={'class': 'form-control'}),
             'descricao': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'tipo': forms.Select(attrs={'class': 'form-select'}),
             'data_inicio': forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control'}),

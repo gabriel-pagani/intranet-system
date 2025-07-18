@@ -30,7 +30,6 @@ class TipoReuniao(models.Model):
 
 class Agenda(models.Model):
     titulo = models.CharField(max_length=200, verbose_name="Título")
-    organizador = models.CharField(max_length=200, verbose_name="Organizador")
     descricao = models.TextField(blank=True, null=True, verbose_name="Descrição")
     tipo = models.ForeignKey(TipoReuniao, on_delete=models.SET_NULL, null=True, verbose_name="Tipo de Reunião")
     data_inicio = models.DateTimeField(verbose_name="Data e Hora de Início")

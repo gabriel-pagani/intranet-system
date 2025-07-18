@@ -35,7 +35,6 @@ def get_reunioes(request):
             'backgroundColor': reuniao.tipo.cor if reuniao.tipo else '#007bff',
             'borderColor': reuniao.tipo.cor if reuniao.tipo else '#007bff',
             'extendedProps': {
-                'organizer': reuniao.organizador,
                 'description': reuniao.descricao if reuniao.descricao else None,
                 'type': reuniao.tipo.id if reuniao.tipo else None,
                 'private': reuniao.privada,
