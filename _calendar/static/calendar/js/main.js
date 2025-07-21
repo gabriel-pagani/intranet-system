@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const calendarEl = document.getElementById("calendar");
         
     const calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: "timeGridDay",
+        initialView: "timeGridWeek",
         locale: "pt-br",
         slotMinTime: "06:00:00",
         slotMaxTime: "22:00:00",
