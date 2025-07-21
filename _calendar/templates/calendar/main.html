@@ -1,11 +1,12 @@
 {% extends 'global/base_with_sidebar.html' %}
 {% load static %}
 
-{% block title %}Calendário{% endblock title %}
+{% block title %}Agenda{% endblock title %}
 
 {% block head %}
         <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet"/>
         <link href="{% static 'calendar/css/main.css' %}" rel="stylesheet">
+        <link href="{% static 'calendar/css/modal.css' %}" rel="stylesheet">
 {% endblock head %}
 
 {% block menu %}{% endblock menu %}
@@ -21,6 +22,67 @@
         <div id="calendar-container">
           <div id="calendar"></div>
         </div>
+        <!-- Modal de Evento -->
+        <div id="event-modal" class="modal-overlay" style="display: none;">
+          <div class="modal-container">
+            <div class="modal-header">
+              <h2 id="modal-title"></h2>
+              <button id="close-modal" class="close-button">&times;</button>
+            </div>
+            <div class="modal-body">
+              <div id="form-errors" class="mensagem erro" style="display: none;"></div>
+              <form id="event-form">
+                <input type="hidden" id="event-id" name="id">
+                <div class="input-group">
+                  <i class="fas fa-heading input-icon"></i>
+                  <input type="text" id="event-title" name="titulo" placeholder="Título do Evento" required>
+                </div>
+                <div class="input-group">
+                  <i class="fas fa-align-left input-icon"></i>
+                  <textarea id="event-description" name="descricao" placeholder="Descrição (Opcional)" rows="3"></textarea>
+                </div>
+                <div class="input-group">
+                  <i class="fas fa-tags input-icon"></i>
+                  <select id="event-type" name="tipo"></select>
+                </div>
+                <div class="datetime-group">
+                  <div class="input-group">
+                    <i class="fas fa-clock input-icon"></i>
+                    <input type="datetime-local" id="event-start" name="data_inicio" required>
+                  </div>
+                  <div class="input-group">
+                    <i class="fas fa-clock input-icon"></i>
+                    <input type="datetime-local" id="event-end" name="data_fim" required>
+                  </div>
+                </div>
+                <div class="checkbox-group">
+                  <input type="checkbox" id="event-private" name="privada">
+                  <label for="event-private">Reunião Privada?</label>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button id="delete-event-btn" class="btn btn-danger" style="display: none;">Excluir</button>
+              <button id="save-event-btn" class="btn">Salvar</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal de Confirmação de Exclusão -->
+        <div id="confirm-delete-modal" class="modal-overlay" style="display: none;">
+          <div class="modal-container">
+            <div class="modal-header">
+              <h2>Confirmar Exclusão</h2>
+            </div>
+            <div class="modal-body">
+              <p>Você tem certeza que deseja excluir este evento?</p>
+            </div>
+            <div class="modal-footer">
+              <button id="cancel-delete-btn" class="btn btn-secondary">Cancelar</button>
+              <button id="confirm-delete-btn" class="btn btn-danger">Excluir</button>
+            </div>
+          </div>
+        </div>
 {% endblock content %}
 
 {% block scripts %}
@@ -32,4 +94,3 @@
     const canDelete = {% if can_delete %}true{% else %}false{% endif %};
   </script>
 {% endblock scripts %}
-
