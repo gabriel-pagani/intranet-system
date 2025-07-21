@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
         formErrors.style.display = 'none';
         currentEventId = data.id || null;
 
-        document.getElementById('modal-title').textContent = data.id ? 'Editar Evento' : 'Novo Evento';
+        document.getElementById('modal-title').textContent = data.id ? 'Visualizar Evento' : 'Criar Evento';
         document.getElementById('event-id').value = data.id || '';
         document.getElementById('event-title').value = data.title || '';
         document.getElementById('event-description').value = data.description || '';
