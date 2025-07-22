@@ -47,6 +47,8 @@ class Dashboard(models.Model):
         User, related_name='dashboards', blank=True)
     grupos = models.ManyToManyField(
         Group, related_name='dashboards', blank=True)
+    favoritado_por = models.ManyToManyField(
+        User, related_name='favorite_dashboards', blank=True, verbose_name="Favoritado por")
 
     def __str__(self) -> str:
         return self.titulo
