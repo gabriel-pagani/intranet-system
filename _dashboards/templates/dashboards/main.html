@@ -16,7 +16,7 @@
           <div class="sector-header active" title="Favoritos">
             <i class="fas fa-star"></i>
             <span class="text">Favoritos</span>
-            <i class="fas fa-chevron-right toggle-icon" style="transform: rotate(90deg);"></i>
+            <i class="fas fa-chevron-right toggle-icon"></i>
           </div>
           <ul class="submenu active" id="favorites-list">
             {% for dashboard in favorites %}
@@ -79,10 +79,5 @@
 {% endblock content %}
 
 {% block scripts %}
-  <script>
-    function getCsrfToken() {
-        return document.cookie.split('; ').find(row => row.startsWith('csrftoken='))?.split('=')[1];
-    }
-  </script>
   <script src="{% static 'dashboards/js/main.js' %}"></script>
 {% endblock scripts %}

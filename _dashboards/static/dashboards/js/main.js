@@ -78,6 +78,7 @@ function toggleFavorite(pinIcon) {
 function updateFavoritesList(dashboardId, isFavorite) {
     let favoritesList = document.getElementById('favorites-list');
     const menuList = document.querySelector('.menu-list');
+    const originalItem = document.querySelector(`.submenu:not(#favorites-list) li[data-id="${dashboardId}"]`);
 
     if (isFavorite) {
         if (!favoritesList) {
@@ -88,17 +89,24 @@ function updateFavoritesList(dashboardId, isFavorite) {
                 <div class="sector-header active" title="Favoritos">
                     <i class="fas fa-star"></i>
                     <span class="text">Favoritos</span>
-                    <i class="fas fa-chevron-right toggle-icon" style="transform: rotate(90deg);"></i>
+                    <i class="fas fa-chevron-right toggle-icon"></i>
                 </div>
                 <ul class="submenu active" id="favorites-list"></ul>
             `;
             menuList.prepend(favoriteSection);
-            favoritesList = document.getElementById('favorites-list');
+            favoritesList = document.getElementById('favorites-list'); // Re-seleciona a lista recém-criada
+
+            // Adiciona o event listener para o novo cabeçalho de setor.
+            favoriteSection.querySelector('.sector-header').addEventListener('click', function (e) {
+                if (e.target.classList.contains('pin-icon')) return;
+                this.classList.toggle("active");
+                const submenu = this.nextElementSibling;
+                submenu.classList.toggle("active");
+            });
         }
 
-        // Clona o item do dashboard e adiciona aos favoritos
-        const originalItem = document.querySelector(`.submenu:not(#favorites-list) li[data-id="${dashboardId}"]`);
-        if (originalItem) {
+        // Clona o item original e adiciona aos favoritos, se ainda não estiver lá.
+        if (originalItem && !favoritesList.querySelector(`li[data-id="${dashboardId}"]`)) {
             const newItem = originalItem.cloneNode(true);
             favoritesList.appendChild(newItem);
         }
@@ -119,4 +127,8 @@ function updateFavoritesList(dashboardId, isFavorite) {
             }
         }
     }
+}
+
+function getCsrfToken() {
+    return document.cookie.split('; ').find(row => row.startsWith('csrftoken='))?.split('=')[1];
 }
