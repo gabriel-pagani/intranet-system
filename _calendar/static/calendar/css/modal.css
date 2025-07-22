@@ -76,6 +76,16 @@
   resize: vertical;
 }
 
+.input-group input:disabled,
+.input-group textarea:disabled,
+.input-group select:disabled {
+  background-color: #f1f3f5;
+  color: #333;
+  opacity: 1;
+  -webkit-text-fill-color: #333;
+  cursor: not-allowed;
+}
+
 .datetime-group {
   display: flex;
   gap: 15px;
