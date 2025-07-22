@@ -1,52 +1,47 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // Toggle sector submenus
-  const sectorHeaders = document.querySelectorAll(".sector-header");
-  sectorHeaders.forEach((header) => {
-    header.addEventListener("click", function (e) {
-      if (e.target.classList.contains('pin-icon')) return;
-      this.classList.toggle("active");
+    const menuList = document.querySelector('.menu-list');
+    if (!menuList) return;
 
-      // Toggle submenu visibility
-      const submenu = this.nextElementSibling;
-      submenu.classList.toggle("active");
-    });
-  });
+    const dashboardFrame = document.getElementById("dashboard-frame");
+    const dashboardPlaceholder = document.getElementById("dashboard-placeholder");
 
-  // Handle dashboard link clicks to update iframe
-  const dashboardLinks = document.querySelectorAll(".dashboard-link");
-  const dashboardFrame = document.getElementById("dashboard-frame");
-  const dashboardPlaceholder = document.getElementById("dashboard-placeholder");
+    // Usar delegação de eventos no menuList
+    menuList.addEventListener('click', function(e) {
+        const pinIcon = e.target.closest('.pin-icon');
+        const dashboardLink = e.target.closest('.dashboard-link');
+        const sectorHeader = e.target.closest('.sector-header');
 
-  dashboardLinks.forEach(function (link) {
-    link.addEventListener("click", function (e) {
-      e.preventDefault();
-      if (e.target.classList.contains('pin-icon')) return;
+        // Prioridade 1: Clicou no ícone de fixar
+        if (pinIcon) {
+        e.stopPropagation();
+        e.preventDefault();
+        toggleFavorite(pinIcon);
+        return;
+    }
 
-      // Remove active class from all dashboard links
-      dashboardLinks.forEach((l) => l.classList.remove("active"));
+    // Prioridade 2: Clicou em um link de dashboard
+    if (dashboardLink) {
+        e.preventDefault();
+        
+        document.querySelectorAll(".dashboard-link").forEach((l) => l.classList.remove("active"));
+        dashboardLink.classList.add("active");
 
-      // Add active class to clicked link
-      this.classList.add("active");
+        const dashboardUrl = dashboardLink.getAttribute("data-url");
+        dashboardPlaceholder.style.display = "none";
+        dashboardFrame.style.display = "block";
+        dashboardFrame.src = dashboardUrl;
+        return;
+    }
 
-      // Update iframe source with dashboard URL
-      const dashboardUrl = this.getAttribute("data-url");
-
-      // Hide placeholder and show iframe
-      dashboardPlaceholder.style.display = "none";
-      dashboardFrame.style.display = "block";
-      dashboardFrame.src = dashboardUrl;
-    });
-  });
-
-  // Handle pin/unpin clicks
-  const menuList = document.querySelector('.menu-list');
-  menuList.addEventListener('click', function(e) {
-      if (e.target.classList.contains('pin-icon')) {
-          e.stopPropagation();
-          e.preventDefault();
-          toggleFavorite(e.target);
-      }
-  });
+    // Prioridade 3: Clicou no cabeçalho de um setor para expandir/recolher
+    if (sectorHeader) {
+        sectorHeader.classList.toggle("active");
+        const submenu = sectorHeader.nextElementSibling;
+        if (submenu && submenu.classList.contains('submenu')) {
+            submenu.classList.toggle("active");
+        }
+    }
+});
 });
 
 function toggleFavorite(pinIcon) {
@@ -94,18 +89,9 @@ function updateFavoritesList(dashboardId, isFavorite) {
                 <ul class="submenu active" id="favorites-list"></ul>
             `;
             menuList.prepend(favoriteSection);
-            favoritesList = document.getElementById('favorites-list'); // Re-seleciona a lista recém-criada
-
-            // Adiciona o event listener para o novo cabeçalho de setor.
-            favoriteSection.querySelector('.sector-header').addEventListener('click', function (e) {
-                if (e.target.classList.contains('pin-icon')) return;
-                this.classList.toggle("active");
-                const submenu = this.nextElementSibling;
-                submenu.classList.toggle("active");
-            });
+            favoritesList = document.getElementById('favorites-list');
         }
 
-        // Clona o item original e adiciona aos favoritos, se ainda não estiver lá.
         if (originalItem && !favoritesList.querySelector(`li[data-id="${dashboardId}"]`)) {
             const newItem = originalItem.cloneNode(true);
             favoritesList.appendChild(newItem);
