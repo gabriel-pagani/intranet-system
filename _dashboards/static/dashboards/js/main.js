@@ -2,8 +2,8 @@ document.addEventListener("DOMContentLoaded", function () {
   // Toggle sector submenus
   const sectorHeaders = document.querySelectorAll(".sector-header");
   sectorHeaders.forEach((header) => {
-    header.addEventListener("click", function () {
-      // Toggle active class on header
+    header.addEventListener("click", function (e) {
+      if (e.target.classList.contains('pin-icon')) return;
       this.classList.toggle("active");
 
       // Toggle submenu visibility
@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
   dashboardLinks.forEach(function (link) {
     link.addEventListener("click", function (e) {
       e.preventDefault();
+      if (e.target.classList.contains('pin-icon')) return;
 
       // Remove active class from all dashboard links
       dashboardLinks.forEach((l) => l.classList.remove("active"));
@@ -36,4 +37,59 @@ document.addEventListener("DOMContentLoaded", function () {
       dashboardFrame.src = dashboardUrl;
     });
   });
+
+  // Handle pin/unpin clicks
+  const menuList = document.querySelector('.menu-list');
+  menuList.addEventListener('click', function(e) {
+      if (e.target.classList.contains('pin-icon')) {
+          e.stopPropagation();
+          e.preventDefault();
+          toggleFavorite(e.target);
+      }
+  });
 });
+
+function toggleFavorite(pinIcon) {
+    const dashboardId = pinIcon.dataset.id;
+    const url = `/indicadores/api/toggle-favorite/${dashboardId}/`;
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCsrfToken(),
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            // Atualiza todos os ícones para este dashboard
+            document.querySelectorAll(`.pin-icon[data-id="${dashboardId}"]`).forEach(icon => {
+                icon.classList.toggle('favorited', data.is_favorite);
+                icon.title = data.is_favorite ? 'Desafixar dos favoritos' : 'Fixar nos favoritos';
+            });
+            // Move o item no DOM (opcional, mas melhora a UX)
+            updateFavoritesList(dashboardId, data.is_favorite);
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+function updateFavoritesList(dashboardId, isFavorite) {
+    const favoritesList = document.getElementById('favorites-list');
+    const originalItem = document.querySelector(`.submenu:not(#favorites-list) li[data-id="${dashboardId}"]`);
+
+    if (isFavorite) {
+        // Se não houver lista de favoritos, crie-a (não deve acontecer com o novo template, mas é seguro)
+        if (!favoritesList) return;
+        // Clona o item original e adiciona aos favoritos
+        const newItem = originalItem.cloneNode(true);
+        favoritesList.appendChild(newItem);
+    } else {
+        // Remove o item da lista de favoritos
+        const favoriteItem = favoritesList.querySelector(`li[data-id="${dashboardId}"]`);
+        if (favoriteItem) {
+            favoriteItem.remove();
+        }
+    }
+}

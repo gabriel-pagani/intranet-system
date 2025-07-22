@@ -168,3 +168,20 @@ iframe {
   margin: 0;
   opacity: 0.7;
 }
+
+.pin-icon {
+  margin-left: auto;
+  padding: 5px;
+  color: #888;
+  cursor: pointer;
+  transition: color 0.2s, transform 0.2s;
+}
+
+.pin-icon:hover {
+  color: #fff;
+  transform: scale(1.2);
+}
+
+.pin-icon.favorited {
+  color: #ffc107;
+}

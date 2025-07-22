@@ -8,21 +8,45 @@
 {% endblock head %}
 
 {% block menu %}
-  {% if dados|length > 0 %}
+  {% if favorites or dashboards_by_sector %}
     <ul class="menu-list">
-      {% for setor, dashboards in dados.items %}
+      <!-- Seção de Favoritos -->
+      {% if favorites %}
+        <li class="menu-item">
+          <div class="sector-header active" title="Favoritos">
+            <i class="fas fa-star"></i>
+            <span class="text">Favoritos</span>
+            <i class="fas fa-chevron-right toggle-icon" style="transform: rotate(90deg);"></i>
+          </div>
+          <ul class="submenu active" id="favorites-list">
+            {% for dashboard in favorites %}
+              <li data-id="{{ dashboard.id }}">
+                <a href="#" class="dashboard-link" data-url="{{ dashboard.url }}" title="{{ dashboard.titulo }}">
+                  <i class="fas fa-chart-line"></i>
+                  <span class="text">{{ dashboard.titulo }}</span>
+                  <i class="fas fa-thumbtack pin-icon favorited" data-id="{{ dashboard.id }}" title="Desafixar dos favoritos"></i>
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </li>
+      {% endif %}
+
+      <!-- Seção de Setores -->
+      {% for setor, dashboards in dashboards_by_sector.items %}
         <li class="menu-item">
           <div class="sector-header" title="{{ setor }}">
             <i class="fas fa-box-archive"></i>
             <span class="text">{{ setor }}</span>
             <i class="fas fa-chevron-right toggle-icon"></i>
           </div>
-          <ul class="submenu">
+          <ul class="submenu" data-sector="{{ setor }}">
             {% for dashboard in dashboards %}
-              <li>
+              <li data-id="{{ dashboard.id }}">
                 <a href="#" class="dashboard-link" data-url="{{ dashboard.url }}" title="{{ dashboard.titulo }}">
                   <i class="fas fa-chart-line"></i>
                   <span class="text">{{ dashboard.titulo }}</span>
+                  <i class="fas fa-thumbtack pin-icon {% if dashboard.is_favorite %}favorited{% endif %}" data-id="{{ dashboard.id }}" title="{% if dashboard.is_favorite %}Desafixar dos favoritos{% else %}Fixar nos favoritos{% endif %}"></i>
                 </a>
               </li>
             {% endfor %}
@@ -55,5 +79,10 @@
 {% endblock content %}
 
 {% block scripts %}
+  <script>
+    function getCsrfToken() {
+        return document.cookie.split('; ').find(row => row.startsWith('csrftoken='))?.split('=')[1];
+    }
+  </script>
   <script src="{% static 'dashboards/js/main.js' %}"></script>
 {% endblock scripts %}
