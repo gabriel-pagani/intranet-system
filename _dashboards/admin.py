@@ -6,5 +6,5 @@ from _dashboards.models import Dashboard
 class DashboardAdmin(admin.ModelAdmin):
     list_display = ('titulo', 'setor', 'codigo')
     search_fields = ('titulo', 'setor')
-    filter_horizontal = ('usuarios', 'grupos')
+    filter_horizontal = ('usuarios', 'grupos', 'favoritado_por')
     list_filter = ('grupos', 'setor')
