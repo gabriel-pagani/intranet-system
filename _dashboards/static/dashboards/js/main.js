@@ -76,20 +76,47 @@ function toggleFavorite(pinIcon) {
 }
 
 function updateFavoritesList(dashboardId, isFavorite) {
-    const favoritesList = document.getElementById('favorites-list');
-    const originalItem = document.querySelector(`.submenu:not(#favorites-list) li[data-id="${dashboardId}"]`);
+    let favoritesList = document.getElementById('favorites-list');
+    const menuList = document.querySelector('.menu-list');
 
     if (isFavorite) {
-        // Se não houver lista de favoritos, crie-a (não deve acontecer com o novo template, mas é seguro)
-        if (!favoritesList) return;
-        // Clona o item original e adiciona aos favoritos
-        const newItem = originalItem.cloneNode(true);
-        favoritesList.appendChild(newItem);
+        if (!favoritesList) {
+            // Cria a seção de Favoritos se ela não existir
+            const favoriteSection = document.createElement('li');
+            favoriteSection.className = 'menu-item';
+            favoriteSection.innerHTML = `
+                <div class="sector-header active" title="Favoritos">
+                    <i class="fas fa-star"></i>
+                    <span class="text">Favoritos</span>
+                    <i class="fas fa-chevron-right toggle-icon" style="transform: rotate(90deg);"></i>
+                </div>
+                <ul class="submenu active" id="favorites-list"></ul>
+            `;
+            menuList.prepend(favoriteSection);
+            favoritesList = document.getElementById('favorites-list');
+        }
+
+        // Clona o item do dashboard e adiciona aos favoritos
+        const originalItem = document.querySelector(`.submenu:not(#favorites-list) li[data-id="${dashboardId}"]`);
+        if (originalItem) {
+            const newItem = originalItem.cloneNode(true);
+            favoritesList.appendChild(newItem);
+        }
     } else {
         // Remove o item da lista de favoritos
-        const favoriteItem = favoritesList.querySelector(`li[data-id="${dashboardId}"]`);
-        if (favoriteItem) {
-            favoriteItem.remove();
+        if (favoritesList) {
+            const favoriteItem = favoritesList.querySelector(`li[data-id="${dashboardId}"]`);
+            if (favoriteItem) {
+                favoriteItem.remove();
+            }
+
+            // Se a lista de favoritos ficar vazia, remove a seção inteira
+            if (favoritesList.children.length === 0) {
+                const favoriteSection = favoritesList.closest('.menu-item');
+                if (favoriteSection) {
+                    favoriteSection.remove();
+                }
+            }
         }
     }
 }
