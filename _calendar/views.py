@@ -13,6 +13,7 @@ def home_view(request):
         'can_add': request.user.has_perm('_calendar.add_agenda'),
         'can_change': request.user.has_perm('_calendar.change_agenda'),
         'can_delete': request.user.has_perm('_calendar.delete_agenda'),
+        'can_view_agenda': request.user.has_perm('_calendar.view_agenda'),
     }
     tipos_reuniao = TipoReuniao.objects.all()
     context = {
@@ -26,12 +27,21 @@ def home_view(request):
 def get_reunioes(request):
     reunioes = Agenda.objects.all()
 
-    if not request.user.has_perm('_calendar.view_agenda'):
-        reunioes = reunioes.filter(privada=False)
-        
+    # Filtro por tipo
     tipo_id = request.GET.get('tipo_id')
     if tipo_id:
         reunioes = reunioes.filter(tipo_id=tipo_id)
+
+    # Filtro por visibilidade
+    privacy = request.GET.get('privacy')
+    if privacy == 'public':
+        reunioes = reunioes.filter(privada=False)
+    elif privacy == 'private':
+        reunioes = reunioes.filter(privada=True)
+
+    # Garante que usuários sem permissão vejam apenas reuniões públicas
+    if not request.user.has_perm('_calendar.view_agenda'):
+        reunioes = reunioes.filter(privada=False)
 
     data = []
     for reuniao in reunioes:

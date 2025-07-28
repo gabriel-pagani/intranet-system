@@ -9,9 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
     const form = document.getElementById('event-form');
     const formErrors = document.getElementById('form-errors');
-    const filterLinks = document.querySelectorAll('.filter-link');
 
-    let currentFilterUrl = '/agenda/api/get/';
     let currentEventId = null;
 
     // Carrega os tipos de reunião para o select
@@ -27,22 +25,46 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .catch(error => console.error("Erro ao carregar tipos de reunião:", error));
     }
+    
+    let activeTypeId = '';
+    let activePrivacy = '';
 
-    filterLinks.forEach(link => {
-        link.addEventListener('click', function (e) {
+    function updateCalendarEvents() {
+        const params = new URLSearchParams();
+        if (activeTypeId) {
+            params.append('tipo_id', activeTypeId);
+        }
+        if (activePrivacy) {
+            params.append('privacy', activePrivacy);
+        }
+        
+        const queryString = params.toString();
+        const newUrl = `/agenda/api/get/${queryString ? '?' + queryString : ''}`;
+
+        calendar.setOption('events', newUrl);
+    }
+
+    // Event listeners para filtros de TIPO
+    const typeFilterLinks = document.querySelectorAll('.type-filter');
+    typeFilterLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
             e.preventDefault();
-            const typeId = this.dataset.typeId;
-
-            filterLinks.forEach(l => l.classList.remove('active'));
+            typeFilterLinks.forEach(l => l.classList.remove('active'));
             this.classList.add('active');
+            activeTypeId = this.dataset.typeId;
+            updateCalendarEvents();
+        });
+    });
 
-            if (typeId) {
-                currentFilterUrl = `/agenda/api/get/?tipo_id=${typeId}`;
-            } else {
-                currentFilterUrl = '/agenda/api/get/';
-            }
-            calendar.setOption('events', currentFilterUrl);
-            calendar.refetchEvents();
+    // Event listeners para filtros de VISIBILIDADE
+    const privacyFilterLinks = document.querySelectorAll('.privacy-filter');
+    privacyFilterLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            privacyFilterLinks.forEach(l => l.classList.remove('active'));
+            this.classList.add('active');
+            activePrivacy = this.dataset.privacy;
+            updateCalendarEvents();
         });
     });
 
@@ -71,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
             day: "Dia",
             list: "Ano",
         },
-        events: currentFilterUrl,
+        events: '/agenda/api/get/',
         eventDrop: function(info) {
             updateEventDateTime(info.event);
         },

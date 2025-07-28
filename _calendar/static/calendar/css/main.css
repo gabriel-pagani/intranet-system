@@ -106,3 +106,7 @@
   margin-left: 12px;
   white-space: nowrap;
 }
+
+.filter-menu + .filter-menu {
+  margin-top: 20px;
+}

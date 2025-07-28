@@ -11,18 +11,37 @@
 
 {% block menu %}
   <div class="filter-menu">
-    <h4>Filtrar por Tipo</h4>
-    <a href="#" class="filter-link active" data-type-id="">
+    <h4>Por Tipo</h4>
+    <a href="#" class="filter-link type-filter active" data-type-id="">
       <i class="fas fa-calendar-alt"></i>
       <span class="text">Todos</span>
     </a>
     {% for tipo in tipos_reuniao %}
-    <a href="#" class="filter-link" data-type-id="{{ tipo.id }}">
+    <a href="#" class="filter-link type-filter" data-type-id="{{ tipo.id }}">
       <i class="fas fa-circle" style="color: {{ tipo.cor }};"></i>
       <span class="text">{{ tipo.tipo }}</span>
     </a>
     {% endfor %}
   </div>
+
+  {% if can_view_agenda %}
+    <div class="filter-menu">
+      <h4>Por Visibilidade</h4>
+      <a href="#" class="filter-link privacy-filter active" data-privacy="">
+          <i class="fas fa-eye"></i>
+          <span class="text">Todas</span>
+      </a>
+      <a href="#" class="filter-link privacy-filter" data-privacy="public">
+          <i class="fas fa-globe-americas"></i>
+          <span class="text">Públicas</span>
+      </a>
+      <a href="#" class="filter-link privacy-filter" data-privacy="private">
+          <i class="fas fa-lock"></i>
+          <span class="text">Privadas</span>
+      </a>
+    </div>
+  {% endif %}
+  
 {% endblock menu %}
 
 {% block bottom %}
@@ -106,5 +125,6 @@
     const canAdd = {% if can_add %}true{% else %}false{% endif %};
     const canChange = {% if can_change %}true{% else %}false{% endif %};
     const canDelete = {% if can_delete %}true{% else %}false{% endif %};
+    const canViewAgenda = {% if can_view_agenda %}true{% else %}false{% endif %};
   </script>
 {% endblock scripts %}
