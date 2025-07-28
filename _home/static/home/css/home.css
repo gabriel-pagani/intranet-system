@@ -138,6 +138,13 @@
   width: 250px;
 }
 
+.main-content {
+  background-image: url('../../global/images/fundo_smi.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 /* Responsividade */
 @media (max-width: 768px) {
   .user-dropdown {
