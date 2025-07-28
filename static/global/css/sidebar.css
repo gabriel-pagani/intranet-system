@@ -50,6 +50,9 @@ body {
 .menu {
   padding: 20px 10px;
   flex: 1;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .bottom {

@@ -11,12 +11,6 @@ iframe {
   display: none;
 }
 
-.menu {
-  overflow-y: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
 .menu a {
   display: flex;
   align-items: center;
