@@ -110,3 +110,7 @@
 .filter-menu + .filter-menu {
   margin-top: 20px;
 }
+
+.sidebar.collapsed .filter-menu h4 {
+  display: none;
+}

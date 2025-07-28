@@ -12,12 +12,12 @@
 {% block menu %}
   <div class="filter-menu">
     <h4>Por Tipo</h4>
-    <a href="#" class="filter-link type-filter active" data-type-id="">
+    <a href="#" class="filter-link type-filter active" data-type-id="" title="Todos">
       <i class="fas fa-calendar-alt"></i>
       <span class="text">Todos</span>
     </a>
     {% for tipo in tipos_reuniao %}
-    <a href="#" class="filter-link type-filter" data-type-id="{{ tipo.id }}">
+    <a href="#" class="filter-link type-filter" data-type-id="{{ tipo.id }}" title="{{ tipo.tipo }}">
       <i class="fas fa-circle" style="color: {{ tipo.cor }};"></i>
       <span class="text">{{ tipo.tipo }}</span>
     </a>
@@ -27,15 +27,15 @@
   {% if can_view_agenda %}
     <div class="filter-menu">
       <h4>Por Visibilidade</h4>
-      <a href="#" class="filter-link privacy-filter active" data-privacy="">
+      <a href="#" class="filter-link privacy-filter active" data-privacy=""  title="Todas">
           <i class="fas fa-eye"></i>
           <span class="text">Todas</span>
       </a>
-      <a href="#" class="filter-link privacy-filter" data-privacy="public">
+      <a href="#" class="filter-link privacy-filter" data-privacy="public" title="Públicas">
           <i class="fas fa-globe-americas"></i>
           <span class="text">Públicas</span>
       </a>
-      <a href="#" class="filter-link privacy-filter" data-privacy="private">
+      <a href="#" class="filter-link privacy-filter" data-privacy="private" title="Privadas">
           <i class="fas fa-lock"></i>
           <span class="text">Privadas</span>
       </a>
