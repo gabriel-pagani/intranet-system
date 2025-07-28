@@ -14,7 +14,12 @@ def home_view(request):
         'can_change': request.user.has_perm('_calendar.change_agenda'),
         'can_delete': request.user.has_perm('_calendar.delete_agenda'),
     }
-    return render(request, 'calendar/main.html', permissions)
+    tipos_reuniao = TipoReuniao.objects.all()
+    context = {
+        **permissions,
+        'tipos_reuniao': tipos_reuniao,
+    }
+    return render(request, 'calendar/main.html', context)
 
 
 @login_required
@@ -23,6 +28,10 @@ def get_reunioes(request):
 
     if not request.user.has_perm('_calendar.view_agenda'):
         reunioes = reunioes.filter(privada=False)
+        
+    tipo_id = request.GET.get('tipo_id')
+    if tipo_id:
+        reunioes = reunioes.filter(tipo_id=tipo_id)
 
     data = []
     for reuniao in reunioes:

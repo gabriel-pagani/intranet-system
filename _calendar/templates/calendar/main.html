@@ -9,7 +9,21 @@
         <link href="{% static 'calendar/css/modal.css' %}" rel="stylesheet">
 {% endblock head %}
 
-{% block menu %}{% endblock menu %}
+{% block menu %}
+  <div class="filter-menu">
+    <h4>Filtrar por Tipo</h4>
+    <a href="#" class="filter-link active" data-type-id="">
+      <i class="fas fa-calendar-alt"></i>
+      <span class="text">Todos</span>
+    </a>
+    {% for tipo in tipos_reuniao %}
+    <a href="#" class="filter-link" data-type-id="{{ tipo.id }}">
+      <i class="fas fa-circle" style="color: {{ tipo.cor }};"></i>
+      <span class="text">{{ tipo.tipo }}</span>
+    </a>
+    {% endfor %}
+  </div>
+{% endblock menu %}
 
 {% block bottom %}
   <a href="{% url "home:home" %}" title="Voltar ao Menu Principal">

@@ -9,7 +9,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
     const form = document.getElementById('event-form');
     const formErrors = document.getElementById('form-errors');
+    const filterLinks = document.querySelectorAll('.filter-link');
 
+    let currentFilterUrl = '/agenda/api/get/';
     let currentEventId = null;
 
     // Carrega os tipos de reunião para o select
@@ -25,6 +27,24 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .catch(error => console.error("Erro ao carregar tipos de reunião:", error));
     }
+
+    filterLinks.forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            const typeId = this.dataset.typeId;
+
+            filterLinks.forEach(l => l.classList.remove('active'));
+            this.classList.add('active');
+
+            if (typeId) {
+                currentFilterUrl = `/agenda/api/get/?tipo_id=${typeId}`;
+            } else {
+                currentFilterUrl = '/agenda/api/get/';
+            }
+            calendar.setOption('events', currentFilterUrl);
+            calendar.refetchEvents();
+        });
+    });
 
     const calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: "timeGridWeek",
@@ -51,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function () {
             day: "Dia",
             list: "Ano",
         },
-        events: '/agenda/api/get/',
+        events: currentFilterUrl,
         eventDrop: function(info) {
             updateEventDateTime(info.event);
         },
