@@ -10,6 +10,10 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
+  background-image: url('../../global/images/fundo_smi.png');
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .container {

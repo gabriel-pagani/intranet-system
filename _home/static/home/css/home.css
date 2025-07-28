@@ -140,8 +140,8 @@
 
 .main-content {
   background-image: url('../../global/images/fundo_smi.png');
-  background-size: cover;
-  background-position: center;
+  background-size: 100% 100%;
+  background-position: top;
   background-repeat: no-repeat;
 }
 
