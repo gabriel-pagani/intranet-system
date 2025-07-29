@@ -1,3 +1,10 @@
+body {
+  background-image: url('../../global/images/fundo_smi.png');
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 .menu a {
   display: flex;
   align-items: center;
@@ -139,10 +146,7 @@
 }
 
 .main-content {
-  background-image: url('../../global/images/fundo_smi.png');
-  background-size: 100% 100%;
-  background-position: top;
-  background-repeat: no-repeat;
+  background-color: transparent;
 }
 
 /* Responsividade */
