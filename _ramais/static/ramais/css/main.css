@@ -10,8 +10,11 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: #ff8f00aa;
   padding: 20px;
+  background-image: url('../../global/images/fundo_estrada.png');
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .container {
@@ -44,7 +47,7 @@ body {
 }
 
 #search-input:focus {
-  border-color: #ffa600aa;
+  border-color: #333333;
 }
 
 h1 {
@@ -111,13 +114,13 @@ tbody tr:hover {
 }
 
 .pagina-botao:hover {
-  color: #ff8f00aa;
-  background-color: #ff910037;
+  color: #333333;
+  background-color: #3333331e;
 }
 
 .pagina-ativa {
   color: white;
-  background-color: #ff8f00aa;
+  background-color: #333333;
   font-weight: bold;
 }
 
@@ -137,7 +140,7 @@ tbody tr:hover {
 .copy-btn {
   background: none;
   border: none;
-  color: #ff8f00aa;
+  color: #333333;
   cursor: pointer;
   font-size: 14px;
   margin-left: 8px;
