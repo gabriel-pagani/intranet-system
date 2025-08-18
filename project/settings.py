@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     '_dashboards',
     '_ramais',
     '_calendar',
+    '_shortener',
 ]
 
 MIDDLEWARE = [
