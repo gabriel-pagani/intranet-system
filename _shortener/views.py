@@ -8,7 +8,7 @@ def redirect_link(request, slug):
     link = get_object_or_404(Link, slug=slug)
     
     if link.expires_at and link.expires_at < timezone.now():
-        raise Http404("Este link expirou")
+        raise Http404("This link has expired")
     
     link.access_count += 1
     link.save()
