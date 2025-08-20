@@ -22,7 +22,7 @@
             {% for dashboard in favorites %}
               <li data-id="{{ dashboard.id }}">
                 <a href="#" class="dashboard-link" data-url="{{ dashboard.url }}" title="{{ dashboard.titulo }}">
-                  {% if not dashboard.has_content %}
+                  {% if not dashboard.url and not dashboard.codigo %}
                     <i class="fas fa-exclamation-triangle" title="Sem conteúdo configurado"></i>
                   {% else %}
                     <i class="fas fa-chart-line"></i>
@@ -48,7 +48,7 @@
             {% for dashboard in dashboards %}
               <li data-id="{{ dashboard.id }}">
                 <a href="#" class="dashboard-link" data-url="{{ dashboard.url }}" title="{{ dashboard.titulo }}">
-                  {% if not dashboard.has_content %}
+                  {% if not dashboard.url and not dashboard.codigo %}
                     <i class="fas fa-exclamation-triangle" title="Sem conteúdo configurado"></i>
                   {% else %}
                     <i class="fas fa-chart-line"></i>
