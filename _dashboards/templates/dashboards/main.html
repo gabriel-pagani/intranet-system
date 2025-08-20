@@ -22,7 +22,11 @@
             {% for dashboard in favorites %}
               <li data-id="{{ dashboard.id }}">
                 <a href="#" class="dashboard-link" data-url="{{ dashboard.url }}" title="{{ dashboard.titulo }}">
-                  <i class="fas fa-chart-line"></i>
+                  {% if not dashboard.has_content %}
+                    <i class="fas fa-exclamation-triangle" title="Sem conteúdo configurado"></i>
+                  {% else %}
+                    <i class="fas fa-chart-line"></i>
+                  {% endif %}
                   <span class="text">{{ dashboard.titulo }}</span>
                   <i class="fas fa-thumbtack pin-icon favorited" data-id="{{ dashboard.id }}" title="Desafixar dos favoritos"></i>
                 </a>
@@ -44,7 +48,11 @@
             {% for dashboard in dashboards %}
               <li data-id="{{ dashboard.id }}">
                 <a href="#" class="dashboard-link" data-url="{{ dashboard.url }}" title="{{ dashboard.titulo }}">
-                  <i class="fas fa-chart-line"></i>
+                  {% if not dashboard.has_content %}
+                    <i class="fas fa-exclamation-triangle" title="Sem conteúdo configurado"></i>
+                  {% else %}
+                    <i class="fas fa-chart-line"></i>
+                  {% endif %}
                   <span class="text">{{ dashboard.titulo }}</span>
                   <i class="fas fa-thumbtack pin-icon {% if dashboard.is_favorite %}favorited{% endif %}" data-id="{{ dashboard.id }}" title="{% if dashboard.is_favorite %}Desafixar dos favoritos{% else %}Fixar nos favoritos{% endif %}"></i>
                 </a>
