@@ -42,7 +42,8 @@ class Dashboard(models.Model):
 
     titulo = models.CharField(max_length=100)
     setor = models.CharField(max_length=100, choices=SETORES)
-    codigo = models.IntegerField()
+    codigo = models.IntegerField(blank=True, null=True)
+    iframe = models.TextField(blank=True, null=True, verbose_name="Conteúdo HTML")
     usuarios = models.ManyToManyField(
         User, related_name='dashboards', blank=True)
     grupos = models.ManyToManyField(

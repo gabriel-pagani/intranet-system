@@ -171,6 +171,9 @@ AUTH_LDAP_USER_FLAGS_BY_GROUP = {
     "is_staff": "cn=GRUPO_TECNOLOGIA,ou=Grupos,ou=Sinasc,dc=sinasc,dc=com,dc=br",
 }
 
+# Iframes
+X_FRAME_OPTIONS = 'ALLOWALL'
+
 try:
     from project.local_settings import *
 except ImportError:
