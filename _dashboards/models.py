@@ -43,13 +43,10 @@ class Dashboard(models.Model):
     titulo = models.CharField(max_length=100)
     setor = models.CharField(max_length=100, choices=SETORES)
     codigo = models.IntegerField(blank=True, null=True)
-    iframe = models.TextField(blank=True, null=True, verbose_name="Conteúdo HTML")
-    usuarios = models.ManyToManyField(
-        User, related_name='dashboards', blank=True)
-    grupos = models.ManyToManyField(
-        Group, related_name='dashboards', blank=True)
-    favoritado_por = models.ManyToManyField(
-        User, related_name='favorite_dashboards', blank=True, verbose_name="Favoritado por")
+    url = models.CharField(blank=True, null=True)
+    usuarios = models.ManyToManyField(User, related_name='dashboards', blank=True)
+    grupos = models.ManyToManyField(Group, related_name='dashboards', blank=True)
+    favoritado_por = models.ManyToManyField(User, related_name='favorite_dashboards', blank=True, verbose_name="Favoritado por")
 
     def __str__(self) -> str:
         return self.titulo
