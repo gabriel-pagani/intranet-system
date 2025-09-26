@@ -6,10 +6,8 @@ from django.conf import settings
 
 urlpatterns = [
     path('', include('_home.urls', namespace='home')),
-    path('agenda/', include('_calendar.urls', namespace='calendar')),
     path('indicadores/', include('_dashboards.urls', namespace='dashboards')),
     path('ramais/', include('_ramais.urls', namespace='ramais')),
-    path('links/', include('_shortener.urls', namespace='shortener')),
     path('admin/', admin.site.urls),
 ]
 
