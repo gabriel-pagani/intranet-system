@@ -8,6 +8,9 @@
 {% endblock head %}
 
 {% block menu %}
+  <div class="search-indicadores-container">
+    <input type="text" id="search-indicadores" placeholder="Pesquisar indicadores...">
+  </div>
   {% if favorites or dashboards_by_sector %}
     <ul class="menu-list">
       <!-- Seção de Favoritos -->

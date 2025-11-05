@@ -44,6 +44,24 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+  const searchInput = document.getElementById('search-indicadores');
+  const menuList = document.querySelector('.menu-list');
+  if (!searchInput || !menuList) return;
+
+  searchInput.addEventListener('input', function() {
+    const termo = searchInput.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    menuList.querySelectorAll('li[data-id]').forEach(function(li) {
+      const titulo = li.querySelector('.text')?.textContent.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      li.style.display = (!termo || (titulo && titulo.includes(termo))) ? '' : 'none';
+    });
+    menuList.querySelectorAll('.menu-item').forEach(function(section) {
+      const visible = Array.from(section.querySelectorAll('li[data-id]')).some(li => li.style.display !== 'none');
+      section.style.display = visible ? '' : 'none';
+    });
+  });
+});
+
 function toggleFavorite(pinIcon) {
     const dashboardId = pinIcon.dataset.id;
     const url = `/indicadores/api/toggle-favorite/${dashboardId}/`;
