@@ -60,6 +60,15 @@ document.addEventListener('DOMContentLoaded', function() {
       section.style.display = visible ? '' : 'none';
     });
   });
+
+  const clearBtn = document.querySelector('.clear-search');
+  if (clearBtn) {
+    clearBtn.addEventListener('click', function() {
+      searchInput.value = '';
+      searchInput.dispatchEvent(new Event('input'));
+      searchInput.focus();
+    });
+  }
 });
 
 function toggleFavorite(pinIcon) {
