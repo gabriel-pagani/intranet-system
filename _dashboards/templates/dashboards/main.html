@@ -10,6 +10,9 @@
 {% block menu %}
   <div class="search-indicadores-container">
     <input type="text" id="search-indicadores" placeholder="Pesquisar indicadores...">
+    <button class="clear-search" type="button" title="Limpar pesquisa">
+      <i class="fas fa-times"></i>
+    </button>
   </div>
   {% if favorites or dashboards_by_sector %}
     <ul class="menu-list">

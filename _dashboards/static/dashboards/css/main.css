@@ -182,6 +182,8 @@ iframe {
 
 .search-indicadores-container {
   padding: 10px 12px;
+  display: flex; 
+  gap: 8px;
 }
 
 .search-indicadores-container input {
@@ -209,4 +211,12 @@ iframe {
   border-radius: 3px;
   margin-left: 6px;
   vertical-align: middle;
+}
+
+.clear-search {
+  padding: 8px 12px; 
+  border-radius: 4px; 
+  border: none; 
+  background: #4b4b4b; 
+  color: #fff;
 }
