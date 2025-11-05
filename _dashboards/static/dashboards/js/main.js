@@ -47,18 +47,49 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener('DOMContentLoaded', function() {
   const searchInput = document.getElementById('search-indicadores');
   const menuList = document.querySelector('.menu-list');
+  let previousExpanded = [];
+
   if (!searchInput || !menuList) return;
 
   searchInput.addEventListener('input', function() {
     const termo = searchInput.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+    // Salva o estado anterior na primeira pesquisa
+    if (previousExpanded.length === 0 && termo) {
+      previousExpanded = Array.from(menuList.querySelectorAll('.sector-header')).map(header =>
+        header.classList.contains('active')
+      );
+    }
+
     menuList.querySelectorAll('li[data-id]').forEach(function(li) {
       const titulo = li.querySelector('.text')?.textContent.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
       li.style.display = (!termo || (titulo && titulo.includes(termo))) ? '' : 'none';
     });
-    menuList.querySelectorAll('.menu-item').forEach(function(section) {
+
+    menuList.querySelectorAll('.menu-item').forEach(function(section, idx) {
       const visible = Array.from(section.querySelectorAll('li[data-id]')).some(li => li.style.display !== 'none');
       section.style.display = visible ? '' : 'none';
+
+      // Expande todos os setores durante a busca
+      const header = section.querySelector('.sector-header');
+      const submenu = section.querySelector('.submenu');
+      if (termo && visible) {
+        header.classList.add('active');
+        submenu.classList.add('active');
+      } else if (!termo && previousExpanded.length) {
+        // Restaura o estado anterior
+        if (previousExpanded[idx]) {
+          header.classList.add('active');
+          submenu.classList.add('active');
+        } else {
+          header.classList.remove('active');
+          submenu.classList.remove('active');
+        }
+      }
     });
+
+    // Limpa o estado salvo ao limpar a busca
+    if (!termo) previousExpanded = [];
   });
 
   const clearBtn = document.querySelector('.clear-search');
