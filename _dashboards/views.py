@@ -27,6 +27,7 @@ def home_view(request):
             'titulo': dashboard.titulo,
             'url': url,
             'em_dev': dashboard.em_dev,
+            'em_manutencao': dashboard.em_manutencao,
             'is_favorite': user in dashboard.favoritado_por.all()
         }
         

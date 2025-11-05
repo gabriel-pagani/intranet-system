@@ -34,6 +34,8 @@
                     {{ dashboard.titulo }}
                     {% if dashboard.em_dev %}
                       <span class="dev-badge">EM DESENVOLVIMENTO</span>
+                    {% elif dashboard.em_manutencao %}
+                      <span class="dev-badge" style="background-color: #ffc107; color: #000;">EM MANUTENÇÃO</span>
                     {% endif %}
                   </span>
                   <i class="fas fa-thumbtack pin-icon favorited" data-id="{{ dashboard.id }}" title="Desafixar dos favoritos"></i>
@@ -65,6 +67,8 @@
                     {{ dashboard.titulo }}
                     {% if dashboard.em_dev %}
                       <span class="dev-badge">EM DESENVOLVIMENTO</span>
+                    {% elif dashboard.em_manutencao %}
+                      <span class="dev-badge" style="background-color: #ffc107; color: #000;">EM MANUTENÇÃO</span>
                     {% endif %}
                   </span>
                   <i class="fas fa-thumbtack pin-icon {% if dashboard.is_favorite %}favorited{% endif %}" data-id="{{ dashboard.id }}" title="{% if dashboard.is_favorite %}Desafixar dos favoritos{% else %}Fixar nos favoritos{% endif %}"></i>
