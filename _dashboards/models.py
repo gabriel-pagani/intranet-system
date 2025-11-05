@@ -44,6 +44,7 @@ class Dashboard(models.Model):
     setor = models.CharField(max_length=100, choices=SETORES)
     codigo = models.IntegerField(blank=True, null=True)
     url = models.CharField(blank=True, null=True)
+    em_dev = models.BooleanField(default=True, verbose_name="Em desenvolvimento")
     usuarios = models.ManyToManyField(User, related_name='dashboards', blank=True)
     grupos = models.ManyToManyField(Group, related_name='dashboards', blank=True)
     favoritado_por = models.ManyToManyField(User, related_name='favorite_dashboards', blank=True, verbose_name="Favoritado por")

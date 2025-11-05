@@ -24,13 +24,18 @@
           <ul class="submenu active" id="favorites-list">
             {% for dashboard in favorites %}
               <li data-id="{{ dashboard.id }}">
-                <a href="#" class="dashboard-link" data-url="{{ dashboard.url }}" title="{{ dashboard.titulo }}">
+                <a href="#" class="dashboard-link" data-url="{{ dashboard.url }}" title="{% if dashboard.em_dev %}Em Desenvolvimento{% else %}{{ dashboard.titulo }}{% endif %}">
                   {% if not dashboard.url and not dashboard.codigo %}
                     <i class="fas fa-exclamation-triangle" title="Sem conteúdo configurado"></i>
                   {% else %}
                     <i class="fas fa-chart-line"></i>
                   {% endif %}
-                  <span class="text">{{ dashboard.titulo }}</span>
+                  <span class="text">
+                    {{ dashboard.titulo }}
+                    {% if dashboard.em_dev %}
+                      <span class="dev-badge">EM DESENVOLVIMENTO</span>
+                    {% endif %}
+                  </span>
                   <i class="fas fa-thumbtack pin-icon favorited" data-id="{{ dashboard.id }}" title="Desafixar dos favoritos"></i>
                 </a>
               </li>
@@ -50,13 +55,18 @@
           <ul class="submenu" data-sector="{{ setor }}">
             {% for dashboard in dashboards %}
               <li data-id="{{ dashboard.id }}">
-                <a href="#" class="dashboard-link" data-url="{{ dashboard.url }}" title="{{ dashboard.titulo }}">
+                <a href="#" class="dashboard-link" data-url="{{ dashboard.url }}" title="{% if dashboard.em_dev %}Em Desenvolvimento{% else %}{{ dashboard.titulo }}{% endif %}">
                   {% if not dashboard.url and not dashboard.codigo %}
                     <i class="fas fa-exclamation-triangle" title="Sem conteúdo configurado"></i>
                   {% else %}
                     <i class="fas fa-chart-line"></i>
                   {% endif %}
-                  <span class="text">{{ dashboard.titulo }}</span>
+                  <span class="text">
+                    {{ dashboard.titulo }}
+                    {% if dashboard.em_dev %}
+                      <span class="dev-badge">EM DESENVOLVIMENTO</span>
+                    {% endif %}
+                  </span>
                   <i class="fas fa-thumbtack pin-icon {% if dashboard.is_favorite %}favorited{% endif %}" data-id="{{ dashboard.id }}" title="{% if dashboard.is_favorite %}Desafixar dos favoritos{% else %}Fixar nos favoritos{% endif %}"></i>
                 </a>
               </li>
