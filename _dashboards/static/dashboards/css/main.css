@@ -95,7 +95,7 @@ iframe {
 }
 
 .submenu.active {
-  max-height: 500px;
+  max-height: 5000px;
   display: block;
 }
 
