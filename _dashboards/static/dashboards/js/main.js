@@ -6,6 +6,33 @@ document.addEventListener("DOMContentLoaded", function () {
     
     if (!menuList) return;
 
+    // Correção: Sincronizar estados ao alternar a sidebar
+    const toggleBtn = document.getElementById("toggle");
+    if (toggleBtn) {
+        toggleBtn.addEventListener("click", function() {
+            // Este evento roda ANTES do sidebar.js alternar a classe 'collapsed'
+            const isCurrentlyCollapsed = sidebar.classList.contains("collapsed");
+
+            if (isCurrentlyCollapsed) {
+                // Expandindo: Converter Dropdowns (.show) para Acordeões (.active)
+                document.querySelectorAll('.submenu.show').forEach(submenu => {
+                    submenu.classList.remove('show');
+                    submenu.classList.add('active');
+                    // Limpar estilos inline de posicionamento do dropdown
+                    submenu.style.maxHeight = '';
+                    submenu.style.top = '';
+                });
+            } else {
+                // Colapsando: Fechar Acordeões (.active) para evitar dropdowns flutuando
+                document.querySelectorAll('.submenu.active').forEach(submenu => {
+                    submenu.classList.remove('active');
+                    const header = submenu.previousElementSibling;
+                    if (header) header.classList.remove('active');
+                });
+            }
+        });
+    }
+
     const dashboardFrame = document.getElementById("dashboard-frame");
     const dashboardPlaceholder = document.getElementById("dashboard-placeholder");
 
