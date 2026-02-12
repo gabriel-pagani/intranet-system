@@ -3,6 +3,7 @@ body {
   font-family: "Roboto Condensed", sans-serif;
   display: flex;
   height: 100vh;
+  overflow: hidden;
 }
 
 .sidebar {

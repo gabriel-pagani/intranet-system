@@ -1,48 +1,95 @@
+/* _dashboards/static/dashboards/js/main.js */
+
 document.addEventListener("DOMContentLoaded", function () {
     const menuList = document.querySelector('.menu-list');
+    const sidebar = document.getElementById("sidebar"); // Referência para verificar se está colapsado
+    
     if (!menuList) return;
 
     const dashboardFrame = document.getElementById("dashboard-frame");
     const dashboardPlaceholder = document.getElementById("dashboard-placeholder");
 
-    // Usar delegação de eventos no menuList
+    // Lógica principal de cliques (Adaptada do Vyzion)
     menuList.addEventListener('click', function(e) {
         const pinIcon = e.target.closest('.pin-icon');
         const dashboardLink = e.target.closest('.dashboard-link');
         const sectorHeader = e.target.closest('.sector-header');
 
-        // Prioridade 1: Clicou no ícone de fixar
+        // 1. Favoritar
         if (pinIcon) {
-        e.stopPropagation();
-        e.preventDefault();
-        toggleFavorite(pinIcon);
-        return;
-    }
-
-    // Prioridade 2: Clicou em um link de dashboard
-    if (dashboardLink) {
-        e.preventDefault();
-        
-        document.querySelectorAll(".dashboard-link").forEach((l) => l.classList.remove("active"));
-        dashboardLink.classList.add("active");
-
-        const dashboardUrl = dashboardLink.getAttribute("data-url");
-        dashboardPlaceholder.style.display = "none";
-        dashboardFrame.style.display = "block";
-        dashboardFrame.src = dashboardUrl;
-        return;
-    }
-
-    // Prioridade 3: Clicou no cabeçalho de um setor para expandir/recolher
-    if (sectorHeader) {
-        sectorHeader.classList.toggle("active");
-        const submenu = sectorHeader.nextElementSibling;
-        if (submenu && submenu.classList.contains('submenu')) {
-            submenu.classList.toggle("active");
+            e.stopPropagation();
+            e.preventDefault();
+            toggleFavorite(pinIcon);
+            return;
         }
+
+        // 2. Abrir Dashboard
+        if (dashboardLink) {
+            e.preventDefault();
+            
+            document.querySelectorAll(".dashboard-link").forEach((l) => l.classList.remove("active"));
+            dashboardLink.classList.add("active");
+
+            const dashboardUrl = dashboardLink.getAttribute("data-url");
+            dashboardPlaceholder.style.display = "none";
+            dashboardFrame.style.display = "block";
+            dashboardFrame.src = dashboardUrl;
+            
+            // Se estiver colapsado, fecha o menu após clicar (comportamento Vyzion)
+            if (sidebar.classList.contains("collapsed")) {
+                closeAllSubmenus();
+            }
+            return;
+        }
+
+        // 3. Expandir/Recolher Setor (Lógica Híbrida Vyzion)
+        if (sectorHeader) {
+            const submenu = sectorHeader.nextElementSibling;
+            if (!submenu || !submenu.classList.contains('submenu')) return;
+
+            const isCollapsed = sidebar.classList.contains("collapsed");
+
+            if (isCollapsed) {
+                // MODO DROPDOWN (Vyzion: openDropdownSector)
+                // Se já estiver aberto, fecha. Se não, abre este e fecha os outros.
+                const isAlreadyOpen = submenu.classList.contains("show");
+                
+                closeAllSubmenus(); // Fecha tudo primeiro (regra do Vyzion p/ dropdown)
+
+                if (!isAlreadyOpen) {
+                    sectorHeader.classList.add("active"); // Destaca o cabeçalho
+                    submenu.classList.add("show");        // Mostra o dropdown
+                }
+
+            } else {
+                // MODO ACORDEÃO (Vyzion: activeSubmenus)
+                sectorHeader.classList.toggle("active");
+                submenu.classList.toggle("active");
+            }
+        }
+    });
+
+    // Fecha dropdowns ao clicar fora (Lógica Vyzion: useEffect handleClickOutside)
+    document.addEventListener("click", function(event) {
+        if (sidebar.classList.contains("collapsed")) {
+            // Se o clique não foi dentro da lista do menu
+            if (!event.target.closest(".menu-list")) {
+                closeAllSubmenus();
+            }
+        }
+    });
+
+    // Função auxiliar para limpar estados
+    function closeAllSubmenus() {
+        // Remove 'active' dos cabeçalhos e 'show'/'active' dos submenus
+        document.querySelectorAll(".sector-header.active").forEach(el => el.classList.remove("active"));
+        document.querySelectorAll(".submenu.show").forEach(el => el.classList.remove("show"));
+        // Remove 'active' de submenus se estiverem abertos no modo acordeão e mudarmos para colapsado
+        document.querySelectorAll(".submenu.active").forEach(el => el.classList.remove("active"));
     }
 });
-});
+
+// --- O RESTANTE DO CÓDIGO (Busca, Favoritos, etc.) CONTINUA IGUAL ABAIXO ---
 
 document.addEventListener('DOMContentLoaded', function() {
   const searchInput = document.getElementById('search-indicadores');
@@ -52,20 +99,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
   if (!searchInput || !menuList) return;
 
-  // Define visibilidade inicial do botão se houver texto (ex: cache do navegador)
+  // Define visibilidade inicial do botão
   if (clearBtn) {
     clearBtn.style.display = searchInput.value.length > 0 ? 'block' : 'none';
   }
 
   searchInput.addEventListener('input', function() {
-    // Controla visibilidade do botão limpar
     if (clearBtn) {
       clearBtn.style.display = searchInput.value.length > 0 ? 'block' : 'none';
     }
 
     const termo = searchInput.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
-    // Salva o estado anterior na primeira pesquisa
     if (previousExpanded.length === 0 && termo) {
       previousExpanded = Array.from(menuList.querySelectorAll('.sector-header')).map(header =>
         header.classList.contains('active')
@@ -81,14 +126,12 @@ document.addEventListener('DOMContentLoaded', function() {
       const visible = Array.from(section.querySelectorAll('li[data-id]')).some(li => li.style.display !== 'none');
       section.style.display = visible ? '' : 'none';
 
-      // Expande todos os setores durante a busca
       const header = section.querySelector('.sector-header');
       const submenu = section.querySelector('.submenu');
       if (termo && visible) {
         header.classList.add('active');
         submenu.classList.add('active');
       } else if (!termo && previousExpanded.length) {
-        // Restaura o estado anterior
         if (previousExpanded[idx]) {
           header.classList.add('active');
           submenu.classList.add('active');
@@ -99,7 +142,6 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
 
-    // Limpa o estado salvo ao limpar a busca
     if (!termo) previousExpanded = [];
   });
 
@@ -126,12 +168,10 @@ function toggleFavorite(pinIcon) {
     .then(response => response.json())
     .then(data => {
         if (data.status === 'success') {
-            // Atualiza todos os ícones para este dashboard
             document.querySelectorAll(`.pin-icon[data-id="${dashboardId}"]`).forEach(icon => {
                 icon.classList.toggle('favorited', data.is_favorite);
                 icon.title = data.is_favorite ? 'Desafixar dos favoritos' : 'Fixar nos favoritos';
             });
-            // Move o item no DOM (opcional, mas melhora a UX)
             updateFavoritesList(dashboardId, data.is_favorite);
         }
     })
@@ -145,7 +185,6 @@ function updateFavoritesList(dashboardId, isFavorite) {
 
     if (isFavorite) {
         if (!favoritesList) {
-            // Cria a seção de Favoritos se ela não existir
             const favoriteSection = document.createElement('li');
             favoriteSection.className = 'menu-item';
             favoriteSection.innerHTML = `
@@ -165,14 +204,12 @@ function updateFavoritesList(dashboardId, isFavorite) {
             favoritesList.appendChild(newItem);
         }
     } else {
-        // Remove o item da lista de favoritos
         if (favoritesList) {
             const favoriteItem = favoritesList.querySelector(`li[data-id="${dashboardId}"]`);
             if (favoriteItem) {
                 favoriteItem.remove();
             }
 
-            // Se a lista de favoritos ficar vazia, remove a seção inteira
             if (favoritesList.children.length === 0) {
                 const favoriteSection = favoritesList.closest('.menu-item');
                 if (favoriteSection) {
