@@ -57,8 +57,30 @@ document.addEventListener("DOMContentLoaded", function () {
                 closeAllSubmenus(); // Fecha tudo primeiro (regra do Vyzion p/ dropdown)
 
                 if (!isAlreadyOpen) {
-                    sectorHeader.classList.add("active"); // Destaca o cabeçalho
-                    submenu.classList.add("show");        // Mostra o dropdown
+                    sectorHeader.classList.add("active");
+                    submenu.classList.add("show");
+
+                    // Lógica para reposicionar se estourar a tela
+                    const rect = submenu.getBoundingClientRect();
+                    const windowHeight = window.innerHeight;
+                    
+                    // Altura máxima fixa para scrolagem interna
+                    const maxHeight = windowHeight * 0.8; // 80% da tela
+                    submenu.style.maxHeight = `${maxHeight}px`;
+
+                    // Verifica se o dropdown ultrapassa o limite inferior da tela
+                    if (rect.bottom > windowHeight) {
+                        // Calcula a posição para abrir para cima
+                        // O 'rect.top' é a posição atual do topo do elemento em relação à viewport.
+                        // O 'rect.height' é a altura do elemento (já considerando o max-height aplicado pelo CSS ou JS se repintou, mas aqui aplicamos style logo acima).
+                        // Corrigindo: Precisamos forçar o navegador a recalcular o layout ou usar a altura setada.
+                        
+                        // Vamos mover o `top` para que o fundo do menu fique alinhado com o fundo da janela menos uma margem
+                        const overflow = rect.bottom - windowHeight + 20; // 20px de margem
+                        const newTop = parseInt(window.getComputedStyle(submenu).top || 0) - overflow;
+                        
+                        submenu.style.top = `${newTop}px`;
+                    }
                 }
 
             } else {
@@ -83,7 +105,11 @@ document.addEventListener("DOMContentLoaded", function () {
     function closeAllSubmenus() {
         // Remove 'active' dos cabeçalhos e 'show'/'active' dos submenus
         document.querySelectorAll(".sector-header.active").forEach(el => el.classList.remove("active"));
-        document.querySelectorAll(".submenu.show").forEach(el => el.classList.remove("show"));
+        document.querySelectorAll(".submenu.show").forEach(el => {
+            el.classList.remove("show");
+            el.style.maxHeight = ""; // Limpa estilo inline de altura
+            el.style.top = "";       // Limpa estilo inline de posição
+        });
         // Remove 'active' de submenus se estiverem abertos no modo acordeão e mudarmos para colapsado
         document.querySelectorAll(".submenu.active").forEach(el => el.classList.remove("active"));
     }
