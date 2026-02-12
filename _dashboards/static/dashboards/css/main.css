@@ -11,6 +11,10 @@ iframe {
   display: none;
 }
 
+.sidebar.collapsed .search-indicadores-container {
+  display: none;
+}
+
 .menu a {
   display: flex;
   align-items: center;
@@ -219,4 +223,6 @@ iframe {
   border: none; 
   background: #4b4b4b; 
   color: #fff;
+  display: none;
+  cursor: pointer;
 }

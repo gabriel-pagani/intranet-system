@@ -47,11 +47,22 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener('DOMContentLoaded', function() {
   const searchInput = document.getElementById('search-indicadores');
   const menuList = document.querySelector('.menu-list');
+  const clearBtn = document.querySelector('.clear-search');
   let previousExpanded = [];
 
   if (!searchInput || !menuList) return;
 
+  // Define visibilidade inicial do botão se houver texto (ex: cache do navegador)
+  if (clearBtn) {
+    clearBtn.style.display = searchInput.value.length > 0 ? 'block' : 'none';
+  }
+
   searchInput.addEventListener('input', function() {
+    // Controla visibilidade do botão limpar
+    if (clearBtn) {
+      clearBtn.style.display = searchInput.value.length > 0 ? 'block' : 'none';
+    }
+
     const termo = searchInput.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
     // Salva o estado anterior na primeira pesquisa
@@ -92,7 +103,6 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!termo) previousExpanded = [];
   });
 
-  const clearBtn = document.querySelector('.clear-search');
   if (clearBtn) {
     clearBtn.addEventListener('click', function() {
       searchInput.value = '';
