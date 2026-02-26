@@ -62,6 +62,12 @@ document.addEventListener("DOMContentLoaded", function () {
             dashboardFrame.style.display = "block";
             dashboardFrame.src = dashboardUrl;
             
+            // Salvar o dashboard selecionado no localStorage
+            const dashboardId = dashboardLink.closest('li').getAttribute('data-id');
+            if (dashboardId) {
+                localStorage.setItem('lastSelectedDashboard', dashboardId);
+            }
+
             // Se estiver colapsado, fecha o menu após clicar (comportamento Vyzion)
             if (sidebar.classList.contains("collapsed")) {
                 closeAllSubmenus();
@@ -139,6 +145,26 @@ document.addEventListener("DOMContentLoaded", function () {
         });
         // Remove 'active' de submenus se estiverem abertos no modo acordeão e mudarmos para colapsado
         document.querySelectorAll(".submenu.active").forEach(el => el.classList.remove("active"));
+    }
+
+    // Restaurar o último dashboard selecionado ao carregar a página
+    const lastSelectedDashboardId = localStorage.getItem('lastSelectedDashboard');
+    if (lastSelectedDashboardId) {
+        const targetLink = document.querySelector(`li[data-id="${lastSelectedDashboardId}"] .dashboard-link`);
+        if (targetLink) {
+            // Simula o clique para carregar o iframe
+            targetLink.click();
+            
+            // Expande o menu pai se a sidebar não estiver colapsada
+            const submenu = targetLink.closest('.submenu');
+            if (submenu && !sidebar.classList.contains("collapsed")) {
+                submenu.classList.add('active');
+                const header = submenu.previousElementSibling;
+                if (header && header.classList.contains('sector-header')) {
+                    header.classList.add('active');
+                }
+            }
+        }
     }
 });
 
